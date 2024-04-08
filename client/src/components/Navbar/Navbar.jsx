@@ -33,9 +33,7 @@ export const Navbare = () => {
                     style={{marginRight: "auto"}}
                     className={''}
                 />
-                <div>
-                    <Button variant="success" style={{width: "120px"}}>تسجيل الدخول</Button>
-                </div>
+
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <div className="navbar-menu ">
                         <Nav className="me-auto">
@@ -58,6 +56,9 @@ export const Navbare = () => {
                         </Nav>
                     </div>
                 </Navbar.Collapse>
+                <div>
+                    <Button variant="success" style={{width: "120px"}}>تسجيل الدخول</Button>
+                </div>
             </Container>
         </Navbar>
       </div>
