@@ -3,6 +3,7 @@ import {BrowserRouter,Routes,Route}from'react-router-dom'
 import { Footer } from '../components/Footer/Footer'
 import { Navbare } from '../components/Navbar/Navbar'
 import { Homepage } from './Homepage'
+import { Financiere } from '../components/Aide-financiere/financiere'
 
 function App() {
     return (
@@ -12,9 +13,8 @@ function App() {
 
 <Routes>
           <Route path="/" element={<Homepage/>} />
-          {/* <Route path="/component2" element={<Component2 />} />
-          <Route path="/component3" element={<Component3 />} />
-          <Route path="/component4" element={<Component4 />} /> */}
+          <Route path="/Financiere" element={<Financiere />} />
+
 </Routes>
 <Footer/>
 </BrowserRouter>
