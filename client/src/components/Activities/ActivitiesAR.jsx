@@ -34,6 +34,8 @@ export const ActivitiesAR = () => {
             <p
               style={{
                 border: "5px solid orange",
+                
+                
                 direction: "rtl",
                 padding: "20px",
               }}

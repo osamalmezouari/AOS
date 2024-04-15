@@ -2,8 +2,11 @@ import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Form from "react-bootstrap/Form";
 import { Button, Container, Row, Col } from "react-bootstrap/";
 import login from "../../Assets/login.avif";
+
 export const Login = () => {
+
   return (
+    
     <center>
       <div style={{ width: "70%", backgroundColor: "#F2F2F2" }}>
         <Container>

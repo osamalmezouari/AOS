@@ -1,0 +1,56 @@
+/* Form container */
+#form-container {
+    width: 80%;
+    margin: auto;
+  }
+  
+  /* Form row */
+  .form-row {
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 15px;
+  }
+  
+  /* Form column */
+  .form-col {
+    flex: 0 0 23%;
+    margin-bottom: 10px;
+  }
+  
+  /* Label style */
+  .form-label {
+    font-weight: bold;
+  }
+  
+  /* Input style */
+  .form-input {
+    width: 250px;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  /* Checkbox style */
+  .form-checkbox {
+    margin-top: 10px;
+  }
+  
+  /* Submit button style */
+  .form-submit {
+    background-color: #4caf50;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  /* Submit button hover effect */
+  .form-submit:hover {
+    background-color: #45a049;
+  }
+  

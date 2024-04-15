@@ -19,6 +19,7 @@ import { ActivitiesAR } from "../components/Activities/ActivitiesAR";
 import { ActivitiesFR } from "../components/Activities/ActivitiesFR";
 import { AssistanceAR } from "../components/assistance-medicale/AssistanceAR";
 import { AssistanceFR } from "../components/assistance-medicale/AssistanceFR.jsx";
+import { Dashboard } from "./Dashboard";
 
 function App() {
   const [language, setLanguage] = useState(() => {
@@ -58,6 +59,7 @@ function App() {
             path="/"
             element={language === "AR" ? <HomepageAR /> : <HomepageFR />}
           />
+
           <Route
             path="/Financiere"
             element={language === "AR" ? <FinanciereAR /> : <FinanciereFR />}
@@ -81,6 +83,7 @@ function App() {
             element={language === "AR" ? <FunAR /> : <FunFR />}
           />
           <Route path="/Login" element={<Login />} />
+          <Route path="/Dashboard" element={<Dashboard />} />
         </Routes>
         {language === "AR" ? <FooterAR /> : <FooterFR />}
       </BrowserRouter>
