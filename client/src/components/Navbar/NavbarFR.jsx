@@ -1,6 +1,6 @@
-import { Navbar, Nav, Container, Button } from "react-bootstrap";
+import { Navbar, Nav, Container, Button, NavDropdown } from "react-bootstrap";
 
-export const NavbareFR = () => {
+export const NavbarFR = () => {
   return (
     <div style={{ background: "grey" }}>
       <div className="navbarr ">
@@ -17,26 +17,40 @@ export const NavbareFR = () => {
 
             <Navbar.Toggle
               aria-controls="responsive-navbar-nav"
-              style={{ marginRight: "auto" }}
+              style={{ marginLeft: "auto" }}
             />
 
             <Navbar.Collapse id="responsive-navbar-nav">
               <div className="navbar-menu">
                 <Nav className="me-auto">
                   <Nav.Link href="/Financiere" className="me-4">
-                    Aides Financières
+                    Aides financières
                   </Nav.Link>
+
                   <Nav.Link href="/Assistance" className="me-4">
-                    Assurance et Assistance Médicale
+                    Sécurité sociale et assistance médicale
                   </Nav.Link>
-                  <Nav.Link href="/Activities" className="me-4">
-                    Activités Culturelles
-                  </Nav.Link>
+                  <NavDropdown
+                    title="Activités culturelles"
+                    id="basic-nav-dropdown"
+                    className="me-4"
+                  >
+                    <NavDropdown.Item href="/Option1">
+                      Centres de loisirs
+                    </NavDropdown.Item>
+                    <NavDropdown.Item href="/Option2">
+                      Centres de soutien linguistique
+                    </NavDropdown.Item>
+                  </NavDropdown>
                   <Nav.Link href="/Fun" className="me-4">
-                    Activités de Loisirs
+                    Activités de loisirs
                   </Nav.Link>
                   <Nav.Link href="/Partnerships" className="me-4">
-                    Accords et Partenariats
+                    Accords et partenariats
+                  </Nav.Link>
+
+                  <Nav.Link href="/dashboard" style={{ fontSize: "10px" }}>
+                    Dashboard
                   </Nav.Link>
                 </Nav>
               </div>
@@ -44,9 +58,11 @@ export const NavbareFR = () => {
 
             <Nav.Link href="/Login" className="me-4">
               <Button variant="success" style={{ width: "120px" }}>
-                Se Connecter
+                Connexion
               </Button>
             </Nav.Link>
+
+            {/* </Link> */}
           </Container>{" "}
         </Navbar>{" "}
       </div>
