@@ -3,11 +3,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { FooterAR } from "../components/Footer/FooterAR";
 import { FooterFR } from "../components/Footer/FooterFR";
 import { NavbareAR } from "../components/Navbar/NavbarAR";
-import { NavbareFR } from "../components/Navbar/NavbarFR";
 import { FinanciereAR } from "../components/Aide-financiere/FinanciereAR";
 import { FinanciereFR } from "../components/Aide-financiere/FinanciereFR";
-// import { AssistanceAR } from "../components/assistance-medicale/AssistanceAR";
-// import { AssistanceFR } from "../components/assistance-medicale/AssistanceFR";
+
 import { PartnershipsAR } from "../components/partnerships/PartnershipsAR";
 import { PartnershipsFR } from "../components/partnerships/PartnershipsFR";
 import { FunAR } from "../components/Fun/FunAR";
@@ -15,11 +13,15 @@ import { FunFR } from "../components/Fun/FunFR";
 import { Login } from "../components/Login/Login";
 import { HomepageAR } from "./HomepageAR";
 import { HomepageFR } from "./HomepageFR";
-import { ActivitiesAR } from "../components/Activities/ActivitiesAR";
-import { ActivitiesFR } from "../components/Activities/ActivitiesFR";
+
 import { AssistanceAR } from "../components/assistance-medicale/AssistanceAR";
 import { AssistanceFR } from "../components/assistance-medicale/AssistanceFR.jsx";
 import { Dashboard } from "./Dashboard";
+import { Option1AR } from "../components/Activities/option1AR";
+import { Option1FR } from "../components/Activities/option1FR";
+import { Option2AR } from "../components/Activities/option2AR";
+import { Option2FR } from "../components/Activities/option2FR";
+import { NavbarFR } from "../components/Navbar/NavbarFR";
 
 function App() {
   const [language, setLanguage] = useState(() => {
@@ -51,8 +53,9 @@ function App() {
             {language === "AR" ? " Français " : "   العربية"}
           </button>
         </center>
+        
       </div>
-      {language === "AR" ? <NavbareAR /> : <NavbareFR />}
+      {language === "AR" ? <NavbareAR /> : <NavbarFR/>}
       <BrowserRouter>
         <Routes>
           <Route
@@ -69,8 +72,12 @@ function App() {
             element={language === "AR" ? <AssistanceAR /> : <AssistanceFR />}
           />
           <Route
-            path="/Activities"
-            element={language === "AR" ? <ActivitiesAR /> : <ActivitiesFR />}
+            path="/Option1"
+            element={language === "AR" ? <Option1AR /> : <Option1FR />}
+          />
+                    <Route
+            path="/Option2"
+            element={language === "AR" ? <Option2AR /> : <Option2FR />}
           />
           <Route
             path="/Partnerships"
