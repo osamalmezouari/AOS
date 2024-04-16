@@ -79,7 +79,7 @@ export const FormPersonne = () => {
                 ADHERENT
               </label>
               <br />
-              <input className="form-checkbox" type="checkbox" id="adherent" style={{ transform: 'scale(1.5)' }} checked disabled />
+              <input className="form-checkbox" type="checkbox" id="adherent" style={{ transform: 'scale(1.5)' }}   />
             </Col>
             <Col className="form-col">
               <label className="form-label" htmlFor="Structure">
