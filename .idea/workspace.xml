@@ -5,12 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="35990207-7879-4eb7-8436-1bdda4842b11" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/pages/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/pages/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/app.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/sous-activites/Model/activite.model.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/sous-activites/Model/dotation.model.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/sous-activites/Model/sousActivitie.model.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/sous-activites/dto/createsousActivite.dto.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/sous-activites/sous-activites.controller.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/sous-activites/sous-activites.module.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/sous-activites/sous-activites.service.ts" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,6 +21,20 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;osamalmezouari&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="6cc04d62-b691-4b88-84b5-32e7286a7b3b" />
+        <option name="url" value="https://github.com/osamalmezouari/Mic-Minah.git" />
+      </UrlAndAccount>
+    </option>
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/client/src/pages/App.jsx" root0="FORCE_HIGHLIGHTING" />
@@ -44,8 +60,8 @@
     &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;add-server-func&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/Oussama/PROJECTS/Mic-Minah/server/src/sous-activites&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Oussama/PROJECTS/Mic-Minah/server/src/demande/Model&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -60,17 +76,18 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Oussama\PROJECTS\Mic-Minah\server\src\demande\Model" />
+      <recent name="D:\Oussama\PROJECTS\Mic-Minah\server\src\dotation" />
+      <recent name="D:\Oussama\PROJECTS\Mic-Minah\server\src\affectation" />
       <recent name="D:\Oussama\PROJECTS\Mic-Minah\server\src\sous-activites" />
       <recent name="D:\Oussama\PROJECTS\Mic-Minah\server\src\SousActivities" />
-      <recent name="D:\Oussama\PROJECTS\Mic-Minah\server\src\personel" />
-      <recent name="D:\Oussama\PROJECTS\Mic-Minah\server\src\demande" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Oussama\PROJECTS\Mic-Minah\server\src\activite\Model" />
+      <recent name="D:\Oussama\PROJECTS\Mic-Minah\server\src\demande\Model" />
       <recent name="D:\Oussama\PROJECTS\Mic-Minah\server\src\personel\Model" />
       <recent name="D:\Oussama\PROJECTS\Mic-Minah\server\src\sous-activites" />
       <recent name="D:\Oussama\PROJECTS\Mic-Minah\client\public\assets\images" />
-      <recent name="D:\Oussama\PROJECTS\Mic-Minah\client\public" />
-      <recent name="D:\Oussama\PROJECTS\Mic-Minah\client" />
     </key>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -91,6 +108,17 @@
       <workItem from="1712673940269" duration="6831000" />
       <workItem from="1713119347888" duration="2000" />
       <workItem from="1713162060233" duration="208000" />
+      <workItem from="1713171144772" duration="12000" />
+      <workItem from="1713178846677" duration="1723000" />
+      <workItem from="1713181819495" duration="10000" />
+      <workItem from="1713182114067" duration="195000" />
+      <workItem from="1713182609675" duration="164000" />
+      <workItem from="1713187785220" duration="610000" />
+      <workItem from="1713302277013" duration="477000" />
+      <workItem from="1713306454947" duration="6000" />
+      <workItem from="1713306916501" duration="483000" />
+      <workItem from="1713313245187" duration="14000" />
+      <workItem from="1713314518161" duration="1776000" />
     </task>
     <servers />
   </component>
