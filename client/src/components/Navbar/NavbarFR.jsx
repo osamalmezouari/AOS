@@ -48,10 +48,10 @@ export const NavbarFR = () => {
                   <Nav.Link href="/Partnerships" className="me-4">
                     Accords et partenariats
                   </Nav.Link>
-
+                  {/* 
                   <Nav.Link href="/dashboard" style={{ fontSize: "10px" }}>
                     Dashboard
-                  </Nav.Link>
+                  </Nav.Link> */}
                 </Nav>
               </div>
             </Navbar.Collapse>

@@ -8,110 +8,66 @@ function getNumberOfPages(rowCount, rowsPerPage) {
 function toPages(pages) {
   const results = [];
 
-  for (let i = 1; i < pages; i++) {
+  for (let i = 1; i <= pages; i++) {
     results.push(i);
   }
 
   return results;
 }
 
-function Table() {
+function TableActivity() {
   // Sample data
-  const personnelData = [
+  const activityData = [
     {
-      id: 1,
-      nom_fr: "Smith",
-      prenom_fr: "John",
-      nom_ar: "سميث",
-      prenom_ar: "جون",
-      date_naissance: "1990-01-01",
-      email: "john@example.com",
-      echelle: "Echelle 1",
-      qualite: "Qualité 1",
-      adherent: "Oui",
-      structure_fr: "Structure 1"
+      ID_Activite: 1,
+      Activite_FR: "Activite 1",
+      Activite_AR: "نشاط 1",
     },
-    // Add more personnel objects as needed
+    // Add more activity objects as needed
   ];
 
   const columns = [
     {
-      name: "NOM FR",
-      selector: (row) => row.nom_fr,
-      sortable: true
+      name: "ID_Activite",
+      selector: (row) => row.ID_Activite,
+      sortable: true,
     },
     {
-      name: "Prenom FR",
-      selector: (row) => row.prenom_fr,
-      sortable: true
+      name: "Activite FR",
+      selector: (row) => row.Activite_FR,
+      sortable: true,
     },
     {
-      name: "NOM AR",
-      selector: (row) => row.nom_ar,
-      sortable: true
+      name: "Activite AR",
+      selector: (row) => row.Activite_AR,
+      sortable: true,
     },
-    {
-      name: "PRENOM AR",
-      selector: (row) => row.prenom_ar,
-      sortable: true
-    },
-    {
-      name: "DATE NAISSANCE",
-      selector: (row) => row.date_naissance,
-      sortable: true
-    },
-    {
-      name: "EMAIL",
-      selector: (row) => row.email,
-      sortable: true
-    },
-    {
-      name: "ECHELLE",
-      selector: (row) => row.echelle,
-      sortable: true
-    },
-    {
-      name: "QUALITE",
-      selector: (row) => row.qualite,
-      sortable: true
-    },
-    {
-      name: "ADHERENT",
-      selector: (row) => row.adherent,
-      sortable: true
-    },
-    {
-      name: "Structure FR",
-      selector: (row) => row.structure_fr,
-      sortable: true
-    },
-    // Add more columns as needed
     {
       name: "Actions",
       cell: (row) => (
         <div>
           <button
             className="btn btn-primary btn-sm"
-            onClick={() => handleModify(row)}
+            onClick={() => handleAddActivity(row)}
           >
-            Modify
+            Add Activity
           </button>{" "}
           <button
             className="btn btn-danger btn-sm"
-            onClick={() => handleDelete(row.id)}
+            onClick={() => handleDeleteActivity(row.ID_Activite)}
           >
             Delete
           </button>
         </div>
-      )
-    }
+      ),
+    },
   ];
 
   const BootyPagination = ({
     rowsPerPage,
     rowCount,
     onChangePage,
-    currentPage
+    currentPage,
   }) => {
     const handleBackButtonClick = () => {
       onChangePage(currentPage - 1);
@@ -190,14 +146,17 @@ function Table() {
     </div>
   ));
 
-  const handleModify = (row) => {
-    // Implement modify action here
-    console.log("Modify action for row:", row);
+  const handleAddActivity = (row) => {
+    // Implement add activity action here
+    console.log("Add activity action for row:", row);
   };
 
-  const handleDelete = (id) => {
-    // Implement delete action here
-    console.log("Delete action for row with id:", id);
+  const handleDeleteActivity = (ID_Activite) => {
+    // Implement delete activity action here
+    console.log(
+      "Delete activity action for row with ID_Activite:",
+      ID_Activite
+    );
   };
 
   return (
@@ -205,7 +164,7 @@ function Table() {
       <div className="card">
         <DataTable
           columns={columns}
-          data={personnelData}
+          data={activityData}
           defaultSortFieldID={1}
           pagination
           paginationComponent={BootyPagination}
@@ -217,4 +176,4 @@ function Table() {
   );
 }
 
-export default Table;
+export default TableActivity;
