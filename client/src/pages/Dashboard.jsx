@@ -12,11 +12,15 @@ import { FormActivities } from "../components/Admin_F/FormActivities";
 import { FormSsActivities } from "../components/Admin_F/FormSsActivities";
 import TableSsActivity from "../components/Table/TableSsActivity";
 import TableActivity from "../components/Table/TableActivity";
+import { FormPiece } from "../components/Admin_F/Formpiece";
+import TablePiece from "../components/Table/TablePiece";
 export const Dashboard = () => {
   const [PersShow, setPersShow] = useState(false);
   const [ActShow, setActShow] = useState(false);
   const [SsActShow, setSsActShow] = useState(false);
   const [lgShow, setLgShow] = useState(false);
+  const [PieceShow, setPieceShow] = useState(false);
+
   return (
     <div style={{ margin: "30px" }}>
       <center>
@@ -69,39 +73,71 @@ export const Dashboard = () => {
               </Button>
             </center>
           </Col>
+          <Col>
+            <center>
+              <Button
+                onClick={() => setPieceShow(true)}
+                style={{ width: "250px", margin: "3px" }}
+                variant="success"
+              >
+                Piece
+              </Button>
+            </center>
+          </Col>
         </Row>
       </Container>
       <center>
         {" "}
         <h1>visualisation du parametrage</h1>
       </center>
-
       <Accordion flush>
         <Accordion.Item eventKey="0">
-          <Accordion.Header > <h5 style={{color:"#EC0000",fontWeight:"1000"}}>Personnel</h5> </Accordion.Header>
+          <Accordion.Header>
+            {" "}
+            <h5 style={{ color: "#EC0000", fontWeight: "1000" }}>
+              Personnel
+            </h5>{" "}
+          </Accordion.Header>
           <Accordion.Body>
             <Table />
           </Accordion.Body>
         </Accordion.Item>
         <Accordion.Item eventKey="1">
-          <Accordion.Header><h5 style={{color:"#EC0000",fontWeight:"1000"}}>Affectation</h5></Accordion.Header>
+          <Accordion.Header>
+            <h5 style={{ color: "#EC0000", fontWeight: "1000" }}>
+              Affectation
+            </h5>
+          </Accordion.Header>
           <Accordion.Body>
             <TableAffectation />
           </Accordion.Body>
         </Accordion.Item>
-      </Accordion>
-        {" "}
+      </Accordion>{" "}
       <Accordion flush>
         <Accordion.Item eventKey="0">
-          <Accordion.Header><h5 style={{color:"#EC0000",fontWeight:"1000"}}>ACTIVITIES</h5></Accordion.Header>
+          <Accordion.Header>
+            <h5 style={{ color: "#EC0000", fontWeight: "1000" }}>ACTIVITIES</h5>
+          </Accordion.Header>
           <Accordion.Body>
             <TableActivity />
           </Accordion.Body>
         </Accordion.Item>
         <Accordion.Item eventKey="1">
-          <Accordion.Header><h5 style={{color:"#EC0000",fontWeight:"1000"}}>SOUS-ACTIVITIES</h5></Accordion.Header>
+          <Accordion.Header>
+            <h5 style={{ color: "#EC0000", fontWeight: "1000" }}>
+              SOUS-ACTIVITIES
+            </h5>
+          </Accordion.Header>
           <Accordion.Body>
             <TableSsActivity />
+          </Accordion.Body>
+        </Accordion.Item>
+        <Accordion.Item eventKey="2">
+          <Accordion.Header>
+            <h5 style={{ color: "#EC0000", fontWeight: "1000" }}>Piece</h5>
+          </Accordion.Header>
+          <Accordion.Body>
+            <TablePiece/>
           </Accordion.Body>
         </Accordion.Item>
       </Accordion>
@@ -116,7 +152,6 @@ export const Dashboard = () => {
           <FormPersonne />
         </Modal.Body>
       </Modal>
-
       <Modal
         size="lg"
         show={lgShow}
@@ -139,7 +174,6 @@ export const Dashboard = () => {
           <FormActivities />
         </Modal.Body>
       </Modal>
-
       <Modal
         size="lg"
         show={SsActShow}
@@ -149,6 +183,17 @@ export const Dashboard = () => {
         <Modal.Header closeButton></Modal.Header>
         <Modal.Body>
           <FormSsActivities />
+        </Modal.Body>
+      </Modal>
+      <Modal
+        size="lg"
+        show={PieceShow}
+        onHide={() => setPieceShow(false)}
+        aria-labelledby="example-modal-sizes-title-lg"
+      >
+        <Modal.Header closeButton></Modal.Header>
+        <Modal.Body>
+          <FormPiece />
         </Modal.Body>
       </Modal>
     </div>
