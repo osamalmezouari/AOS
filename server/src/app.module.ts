@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AffectationModule } from './affectation/affectation.module';
-import { DemandeModule } from './demande/demande.module';
+import { DemandeModule } from './demandeEstivage/demande.module';
 import { PersonelModule } from './personel/personel.module';
 import { SousActivitesModule } from './sous-activites/sous-activites.module';
 import { ActiviteController } from './activite/activite.controller';
@@ -15,7 +15,15 @@ import { AffectationService } from './affectation/affectation.service';
 import { AffectationModule } from './affectation/affectation.module';
 
 @Module({
-  imports: [AffectationModule, DemandeModule, PersonelModule, SousActivitesModule, ActiviteModule, PiecesModule, SousActiviteModule],
+  imports: [
+    AffectationModule,
+    DemandeModule,
+    PersonelModule,
+    SousActivitesModule,
+    ActiviteModule,
+    PiecesModule,
+    SousActiviteModule,
+  ],
   controllers: [AppController, ActiviteController, AffectationController],
   providers: [AppService, ActiviteService, AffectationService],
 })
