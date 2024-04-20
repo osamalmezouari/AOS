@@ -8,84 +8,64 @@ function getNumberOfPages(rowCount, rowsPerPage) {
 function toPages(pages) {
   const results = [];
 
-  for (let i = 1; i < pages; i++) {
+  for (let i = 1; i <= pages; i++) {
     results.push(i);
   }
 
   return results;
 }
 
-function Table() {
+function TableSsActivity() {
   // Sample data
-  const personnelData = [
+  const ssActivityData = [
     {
-      id: 1,
-      nom_fr: "Smith",
-      prenom_fr: "John",
-      nom_ar: "سميث",
-      prenom_ar: "جون",
-      date_naissance: "1990-01-01",
-      email: "john@example.com",
-      echelle: "Echelle 1",
-      qualite: "Qualité 1",
-      adherent: "Oui",
-      structure_fr: "Structure 1"
+      ID_Sous_Activite: 1,
+      Sous_Activite_FR: "Sous Activite 1",
+      Sous_Activite_AR: "النشاط الفرعي 1",
+      Text_AR: "نص بالعربية",
+      Text_FR: "Text in French",
+      Dotation: 1000, // New column
+      Piece_Demandee: "Rib / CIN / Copie carte...", // New column
     },
-    // Add more personnel objects as needed
+    // Add more sub-activity objects as needed
   ];
 
   const columns = [
     {
-      name: "NOM FR",
-      selector: (row) => row.nom_fr,
-      sortable: true
+      name: "ID_Sous_Activite",
+      selector: (row) => row.ID_Sous_Activite,
+      sortable: true,
     },
     {
-      name: "Prenom FR",
-      selector: (row) => row.prenom_fr,
-      sortable: true
+      name: "Sous Activite FR",
+      selector: (row) => row.Sous_Activite_FR,
+      sortable: true,
     },
     {
-      name: "NOM AR",
-      selector: (row) => row.nom_ar,
-      sortable: true
+      name: "Sous Activite AR",
+      selector: (row) => row.Sous_Activite_AR,
+      sortable: true,
     },
     {
-      name: "PRENOM AR",
-      selector: (row) => row.prenom_ar,
-      sortable: true
+      name: "Text AR",
+      selector: (row) => row.Text_AR,
+      sortable: true,
     },
     {
-      name: "DATE NAISSANCE",
-      selector: (row) => row.date_naissance,
-      sortable: true
+      name: "Text Fr",
+      selector: (row) => row.Text_FR,
+      sortable: true,
     },
     {
-      name: "EMAIL",
-      selector: (row) => row.email,
-      sortable: true
+      name: "Dotation", // New column
+      selector: (row) => row.Dotation+" DH",
+      sortable: true,
     },
     {
-      name: "ECHELLE",
-      selector: (row) => row.echelle,
-      sortable: true
+      name: "Piece Demandée", // New column
+      selector: (row) => row.Piece_Demandee,
+      sortable: true,
     },
-    {
-      name: "QUALITE",
-      selector: (row) => row.qualite,
-      sortable: true
-    },
-    {
-      name: "ADHERENT",
-      selector: (row) => row.adherent,
-      sortable: true
-    },
-    {
-      name: "Structure FR",
-      selector: (row) => row.structure_fr,
-      sortable: true
-    },
-    // Add more columns as needed
     {
       name: "Actions",
       cell: (row) => (
@@ -98,20 +78,20 @@ function Table() {
           </button>{" "}
           <button
             className="btn btn-danger btn-sm"
-            onClick={() => handleDelete(row.id)}
+            onClick={() => handleDelete(row.ID_Sous_Activite)}
           >
             Delete
           </button>
         </div>
-      )
-    }
+      ),
+    },
   ];
 
   const BootyPagination = ({
     rowsPerPage,
     rowCount,
     onChangePage,
-    currentPage
+    currentPage,
   }) => {
     const handleBackButtonClick = () => {
       onChangePage(currentPage - 1);
@@ -195,9 +175,12 @@ function Table() {
     console.log("Modify action for row:", row);
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = (ID_Sous_Activite) => {
     // Implement delete action here
-    console.log("Delete action for row with id:", id);
+    console.log(
+      "Delete action for row with ID_Sous_Activite:",
+      ID_Sous_Activite
+    );
   };
 
   return (
@@ -205,7 +188,7 @@ function Table() {
       <div className="card">
         <DataTable
           columns={columns}
-          data={personnelData}
+          data={ssActivityData}
           defaultSortFieldID={1}
           pagination
           paginationComponent={BootyPagination}
@@ -217,4 +200,4 @@ function Table() {
   );
 }
 
-export default Table;
+export default TableSsActivity;
