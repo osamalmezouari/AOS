@@ -1,13 +1,13 @@
-import { Activite } from '../Model/activite.model';
 import DemandeEstivage from '../../demandeEstivage/Model/demandeEstivage.model';
-export class UpdateActiviteDto {
-  id?: number;
+
+export class UpdatepersonelDto {
+  id?: string;
   matricule?: number;
   nom_fr?: string;
   nom_ar?: string;
   prenom_ar?: string;
   prenom_fr?: string;
-  naissance?: number;
+  naissance?: bigint;
   email?: string;
   echelle?: number;
   adherant?: boolean;

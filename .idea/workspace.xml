@@ -6,18 +6,18 @@
   <component name="ChangeListManager">
     <list default="true" id="35990207-7879-4eb7-8436-1bdda4842b11" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/sous-activites/Model/activite.model.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/sous-activites/Model/dotation.model.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/sous-activites/Model/sousActivitie.model.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/sous-activites/dto/createsousActivite.dto.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/sous-activites/sous-activites.controller.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/sous-activites/sous-activites.module.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/sous-activites/sous-activites.service.ts" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FormatOnSaveOptions">
+    <option name="myRunOnSave" value="false" />
+    <option name="myAllFileTypesSelected" value="true" />
+    <option name="mySelectedFileTypes">
+      <set />
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -28,19 +28,24 @@
     &quot;assignee&quot;: &quot;osamalmezouari&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">
-    <option name="selectedUrlAndAccountId">
-      <UrlAndAccount>
-        <option name="accountId" value="6cc04d62-b691-4b88-84b5-32e7286a7b3b" />
-        <option name="url" value="https://github.com/osamalmezouari/Mic-Minah.git" />
-      </UrlAndAccount>
-    </option>
-  </component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/osamalmezouari/Mic-Minah.git&quot;,
+    &quot;accountId&quot;: &quot;6cc04d62-b691-4b88-84b5-32e7286a7b3b&quot;
+  }
+}</component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/client/src/pages/App.jsx" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/server/src/activite/Model/activite.model.ts" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/server/src/activite/dto/UpdateActivite.dto.ts" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/server/src/affectation/Model/affectation.model.ts" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/server/src/demandeEstivage/centeres/model/centre.model.ts" root0="SKIP_INSPECTION" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 2
@@ -54,33 +59,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "D:/Oussama/PROJECTS/Mic-Minah/server/src/demande/Model",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.standard": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.standard": "",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "ts.external.directory.path": "D:\\Oussama\\PROJECTS\\Mic-Minah\\server\\node_modules\\typescript\\lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/laragon/www/monPfe&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;D:\\Oussama\\PROJECTS\\Mic-Minah\\server\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "GitStage.ChangesTree.GroupingKeys": [
-      "directory",
-      "module",
-      "repository"
+  &quot;keyToStringList&quot;: {
+    &quot;GitStage.ChangesTree.GroupingKeys&quot;: [
+      &quot;directory&quot;,
+      &quot;module&quot;,
+      &quot;repository&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Oussama\PROJECTS\Mic-Minah\server\src\demande\Model" />
@@ -91,11 +96,18 @@
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Oussama\PROJECTS\Mic-Minah\server\src\demandeEstivage" />
+      <recent name="D:\Oussama\PROJECTS\Mic-Minah\server\src" />
+      <recent name="D:\Oussama\PROJECTS\Mic-Minah\server" />
+      <recent name="D:\Oussama\PROJECTS\Mic-Minah\server\prisma" />
       <recent name="D:\Oussama\PROJECTS\Mic-Minah\server\src\activite\Model" />
-      <recent name="D:\Oussama\PROJECTS\Mic-Minah\server\src\demande\Model" />
-      <recent name="D:\Oussama\PROJECTS\Mic-Minah\server\src\personel\Model" />
-      <recent name="D:\Oussama\PROJECTS\Mic-Minah\server\src\sous-activites" />
     </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-1d06a55b98c1-2e7d6887c066-JavaScript-WS-241.15989.47" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -127,16 +139,48 @@
       <workItem from="1713313245187" duration="14000" />
       <workItem from="1713314518161" duration="2142000" />
       <workItem from="1713615280326" duration="349000" />
-      <workItem from="1713646714938" duration="1298000" />
+      <workItem from="1713646714938" duration="2287000" />
+      <workItem from="1713715876396" duration="12912000" />
+      <workItem from="1713764373670" duration="2983000" />
+      <workItem from="1713772140871" duration="187000" />
+      <workItem from="1713773609961" duration="199000" />
+      <workItem from="1713773828012" duration="95000" />
+      <workItem from="1713773940099" duration="228000" />
+      <workItem from="1713774183777" duration="279000" />
+      <workItem from="1713775364682" duration="9821000" />
+      <workItem from="1713792890397" duration="1061000" />
     </task>
+    <task id="LOCAL-00001" summary="remove the no exissting imports">
+      <option name="closed" value="true" />
+      <created>1713734763761</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1713734763762</updated>
+    </task>
+    <task id="LOCAL-00002" summary="add the prisma model including just(demande-estivage)">
+      <option name="closed" value="true" />
+      <created>1713734859045</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1713734859045</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.sql" />
+  </component>
   <component name="VcsManagerConfiguration">
     <ignored-roots>
       <path value="$PROJECT_DIR$/server" />
     </ignored-roots>
+    <MESSAGE value="remove the no exissting imports" />
+    <MESSAGE value="add the prisma model including just(demande-estivage)" />
+    <option name="LAST_COMMIT_MESSAGE" value="add the prisma model including just(demande-estivage)" />
   </component>
 </project>

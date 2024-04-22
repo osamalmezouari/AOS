@@ -1,8 +1,9 @@
 import { SousActivite } from '../../sous-activite/Model/SousActivite.model';
 
-export class Pieces {
+export class UpdateDotationDto {
   id: string;
-  nomAr: string;
-  nomFr: string;
+  dotation: number;
+  descriptionAr: string;
+  descriptionFr: string;
   SousActivities: SousActivite[];
 }

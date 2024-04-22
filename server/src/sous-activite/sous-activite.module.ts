@@ -4,6 +4,6 @@ import { SousActiviteController } from './sous-activite.controller';
 
 @Module({
   providers: [SousActiviteService],
-  controllers: [SousActiviteController]
+  controllers: [SousActiviteController],
 })
 export class SousActiviteModule {}

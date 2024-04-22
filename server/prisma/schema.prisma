@@ -2,7 +2,9 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
-
+generator client {
+  provider = "prisma-client-js"
+}
 model Personel {
   id           String        @id
   matricule    Int @unique
@@ -75,7 +77,7 @@ model Vile {
   vileAr String
   vileFr String
   /// Relation to centers
-  centres Centres[]
+  centres Centre[]
 }
 
 model DemandeEstivage {
@@ -84,7 +86,7 @@ model DemandeEstivage {
   effet BigInt
   periode String
   /// Relation to centres
-  centre Centres @relation(fields: [centreId], references: [id])
+  centre Centre @relation(fields: [centreId], references: [id])
   centreId String
   /// Relation to personel
   personel Personel @relation(fields: [personelId], references: [id])
@@ -94,7 +96,7 @@ model DemandeEstivage {
   sousActiviteId String
 }
 
-model Centres {
+model Centre {
   id String @id
   centreAr String
   centreFr String
@@ -107,21 +109,21 @@ model Centres {
   TypeEstivage TypeEsstivage @relation(fields: [TypeEstivageId],references: [id])
   TypeEstivageId String
   /// Relation to Appartements
-  appartements Appartements[]
+  appartements Appartement[]
 }
 
-model Appartements {
+model Appartement {
   id String @id
   numero Int
   /// Relation to centers
-  centre Centres @relation(fields: [centreId], references: [id])
+  centre Centre @relation(fields: [centreId], references: [id])
   centreId String
 }
 model TypeEsstivage {
   id String @id
   type String
   /// Relation to centers
-  centre Centres[]
+  centre Centre[]
 }
 
 
