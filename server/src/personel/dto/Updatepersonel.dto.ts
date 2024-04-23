@@ -1,4 +1,7 @@
-import DemandeEstivage from '../../demandeEstivage/Model/demandeEstivage.model';
+import {DemandeEstivage} from "@prisma/client";
+import {PartialType} from "@nestjs/mapped-types";
+
+import {Personel} from "@prisma/client";
 
 export class UpdatepersonelDto {
   id?: string;
@@ -15,3 +18,9 @@ export class UpdatepersonelDto {
   AffectationId?: string;
   demandeEstivage?: DemandeEstivage[];
 }
+// type MyPartial<T> = {
+//     [P in keyof T]?: T[P];
+// };
+//
+// // Use MyPartial with PersonelDto
+// export class UpdatepersonelDto implements MyPartial<Personel> {}

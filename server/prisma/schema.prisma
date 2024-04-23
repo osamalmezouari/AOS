@@ -2,129 +2,135 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
 generator client {
   provider = "prisma-client-js"
 }
+
 model Personel {
-  id           String        @id
-  matricule    Int @unique
-  nom_fr       String @unique
-  nom_ar       String
-  prenom_ar    String
-  prenom_fr    String
-  naissance    BigInt
-  email        String @unique
-  echelle      Int
-  adherant     Boolean
-  isAdmin      Boolean
+  id              String            @id
+  matricule       Int               @unique
+  nom_fr          String            @unique
+  nom_ar          String
+  prenom_ar       String
+  prenom_fr       String
+  naissance       BigInt
+  email           String            @unique
+  echelle         Int
+  adherant        Boolean
+  isAdmin         Boolean
   /// Relation to Affectation
-  Affectation Affectation @relation(fields: [AffectationId],references: [id])
-  AffectationId String
+  Affectation     Affectation       @relation(fields: [AffectationId], references: [id])
+  AffectationId   String
   /// Relation to demande estivage
-  demandeEstivage DemandeEstivage []
+  demandeEstivage DemandeEstivage[]
 }
+
 model Affectation {
-  id String @id
-  structureAr String
-  StructureFr String
-  abrviation String
+  id              String     @id
+  structureAr     String
+  StructureFr     String
+  abrviation      String
   TypeDepartement String
   /// Relation to personel
-  personel Personel[]
+  personel        Personel[]
 }
+
 model SousActivite {
-  id String @id
-  nomAr String @unique
-  nomFr String @unique
-  descriptionAr String
-  descriptionFr String
+  id               String            @id
+  nomAr            String            @unique
+  nomFr            String            @unique
+  descriptionAr    String
+  descriptionFr    String
   /// Relation pieces
-  pieces Pieces @relation(fields: [piecesId] , references: [id])
-  piecesId String
+  pieces           Pieces            @relation(fields: [piecesId], references: [id])
+  piecesId         String
   /// Relation activite
-  activite Activitie @relation(fields: [activiteId],references: [id])
-  activiteId String
+  activite         Activitie         @relation(fields: [activiteId], references: [id])
+  activiteId       String
   ///Relation dotation
-  dotation Dotation @relation(fields: [dotationId] , references: [id])
-  dotationId String
+  dotation         Dotation          @relation(fields: [dotationId], references: [id])
+  dotationId       String
   /// Relation to dommande d'esstivage
   demandeEsstivage DemandeEstivage[]
 }
+
 model Activitie {
-  id String @id
-  nomAr String @unique
-  nomFr String @unique
+  id             String         @id
+  nomAr          String         @unique
+  nomFr          String         @unique
   ///Relation to sousActivites
   SousActivities SousActivite[]
 }
+
 model Pieces {
-  id String @id
-  nomAr String @unique
-  nomFr String @unique
+  id             String         @id
+  nomAr          String         @unique
+  nomFr          String         @unique
   ///Relation to sousActivites
   SousActivities SousActivite[]
 }
+
 model Dotation {
-  id String @id
-  dotation Float
-  descriptionAr String @unique
-  descriptionFr String @unique
+  id             String         @id
+  dotation       Float
+  descriptionAr  String         @unique
+  descriptionFr  String         @unique
   /// Relation to sousActivites
   SousActivities SousActivite[]
 }
+
 model Vile {
-  id String @id
-  vileAr String
-  vileFr String
+  id      String   @id
+  vileAr  String
+  vileFr  String
   /// Relation to centers
   centres Centre[]
 }
 
 model DemandeEstivage {
-  id String @id
-  date BigInt
-  effet BigInt
-  periode String
+  id             String       @id
+  date           BigInt
+  effet          BigInt
+  periode        String
   /// Relation to centres
-  centre Centre @relation(fields: [centreId], references: [id])
-  centreId String
+  centre         Centre       @relation(fields: [centreId], references: [id])
+  centreId       String
   /// Relation to personel
-  personel Personel @relation(fields: [personelId], references: [id])
-  personelId String
+  personel       Personel     @relation(fields: [personelId], references: [id])
+  personelId     String
   /// Relation to relation
-  sousActivite SousActivite @relation(fields: [sousActiviteId] , references: [id])
+  sousActivite   SousActivite @relation(fields: [sousActiviteId], references: [id])
   sousActiviteId String
 }
 
 model Centre {
-  id String @id
-  centreAr String
-  centreFr String
+  id              String            @id
+  centreAr        String
+  centreFr        String
   /// Relation to demamnde estivage
-  demandeEstivage DemandeEstivage []
+  demandeEstivage DemandeEstivage[]
   /// Relation to ville
-  Vile Vile @relation(fields: [vileId], references: [id])
-  vileId String
+  Vile            Vile              @relation(fields: [vileId], references: [id])
+  vileId          String
   /// Relation to typeEsstivage
-  TypeEstivage TypeEsstivage @relation(fields: [TypeEstivageId],references: [id])
-  TypeEstivageId String
+  TypeEstivage    TypeEsstivage     @relation(fields: [TypeEstivageId], references: [id])
+  TypeEstivageId  String
   /// Relation to Appartements
-  appartements Appartement[]
+  appartements    Appartement[]
 }
 
 model Appartement {
-  id String @id
-  numero Int
+  id       String @id
+  numero   Int
   /// Relation to centers
-  centre Centre @relation(fields: [centreId], references: [id])
+  centre   Centre @relation(fields: [centreId], references: [id])
   centreId String
 }
+
 model TypeEsstivage {
-  id String @id
-  type String
+  id     String   @id
+  type   String
   /// Relation to centers
   centre Centre[]
 }
-
-
-
