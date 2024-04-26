@@ -17,11 +17,11 @@ import { DemandeMaladiesModule } from './demande-maladies/demande-maladies.modul
 import { DemandeLangModule } from './demande-lang/demande-lang.module';
 import { ZooModule } from './zoo/zoo.module';
 import { DemandeExcursionModule } from './demande-excursion/demande-excursion.module';
-import { CentresLinguistiqueModule } from './centres-linguistique/centres-linguistique.module';
-import { DetailsExcursionModule } from './details-excursion/details-excursion.module';
-import { ExcursionModule } from './excursion/excursion.module';
+import { CentresLinguistiqueModule } from './demande-lang/centres-linguistique/centres-linguistique.module';
+import { DetailsExcursionModule } from './demande-excursion/details-excursion/details-excursion.module';
+import { ExcursionModule } from './demande-excursion/excursion/excursion.module';
 import { DemandeCondoleanceModule } from './demande-condoleance/demande-condoleance.module';
-import { TypeCondoleanceModule } from './type-condoleance/type-condoleance.module';
+import { TypeCondoleanceModule } from './demande-condoleance/type-condoleance/type-condoleance.module';
 
 @Module({
   imports: [

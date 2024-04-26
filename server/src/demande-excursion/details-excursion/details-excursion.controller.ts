@@ -1,11 +1,21 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { DetailsExcursionService } from './details-excursion.service';
 import { CreateDetailsExcursionDto } from './dto/create-details-excursion.dto';
 import { UpdateDetailsExcursionDto } from './dto/update-details-excursion.dto';
 
 @Controller('details-excursion')
 export class DetailsExcursionController {
-  constructor(private readonly detailsExcursionService: DetailsExcursionService) {}
+  constructor(
+    private readonly detailsExcursionService: DetailsExcursionService,
+  ) {}
 
   @Post()
   create(@Body() createDetailsExcursionDto: CreateDetailsExcursionDto) {
@@ -23,7 +33,10 @@ export class DetailsExcursionController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDetailsExcursionDto: UpdateDetailsExcursionDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateDetailsExcursionDto: UpdateDetailsExcursionDto,
+  ) {
     return this.detailsExcursionService.update(+id, updateDetailsExcursionDto);
   }
 

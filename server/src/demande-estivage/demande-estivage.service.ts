@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateDemandeEstivageDto } from './dto/create-demande-estivage.dto';
 import { UpdateDemandeEstivageDto } from './dto/update-demande-estivage.dto';
-import {  PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import { v4 as uuid } from 'uuid';
 
 @Injectable()

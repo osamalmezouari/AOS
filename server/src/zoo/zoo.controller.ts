@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { ZooService } from './zoo.service';
 import { CreateZooDto } from './dto/create-zoo.dto';
 import { UpdateZooDto } from './dto/update-zoo.dto';

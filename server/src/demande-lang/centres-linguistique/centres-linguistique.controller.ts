@@ -1,11 +1,21 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { CentresLinguistiqueService } from './centres-linguistique.service';
 import { CreateCentresLinguistiqueDto } from './dto/create-centres-linguistique.dto';
 import { UpdateCentresLinguistiqueDto } from './dto/update-centres-linguistique.dto';
 
 @Controller('centres-linguistique')
 export class CentresLinguistiqueController {
-  constructor(private readonly centresLinguistiqueService: CentresLinguistiqueService) {}
+  constructor(
+    private readonly centresLinguistiqueService: CentresLinguistiqueService,
+  ) {}
 
   @Post()
   create(@Body() createCentresLinguistiqueDto: CreateCentresLinguistiqueDto) {
@@ -23,8 +33,14 @@ export class CentresLinguistiqueController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCentresLinguistiqueDto: UpdateCentresLinguistiqueDto) {
-    return this.centresLinguistiqueService.update(+id, updateCentresLinguistiqueDto);
+  update(
+    @Param('id') id: string,
+    @Body() updateCentresLinguistiqueDto: UpdateCentresLinguistiqueDto,
+  ) {
+    return this.centresLinguistiqueService.update(
+      +id,
+      updateCentresLinguistiqueDto,
+    );
   }
 
   @Delete(':id')

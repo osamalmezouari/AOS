@@ -1,11 +1,21 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { DemandeExcursionService } from './demande-excursion.service';
 import { CreateDemandeExcursionDto } from './dto/create-demande-excursion.dto';
 import { UpdateDemandeExcursionDto } from './dto/update-demande-excursion.dto';
 
 @Controller('demande-excursion')
 export class DemandeExcursionController {
-  constructor(private readonly demandeExcursionService: DemandeExcursionService) {}
+  constructor(
+    private readonly demandeExcursionService: DemandeExcursionService,
+  ) {}
 
   @Post()
   create(@Body() createDemandeExcursionDto: CreateDemandeExcursionDto) {
@@ -23,7 +33,10 @@ export class DemandeExcursionController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDemandeExcursionDto: UpdateDemandeExcursionDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateDemandeExcursionDto: UpdateDemandeExcursionDto,
+  ) {
     return this.demandeExcursionService.update(+id, updateDemandeExcursionDto);
   }
 

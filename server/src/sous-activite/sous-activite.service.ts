@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 import { v4 as uuid } from 'uuid';
 
-import {  PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import { CreateSousActiviteDto } from './dto/CreateSousActivite.dto';
 import { UpdateSousActiviteDto } from './dto/UpdateSousActivite.dto';
 

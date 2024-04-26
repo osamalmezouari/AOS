@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { DemandeLangService } from './demande-lang.service';
 import { CreateDemandeLangDto } from './dto/create-demande-lang.dto';
 import { UpdateDemandeLangDto } from './dto/update-demande-lang.dto';
@@ -23,7 +31,10 @@ export class DemandeLangController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateDemandeLangDto: UpdateDemandeLangDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateDemandeLangDto: UpdateDemandeLangDto,
+  ) {
     return this.demandeLangService.update(+id, updateDemandeLangDto);
   }
 

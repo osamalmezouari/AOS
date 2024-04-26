@@ -8,24 +8,31 @@ generator client {
 }
 
 model Personel {
-  id              String            @id
-  matricule       Int               @unique
-  createAt        DateTime          @default(now())
-  dateRepense     DateTime?
-  nom_fr          String            @unique
-  nom_ar          String
-  prenom_ar       String
-  prenom_fr       String
-  naissance       String
-  email           String            @unique
-  echelle         Int
-  adherant        Boolean?          @default(false)
-  isAdmin         Boolean?          @default(false)
+  id                String              @id
+  matricule         Int                 @unique
+  createAt          DateTime            @default(now())
+  dateRepense       DateTime?
+  nom_fr            String              @unique
+  nom_ar            String
+  prenom_ar         String
+  prenom_fr         String
+  naissance         String
+  email             String              @unique
+  echelle           Int
+  adherant          Boolean?            @default(false)
+  isAdmin           Boolean?            @default(false)
   /// Relation to Affectation
-  Affectation     Affectation       @relation(fields: [AffectationId], references: [id])
-  AffectationId   String
+  Affectation       Affectation         @relation(fields: [AffectationId], references: [id])
+  AffectationId     String
   /// Relation to demande estivage
-  demandeEstivage DemandeEstivage[]
+  demandeEstivage   DemandeEstivage[]
+  demandeCredit     demandeCredit[]
+  demandePelerinage demandePelerinage[]
+  retrait           retrait[]
+  demamdeMaladies   demamdeMaladies[]
+  demandeLang       demandeLang[]
+  condoleance       condoleance[]
+  Zoo               Zoo[]
 }
 
 model Affectation {
@@ -49,21 +56,28 @@ model Activitie {
 }
 
 model SousActivite {
-  id               String                   @id
-  nomAr            String
-  nomFr            String
-  descriptionAr    String
-  descriptionFr    String
+  id                String                   @id
+  nomAr             String
+  nomFr             String
+  descriptionAr     String
+  descriptionFr     String
   /// Relation pieces
-  pieces           SousActivitiesOnPieces[]
+  pieces            SousActivitiesOnPieces[]
   /// Relation activite
-  activite         Activitie                @relation(fields: [activiteId], references: [id])
-  activiteId       String
+  activite          Activitie                @relation(fields: [activiteId], references: [id])
+  activiteId        String
   ///Relation dotation
-  dotation         Dotation                 @relation(fields: [dotationId], references: [id])
-  dotationId       String
+  dotation          Dotation                 @relation(fields: [dotationId], references: [id])
+  dotationId        String
   /// Relation to dommande d'esstivage
-  demandeEsstivage DemandeEstivage[]
+  demandeEsstivage  DemandeEstivage[]
+  demandeCredit     demandeCredit[]
+  demandePelerinage demandePelerinage[]
+  retrait           retrait[]
+  demamdeMaladies   demamdeMaladies[]
+  demandeLang       demandeLang[]
+  condoleance       condoleance[]
+  Zoo               Zoo[]
 
   @@unique([nomFr, nomAr, descriptionAr, descriptionFr])
 }
@@ -155,3 +169,122 @@ model TypeEsstivage {
   /// Relation to centers
   centre Centre[]
 }
+
+model demandeCredit {
+  id            String  @id
+  mantantCredit Decimal
+  description   String
+  observation   String?
+
+  ///relation to personel
+  Personel   Personel @relation(fields: [personelId], references: [id])
+  personelId String
+
+  ///relation to personel
+  SousActivite   SousActivite @relation(fields: [sousActiviteId], references: [id])
+  sousActiviteId String
+}
+
+model demandePelerinage {
+  id          String   @id
+  annee       BigInt
+  observation String?
+  ///relation to personel
+  Personel    Personel @relation(fields: [personelId], references: [id])
+  personelId  String
+
+  ///relation to personel
+  SousActivite   SousActivite @relation(fields: [sousActiviteId], references: [id])
+  sousActiviteId String
+}
+
+model retrait {
+  id              String  @id
+  date            String
+  mantantRetraite Int
+  observation     String?
+
+  ///relation to personel
+  Personel   Personel @relation(fields: [personelId], references: [id])
+  personelId String
+
+  ///relation to personel
+  SousActivite   SousActivite @relation(fields: [sousActiviteId], references: [id])
+  sousActiviteId String
+}
+
+model demamdeMaladies {
+  id                String   @id
+  mantantMaladie    BigInt
+  MaladieDecription String
+  observation       String?
+  ///relation to personel
+  Personel          Personel @relation(fields: [personelId], references: [id])
+  personelId        String
+
+  ///relation to personel
+  SousActivite   SousActivite @relation(fields: [sousActiviteId], references: [id])
+  sousActiviteId String
+}
+
+model demandeLang {
+  id             String       @id
+  observation    String?
+  /// relation to CentresLang
+  CentreLang     CentresLang  @relation(fields: [CentreLangId], references: [id])
+  CentreLangId   String
+  /// relation to personel
+  Personel       Personel     @relation(fields: [personelId], references: [id])
+  personelId     String
+  /// relation to personel
+  SousActivite   SousActivite @relation(fields: [sousActiviteId], references: [id])
+  sousActiviteId String
+}
+
+model CentresLang {
+  id          String        @id
+  nom         String
+  demandeLang demandeLang[]
+}
+
+model condoleance {
+  id                 String          @id
+  mantantCondoleance Int
+  description        String
+  observation        String?
+  ///relation to condoleance
+  typeCondoleance    typeCondoleance @relation(fields: [typeCondoleanceId], references: [id])
+  typeCondoleanceId  String
+  /// relation to personel
+  Personel           Personel        @relation(fields: [personelId], references: [id])
+  personelId         String
+  /// relation to personel
+  SousActivite       SousActivite    @relation(fields: [sousActiviteId], references: [id])
+  sousActiviteId     String
+}
+
+model typeCondoleance {
+  id          String        @id
+  nom         String
+  condoleance condoleance[]
+}
+
+model Zoo {
+  id          String   @id
+  date        BigInt
+  adulte      Int
+  enfant      Int
+  observation String?
+  ///relation to personel
+  Personel    Personel @relation(fields: [personelId], references: [id])
+  personelId  String
+
+  ///relation to personel
+  SousActivite   SousActivite @relation(fields: [sousActiviteId], references: [id])
+  sousActiviteId String
+}
+
+// model demandeExcursion {
+//   id   String @id
+//   Date BigInt
+// }

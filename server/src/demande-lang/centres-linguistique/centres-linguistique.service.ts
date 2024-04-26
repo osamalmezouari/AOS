@@ -16,7 +16,10 @@ export class CentresLinguistiqueService {
     return `This action returns a #${id} centresLinguistique`;
   }
 
-  update(id: number, updateCentresLinguistiqueDto: UpdateCentresLinguistiqueDto) {
+  update(
+    id: number,
+    updateCentresLinguistiqueDto: UpdateCentresLinguistiqueDto,
+  ) {
     return `This action updates a #${id} centresLinguistique`;
   }
 
