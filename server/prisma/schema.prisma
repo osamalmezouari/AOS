@@ -171,9 +171,10 @@ model TypeEsstivage {
 }
 
 model demandeCredit {
-  id            String  @id
+  id            String   @id
   mantantCredit Decimal
   description   String
+  effet         DateTime @default(now())
   observation   String?
 
   ///relation to personel
@@ -188,6 +189,7 @@ model demandeCredit {
 model demandePelerinage {
   id          String   @id
   annee       BigInt
+  effet       DateTime @default(now())
   observation String?
   ///relation to personel
   Personel    Personel @relation(fields: [personelId], references: [id])
@@ -199,9 +201,10 @@ model demandePelerinage {
 }
 
 model retrait {
-  id              String  @id
+  id              String   @id
   date            String
   mantantRetraite Int
+  effet           DateTime @default(now())
   observation     String?
 
   ///relation to personel
@@ -217,6 +220,7 @@ model demamdeMaladies {
   id                String   @id
   mantantMaladie    BigInt
   MaladieDecription String
+  effet             DateTime @default(now())
   observation       String?
   ///relation to personel
   Personel          Personel @relation(fields: [personelId], references: [id])
@@ -229,6 +233,7 @@ model demamdeMaladies {
 
 model demandeLang {
   id             String       @id
+  effet          DateTime     @default(now())
   observation    String?
   /// relation to CentresLang
   CentreLang     CentresLang  @relation(fields: [CentreLangId], references: [id])
@@ -251,6 +256,7 @@ model condoleance {
   id                 String          @id
   mantantCondoleance Int
   description        String
+  effet              DateTime        @default(now())
   observation        String?
   ///relation to condoleance
   typeCondoleance    typeCondoleance @relation(fields: [typeCondoleanceId], references: [id])
@@ -274,6 +280,7 @@ model Zoo {
   date        BigInt
   adulte      Int
   enfant      Int
+  effet       DateTime @default(now())
   observation String?
   ///relation to personel
   Personel    Personel @relation(fields: [personelId], references: [id])
