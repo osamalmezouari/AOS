@@ -8,7 +8,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { SousActiviteService } from './sous-activite.service';
-import { Prisma, SousActivite } from '@prisma/client';
+import { SousActivite } from '@prisma/client';
 import { UpdateSousActiviteDto } from './dto/UpdateSousActivite.dto';
 import { CreateSousActiviteDto } from './dto/CreateSousActivite.dto';
 

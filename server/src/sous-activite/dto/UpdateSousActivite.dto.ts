@@ -1,10 +1,4 @@
-import { Prisma } from '@prisma/client';
+import { PartialType } from '@nestjs/mapped-types';
+import { CreateSousActiviteDto } from './CreateSousActivite.dto';
 
-export class UpdateSousActiviteDto {
-  nomAr?: string;
-  nomFr?: string;
-  descriptionAr?: string;
-  descriptionFr?: string;
-  activite?: string;
-  dotation?: string;
-}
+export class UpdateSousActiviteDto extends PartialType(CreateSousActiviteDto) {}
