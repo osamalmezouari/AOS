@@ -10,15 +10,17 @@ generator client {
 model Personel {
   id              String            @id
   matricule       Int               @unique
+  createAt        DateTime          @default(now())
+  dateRepense     DateTime?
   nom_fr          String            @unique
   nom_ar          String
   prenom_ar       String
   prenom_fr       String
-  naissance       BigInt
+  naissance       String
   email           String            @unique
   echelle         Int
-  adherant        Boolean
-  isAdmin         Boolean
+  adherant        Boolean?          @default(false)
+  isAdmin         Boolean?          @default(false)
   /// Relation to Affectation
   Affectation     Affectation       @relation(fields: [AffectationId], references: [id])
   AffectationId   String
@@ -28,31 +30,12 @@ model Personel {
 
 model Affectation {
   id              String     @id
-  structureAr     String
-  StructureFr     String
+  structureAr     String     @unique
+  StructureFr     String     @unique
   abrviation      String
   TypeDepartement String
   /// Relation to personel
   personel        Personel[]
-}
-
-model SousActivite {
-  id               String            @id
-  nomAr            String            @unique
-  nomFr            String            @unique
-  descriptionAr    String
-  descriptionFr    String
-  /// Relation pieces
-  pieces           Pieces            @relation(fields: [piecesId], references: [id])
-  piecesId         String
-  /// Relation activite
-  activite         Activitie         @relation(fields: [activiteId], references: [id])
-  activiteId       String
-  ///Relation dotation
-  dotation         Dotation          @relation(fields: [dotationId], references: [id])
-  dotationId       String
-  /// Relation to dommande d'esstivage
-  demandeEsstivage DemandeEstivage[]
 }
 
 model Activitie {
@@ -61,14 +44,47 @@ model Activitie {
   nomFr          String         @unique
   ///Relation to sousActivites
   SousActivities SousActivite[]
+
+  @@unique([nomFr, nomAr])
+}
+
+model SousActivite {
+  id               String                   @id
+  nomAr            String
+  nomFr            String
+  descriptionAr    String
+  descriptionFr    String
+  /// Relation pieces
+  pieces           SousActivitiesOnPieces[]
+  /// Relation activite
+  activite         Activitie                @relation(fields: [activiteId], references: [id])
+  activiteId       String
+  ///Relation dotation
+  dotation         Dotation                 @relation(fields: [dotationId], references: [id])
+  dotationId       String
+  /// Relation to dommande d'esstivage
+  demandeEsstivage DemandeEstivage[]
+
+  @@unique([nomFr, nomAr, descriptionAr, descriptionFr])
+}
+
+model SousActivitiesOnPieces {
+  sousActivite   SousActivite @relation(fields: [sousActiviteId], references: [id])
+  sousActiviteId String
+  piece          Pieces       @relation(fields: [pieceId], references: [id])
+  pieceId        String
+
+  @@id([sousActiviteId, pieceId])
 }
 
 model Pieces {
-  id             String         @id
-  nomAr          String         @unique
-  nomFr          String         @unique
+  id             String                   @id
+  nomAr          String
+  nomFr          String
   ///Relation to sousActivites
-  SousActivities SousActivite[]
+  SousActivities SousActivitiesOnPieces[]
+
+  @@unique([nomAr, nomFr])
 }
 
 model Dotation {
@@ -78,6 +94,8 @@ model Dotation {
   descriptionFr  String         @unique
   /// Relation to sousActivites
   SousActivities SousActivite[]
+
+  @@unique([descriptionAr, descriptionFr])
 }
 
 model Vile {
@@ -86,13 +104,16 @@ model Vile {
   vileFr  String
   /// Relation to centers
   centres Centre[]
+
+  @@unique([vileAr, vileFr])
 }
 
 model DemandeEstivage {
   id             String       @id
-  date           BigInt
-  effet          BigInt
-  periode        String
+  date_entre     BigInt
+  date_sortie    BigInt
+  effet          DateTime     @default(now())
+  appartementId  String?
   /// Relation to centres
   centre         Centre       @relation(fields: [centreId], references: [id])
   centreId       String

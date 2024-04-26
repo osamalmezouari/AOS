@@ -1,0 +1,14 @@
+import { Prisma } from '@prisma/client';
+
+export class CreatepersonelDto {
+  id: string;
+  matricule: number;
+  nom_fr: string;
+  nom_ar: string;
+  prenom_ar: string;
+  prenom_fr: string;
+  naissance: string;
+  email: string;
+  echelle: number;
+  AffectationId: string;
+}

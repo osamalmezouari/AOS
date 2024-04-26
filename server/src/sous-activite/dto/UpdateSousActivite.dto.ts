@@ -1,13 +1,10 @@
-import DemandeEstivage from '../../demandeEstivage/Model/demandeEstivage.model';
+import { Prisma } from '@prisma/client';
 
-export class UpdateSousActivite {
-  id?: string;
+export class UpdateSousActiviteDto {
   nomAr?: string;
   nomFr?: string;
   descriptionAr?: string;
   descriptionFr?: string;
-  piecesId?: string;
-  activiteId?: string;
-  dotationId?: string;
-  demandeEsstivage?: DemandeEstivage[];
+  activite?: string;
+  dotation?: string;
 }

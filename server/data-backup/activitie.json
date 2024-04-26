@@ -1,0 +1,77 @@
+[
+  {
+    "id": "activite_0bf6c1f4026e11ef8cebd880833a5b7c",
+    "nomAr": "نشاط عربي رقم 1",
+    "nomFr": "Activité français numéro 1"
+  },
+  {
+    "id": "activite_0f1867e4026e11ef8cebd880833a5b7c",
+    "nomAr": "نشاط عربي رقم 10",
+    "nomFr": "Activité français numéro 10"
+  },
+  {
+    "id": "activite_0e3925f7026e11ef8cebd880833a5b7c",
+    "nomAr": "نشاط عربي رقم 2",
+    "nomFr": "Activité français numéro 2"
+  },
+  {
+    "id": "activite_0e7047ad026e11ef8cebd880833a5b7c",
+    "nomAr": "نشاط عربي رقم 3",
+    "nomFr": "Activité français numéro 3"
+  },
+  {
+    "id": "activite_0e85af3c026e11ef8cebd880833a5b7c",
+    "nomAr": "نشاط عربي رقم 4",
+    "nomFr": "Activité français numéro 4"
+  },
+  {
+    "id": "activite_0ea7732e026e11ef8cebd880833a5b7c",
+    "nomAr": "نشاط عربي رقم 5",
+    "nomFr": "Activité français numéro 5"
+  },
+  {
+    "id": "activite_0ebafa42026e11ef8cebd880833a5b7c",
+    "nomAr": "نشاط عربي رقم 6",
+    "nomFr": "Activité français numéro 6"
+  },
+  {
+    "id": "activite_0ed40bc5026e11ef8cebd880833a5b7c",
+    "nomAr": "نشاط عربي رقم 7",
+    "nomFr": "Activité français numéro 7"
+  },
+  {
+    "id": "activite_0ee79e78026e11ef8cebd880833a5b7c",
+    "nomAr": "نشاط عربي رقم 8",
+    "nomFr": "Activité français numéro 8"
+  },
+  {
+    "id": "activite_0efe2563026e11ef8cebd880833a5b7c",
+    "nomAr": "نشاط عربي رقم 9",
+    "nomFr": "Activité français numéro 9"
+  }
+]
+// test with postman
+
+// Post
+//url
+"http://localhost:3000/activite"
+//body data
+{
+    "id": "activite_test",
+    "nomAr": "نشاط عربي رقم test",
+    "nomFr": "Activité français numéro test"
+  }
+// Get All
+"http://localhost:3000/activite"
+// Get One
+"http://localhost:3000/activite/activite_test"
+// Put
+//url
+"http://localhost:3000/activite/activite_test"
+//body data
+{
+    "nomAr": "update نشاط عربي رقم test",
+    "nomFr": "Activité français numéro test update"
+  }
+//delete One
+"http://localhost:3000/activite/activite_test"

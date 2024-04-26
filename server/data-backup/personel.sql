@@ -1,0 +1,1 @@
+INSERT INTO micminah.personel (id, matricule, nom_fr, nom_ar, prenom_ar, prenom_fr, naissance, email, echelle, adherant, isAdmin, AffectationId, createAt, dateRepense) VALUES ('c3af8a59-87ca-4288-ac3e-d803542bdeb0', 12344, 'John', 'Doe', 'جان', 'John', '1990-01-01', 'john.doe@example.com', 5, true, true, '235c9ae82-7ef1-41e2-88e2-04e06dd7a', '2024-04-24 17:24:47.899', null);
