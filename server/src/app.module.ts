@@ -1,27 +1,29 @@
 import { Module } from '@nestjs/common';
-import { ActiviteModule } from './activite/activite.module';
-import { PiecesModule } from './pieces/pieces.module';
-import { TypedemandeestivageModule } from './demande-estivage/typedemandeestivage/typedemandeestivage.module';
-import { CentresModule } from './demande-estivage/centres/centres.module';
-import { DemandeEstivageModule } from './demande-estivage/demande-estivage.module';
-import { DotationModule } from './dotation/dotation.module';
-import { VillesModule } from './villes/villes.module';
-import { PersonelModule } from './personel/personel.module';
-import { AffectationModule } from './affectation/affectation.module';
-import { AppartementsModule } from './demande-estivage/appartements/appartements.module';
-import { SousActiviteModule } from './sous-activite/sous-activite.module';
-import { DemandeCreditModule } from './demande-credit/demande-credit.module';
-import { DemandePelerinageModule } from './demande-pelerinage/demande-pelerinage.module';
-import { RetraitModule } from './retrait/retrait.module';
-import { DemandeMaladiesModule } from './demande-maladies/demande-maladies.module';
-import { DemandeLangModule } from './demande-lang/demande-lang.module';
-import { ZooModule } from './zoo/zoo.module';
-import { DemandeExcursionModule } from './demande-excursion/demande-excursion.module';
-import { CentresLinguistiqueModule } from './demande-lang/centres-linguistique/centres-linguistique.module';
-import { DetailsExcursionModule } from './demande-excursion/details-excursion/details-excursion.module';
-import { ExcursionModule } from './demande-excursion/excursion/excursion.module';
-import { DemandeCondoleanceModule } from './demande-condoleance/demande-condoleance.module';
-import { TypeCondoleanceModule } from './demande-condoleance/type-condoleance/type-condoleance.module';
+import { ActiviteModule } from './Resources/Panel/activite/activite.module';
+import { PiecesModule } from './Resources/Panel/pieces/pieces.module';
+import { TypedemandeestivageModule } from './Resources/Estivage/typedemandeestivage/typedemandeestivage.module';
+import { CentresModule } from './Resources/Estivage/centres/centres.module';
+import { DemandeEstivageModule } from './Resources/Estivage/demande-estivage/demande-estivage.module';
+import { DotationModule } from './Resources/Panel/dotation/dotation.module';
+import { VillesModule } from './Resources/Panel/villes/villes.module';
+import { PersonelModule } from './Resources/Personel/personel.module';
+import { AffectationModule } from './Resources/Panel/affectation/affectation.module';
+import { AppartementsModule } from './Resources/Estivage/appartements/appartements.module';
+import { SousActiviteModule } from './Resources/Panel/sous-activite/sous-activite.module';
+import { DemandeCreditModule } from './Resources/Credit/demande-credit/demande-credit.module';
+import { DemandePelerinageModule } from './Resources/Pelerinage/demande-pelerinage/demande-pelerinage.module';
+import { RetraitModule } from './Resources/Retrait/demande-retrait/retrait.module';
+import { DemandeMaladiesModule } from './Resources/Maladies/demande-maladies/demande-maladies.module';
+import { DemandeLangModule } from './Resources/Language/demande-lang/demande-lang.module';
+import { ZooModule } from './Resources/Zoo/demande-zoo/zoo.module';
+import { DemandeExcursionModule } from './Resources/Excursion/demande-excursion/demande-excursion.module';
+import { CentresLinguistiqueModule } from './Resources/Language/centres-linguistique/centres-linguistique.module';
+import { DetailsExcursionModule } from './Resources/Excursion/details-excursion/details-excursion.module';
+import { ExcursionModule } from './Resources/Excursion/excursion/excursion.module';
+import { DemandeCondoleanceModule } from './Resources/Condoleance/demande-condoleance/demande-condoleance.module';
+import { TypeCondoleanceModule } from './Resources/Condoleance/type-condoleance/type-condoleance.module';
+import { PrismaModule } from '../prisma/prisma.module';
+import { UuidModule } from './Helpers/UUID/uuid.module';
 
 @Module({
   imports: [
@@ -49,6 +51,8 @@ import { TypeCondoleanceModule } from './demande-condoleance/type-condoleance/ty
     ExcursionModule,
     DemandeCondoleanceModule,
     TypeCondoleanceModule,
+    PrismaModule,
+    UuidModule,
   ],
   controllers: [],
   providers: [],

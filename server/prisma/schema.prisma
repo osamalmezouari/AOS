@@ -8,21 +8,21 @@ generator client {
 }
 
 model Personel {
-  id                String              @id
-  matricule         Int                 @unique
-  createAt          DateTime            @default(now())
+  id                String               @id
+  matricule         Int                  @unique
+  createAt          DateTime             @default(now())
   dateRepense       DateTime?
-  nom_fr            String              @unique
+  nom_fr            String               @unique
   nom_ar            String
   prenom_ar         String
   prenom_fr         String
   naissance         String
-  email             String              @unique
+  email             String               @unique
   echelle           Int
-  adherant          Boolean?            @default(false)
-  isAdmin           Boolean?            @default(false)
+  adherant          Boolean?             @default(false)
+  isAdmin           Boolean?             @default(false)
   /// Relation to Affectation
-  Affectation       Affectation         @relation(fields: [AffectationId], references: [id])
+  Affectation       Affectation          @relation(fields: [AffectationId], references: [id])
   AffectationId     String
   /// Relation to demande estivage
   demandeEstivage   DemandeEstivage[]
@@ -31,8 +31,9 @@ model Personel {
   retrait           retrait[]
   demamdeMaladies   demamdeMaladies[]
   demandeLang       demandeLang[]
-  condoleance       condoleance[]
+  condoleance       demandeCondoleance[]
   Zoo               Zoo[]
+  // demandeExcursion  demandeExcursion[]
 }
 
 model Affectation {
@@ -41,7 +42,7 @@ model Affectation {
   StructureFr     String     @unique
   abrviation      String
   TypeDepartement String
-  /// Relation to personel
+  /// Relation to Personel
   personel        Personel[]
 }
 
@@ -76,9 +77,10 @@ model SousActivite {
   retrait           retrait[]
   demamdeMaladies   demamdeMaladies[]
   demandeLang       demandeLang[]
-  condoleance       condoleance[]
+  condoleance       demandeCondoleance[]
   Zoo               Zoo[]
 
+  // demandeExcursion  demandeExcursion[]
   @@unique([nomFr, nomAr, descriptionAr, descriptionFr])
 }
 
@@ -131,7 +133,7 @@ model DemandeEstivage {
   /// Relation to centres
   centre         Centre       @relation(fields: [centreId], references: [id])
   centreId       String
-  /// Relation to personel
+  /// Relation to Personel
   personel       Personel     @relation(fields: [personelId], references: [id])
   personelId     String
   /// Relation to relation
@@ -177,11 +179,11 @@ model demandeCredit {
   effet         DateTime @default(now())
   observation   String?
 
-  ///relation to personel
+  ///relation to Personel
   Personel   Personel @relation(fields: [personelId], references: [id])
   personelId String
 
-  ///relation to personel
+  ///relation to Personel
   SousActivite   SousActivite @relation(fields: [sousActiviteId], references: [id])
   sousActiviteId String
 }
@@ -191,11 +193,11 @@ model demandePelerinage {
   annee       BigInt
   effet       DateTime @default(now())
   observation String?
-  ///relation to personel
+  ///relation to Personel
   Personel    Personel @relation(fields: [personelId], references: [id])
   personelId  String
 
-  ///relation to personel
+  ///relation to Personel
   SousActivite   SousActivite @relation(fields: [sousActiviteId], references: [id])
   sousActiviteId String
 }
@@ -207,11 +209,11 @@ model retrait {
   effet           DateTime @default(now())
   observation     String?
 
-  ///relation to personel
+  ///relation to Personel
   Personel   Personel @relation(fields: [personelId], references: [id])
   personelId String
 
-  ///relation to personel
+  ///relation to Personel
   SousActivite   SousActivite @relation(fields: [sousActiviteId], references: [id])
   sousActiviteId String
 }
@@ -222,11 +224,11 @@ model demamdeMaladies {
   MaladieDecription String
   effet             DateTime @default(now())
   observation       String?
-  ///relation to personel
+  ///relation to Personel
   Personel          Personel @relation(fields: [personelId], references: [id])
   personelId        String
 
-  ///relation to personel
+  ///relation to Personel
   SousActivite   SousActivite @relation(fields: [sousActiviteId], references: [id])
   sousActiviteId String
 }
@@ -238,10 +240,10 @@ model demandeLang {
   /// relation to CentresLang
   CentreLang     CentresLang  @relation(fields: [CentreLangId], references: [id])
   CentreLangId   String
-  /// relation to personel
+  /// relation to Personel
   Personel       Personel     @relation(fields: [personelId], references: [id])
   personelId     String
-  /// relation to personel
+  /// relation to Personel
   SousActivite   SousActivite @relation(fields: [sousActiviteId], references: [id])
   sousActiviteId String
 }
@@ -252,7 +254,7 @@ model CentresLang {
   demandeLang demandeLang[]
 }
 
-model condoleance {
+model demandeCondoleance {
   id                 String          @id
   mantantCondoleance Int
   description        String
@@ -261,18 +263,18 @@ model condoleance {
   ///relation to condoleance
   typeCondoleance    typeCondoleance @relation(fields: [typeCondoleanceId], references: [id])
   typeCondoleanceId  String
-  /// relation to personel
+  /// relation to Personel
   Personel           Personel        @relation(fields: [personelId], references: [id])
   personelId         String
-  /// relation to personel
+  /// relation to Personel
   SousActivite       SousActivite    @relation(fields: [sousActiviteId], references: [id])
   sousActiviteId     String
 }
 
 model typeCondoleance {
-  id          String        @id
+  id          String               @id
   nom         String
-  condoleance condoleance[]
+  condoleance demandeCondoleance[]
 }
 
 model Zoo {
@@ -282,16 +284,27 @@ model Zoo {
   enfant      Int
   effet       DateTime @default(now())
   observation String?
-  ///relation to personel
+  ///relation to Personel
   Personel    Personel @relation(fields: [personelId], references: [id])
   personelId  String
 
-  ///relation to personel
+  ///relation to Personel
   SousActivite   SousActivite @relation(fields: [sousActiviteId], references: [id])
   sousActiviteId String
 }
 
 // model demandeExcursion {
-//   id   String @id
-//   Date BigInt
+//   id                 String            @id
+//   Date               BigInt
+//   effet              DateTime          @default(now())
+//   observation        String?
+//   ///relation to details Excursion
+//   detailsExcursion   detailsExcursion?
+//   detailsExcursionId String
+//   /// relation to Personel
+//   Personel           Personel          @relation(fields: [personelId], references: [id])
+//   personelId         String
+//   /// relation to Personel
+//   SousActivite       SousActivite      @relation(fields: [sousActiviteId], references: [id])
+//   sousActiviteId     String
 // }
