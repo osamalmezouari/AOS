@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import ministre from "../Assets/ministre.png";
-import logo from "../Assets/logo.png";
+import logo from "../../../frontend/public/assets/images/logo.png";
 import { Slider } from "../components/HomepageSlider/Slider";
 
 export const HomepageAR = () => {
