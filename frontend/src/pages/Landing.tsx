@@ -1,11 +1,8 @@
 import Navbar from "../component/navbar.tsx";
-import { Avatar, Box, Button, Container, Grid, Typography } from "@mui/material";
+import {  Box, Button, Container, Grid, Typography } from "@mui/material";
 import { CollectionsBookmark, Copyright, MonetizationOn, Send } from "@mui/icons-material";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import { CardActionArea, CardActions } from "@mui/material";
 import MultiActionAreaCard from "../component/mui/MultiActionAreaCard.tsx";
+import ActivitieCard from "../component/mui/activitieCard.tsx";
 function Landing() {
   return (
     <div className={"bg-landing h-screen bg-cover "}>
@@ -69,155 +66,21 @@ function Landing() {
         </Typography>
         <Grid
           container
-          justifyContent={"space-evenly"}
+          justifyContent={""}
           sx={{ flexGrow: 1 }}
-          className="m-auto gap-y-2 mt-4 mb-6"
+          className="m-auto gap-2 mt-4 mb-6"
         >
-          <Grid
-            xs={5}
-            xl={2.8}
-            className="p-4 bg-mainBleu rounded text-white font-main hover:bg-yellow transform-all duration-500 text-center cursor-pointer"
-          >
-            <Box component={"div"} className="flex items-center gap-4">
-              <Button size="small" className="bg-white h-8 max-w-12 min-w-8 ">
-                <MonetizationOn />
-              </Button>
-              <Typography>Social Loans Service</Typography>
-            </Box>
-          </Grid>
-          <Grid
-            xs={5}
-            xl={2.8}
-            className="p-4 bg-mainBleu rounded text-white font-main hover:bg-yellow transform-all duration-500 text-center cursor-pointer"
-          >
-            <Box component={"div"} className="flex items-center gap-4">
-              <Button size="small" className="bg-white h-8 max-w-12 min-w-8">
-                <MonetizationOn />
-              </Button>
-              <Typography>Social Loans Service</Typography>
-            </Box>
-          </Grid>
-          <Grid
-            xs={5}
-            xl={2.8}
-            className="p-4 bg-mainBleu rounded text-white font-main hover:bg-yellow transform-all duration-500 text-center cursor-pointer"
-          >
-            <Box component={"div"} className="flex items-center gap-4">
-              <Button size="small" className="bg-white h-8 max-w-12 min-w-8">
-                <MonetizationOn />
-              </Button>
-              <Typography>Social Loans Service</Typography>
-            </Box>
-          </Grid>
-          <Grid
-            xs={5}
-            xl={2.8}
-            className="p-4 bg-mainBleu rounded text-white font-main hover:bg-yellow transform-all duration-500 text-center cursor-pointer"
-          >
-            <Box component={"div"} className="flex items-center gap-4">
-              <Button size="small" className="bg-white h-8 max-w-12 min-w-8">
-                <MonetizationOn />
-              </Button>
-              <Typography>Social Loans Service</Typography>
-            </Box>
-          </Grid>
-          <Grid
-            xs={5}
-            xl={2.8}
-            className="p-4 bg-mainBleu rounded text-white font-main hover:bg-yellow transform-all duration-500 text-center cursor-pointer"
-          >
-            <Box component={"div"} className="flex items-center gap-4">
-              <Button size="small" className="bg-white h-8 max-w-12 min-w-8">
-                <MonetizationOn />
-              </Button>
-              <Typography>Social Loans Service</Typography>
-            </Box>
-          </Grid>
-          <Grid
-            xs={5}
-            xl={2.8}
-            className="p-4 bg-mainBleu rounded text-white font-main hover:bg-yellow transform-all duration-500 text-center cursor-pointer"
-          >
-            <Box component={"div"} className="flex items-center gap-4">
-              <Button size="small" className="bg-white h-8 max-w-12 min-w-8">
-                <MonetizationOn />
-              </Button>
-              <Typography>Social Loans Service</Typography>
-            </Box>
-          </Grid>
-          <Grid
-            xs={5}
-            xl={2.8}
-            className="p-4 bg-mainBleu rounded text-white font-main hover:bg-yellow transform-all duration-500 text-center cursor-pointer"
-          >
-            <Box component={"div"} className="flex items-center gap-4">
-              <Button size="small" className="bg-white h-8 max-w-12 min-w-8">
-                <MonetizationOn />
-              </Button>
-              <Typography>Social Loans Service</Typography>
-            </Box>
-          </Grid>
-          <Grid
-            xs={5}
-            xl={2.8}
-            className="p-4 bg-mainBleu rounded text-white font-main hover:bg-yellow transform-all duration-500 text-center cursor-pointer"
-          >
-            <Box component={"div"} className="flex items-center gap-4">
-              <Button size="small" className="bg-white h-8 max-w-12 min-w-8">
-                <MonetizationOn />
-              </Button>
-              <Typography>Social Loans Service</Typography>
-            </Box>
-          </Grid>
-          <Grid
-            xs={5}
-            xl={2.8}
-            className="p-4 bg-mainBleu rounded text-white font-main hover:bg-yellow transform-all duration-500 text-center cursor-pointer"
-          >
-            <Box component={"div"} className="flex items-center gap-4">
-              <Button size="small" className="bg-white h-8 max-w-12 min-w-8">
-                <MonetizationOn />
-              </Button>
-              <Typography>Social Loans Service</Typography>
-            </Box>
-          </Grid>
-          <Grid
-            xs={5}
-            xl={2.8}
-            className="p-4 bg-mainBleu rounded text-white font-main hover:bg-yellow transform-all duration-500 text-center cursor-pointer"
-          >
-            <Box component={"div"} className="flex items-center gap-4">
-              <Button size="small" className="bg-white h-8 max-w-12 min-w-8">
-                <MonetizationOn />
-              </Button>
-              <Typography>Social Loans Service</Typography>
-            </Box>
-          </Grid>
-          <Grid
-            xs={5}
-            xl={2.8}
-            
-            className="p-4 bg-mainBleu rounded text-white font-main hover:bg-yellow transform-all duration-500 text-center cursor-pointer"
-          >
-            <Box component={"div"} className="flex items-center gap-4">
-              <Button size="small" className="bg-white h-8 max-w-12 min-w-8">
-                <MonetizationOn />
-              </Button>
-              <Typography>Social Loans Service</Typography>
-            </Box>
-          </Grid>
-          <Grid
-            xs={5}
-            xl={2.8}
-            className="p-4 bg-mainBleu rounded text-white font-main hover:bg-yellow transform-all duration-500 text-center cursor-pointer"
-          >
-            <Box component={"div"} className="flex items-center gap-4">
-              <Button size="small" className="bg-white h-8 max-w-12 min-w-8">
-                <MonetizationOn />
-              </Button>
-              <Typography>Social Loans Service</Typography>
-            </Box>
-          </Grid>
+        <ActivitieCard />
+        <ActivitieCard />
+        <ActivitieCard />
+        <ActivitieCard />
+        <ActivitieCard />
+        <ActivitieCard />
+        <ActivitieCard />
+        <ActivitieCard />
+        <ActivitieCard /> 
+        <ActivitieCard />
+        <ActivitieCard /><ActivitieCard />
         </Grid>
         <Typography className="text-xl flex items-center justify-between font-bold capitalize font-main text-start text-mainBleu underline rounded p-4 h-max">
           Esstivage appartement disponible
@@ -259,7 +122,6 @@ function Landing() {
               <div className="bg-logo  w-16 h-16 bg-center bg-cover"></div>
               <Typography className="font-main">
                 Association des Affaires Sociales du Ministère de l'Industrie <Copyright /> {new Date().getFullYear()}
-
               </Typography>
         </Box>
     </div>

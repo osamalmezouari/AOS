@@ -23,7 +23,8 @@ export default {
         landing:
           "url(https://loms-moodle.envytheme.com/theme/loms/pix/banner/banner-bg-3.webp)",
         pngfr :"url(./public/assets/images/2.png)",
-        pngar :"url(./public/assets/images/1.png)"
+        pngar :"url(./public/assets/images/1.png)",
+        makah :"url(https://images.pexels.com/photos/5620451/pexels-photo-5620451.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2)"
       },
     },
   },

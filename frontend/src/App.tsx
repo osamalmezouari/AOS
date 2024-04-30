@@ -1,10 +1,10 @@
 import "./styles/App.css";
-import Landing from "./pages/Landing.tsx";
+import LangCenters from "./pages/langCenter.tsx";
 function App() {
   return (
-    <>
-      <Landing></Landing>
-    </>
+      
+      <><LangCenters /></>
+    
   );
 }
 
