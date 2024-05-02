@@ -1,8 +1,9 @@
 import Navbar from "../component/navbar.tsx";
 import {  Box, Button, Container, Grid, Typography } from "@mui/material";
-import { CollectionsBookmark, Copyright, MonetizationOn, Send } from "@mui/icons-material";
+import { CollectionsBookmark , Send } from "@mui/icons-material";
 import MultiActionAreaCard from "../component/mui/MultiActionAreaCard.tsx";
 import ActivitieCard from "../component/mui/activitieCard.tsx";
+import Footer from "../component/footer.tsx";
 function Landing() {
   return (
     <div className={"bg-landing h-screen bg-cover "}>
@@ -118,12 +119,7 @@ function Landing() {
         </Box> 
         
       </Container>
-      <Box className="h-24 bg-myGray p-4 mt-24 w-full m-auto flex items-center justify-center">
-              <div className="bg-logo  w-16 h-16 bg-center bg-cover"></div>
-              <Typography className="font-main">
-                Association des Affaires Sociales du Ministère de l'Industrie <Copyright /> {new Date().getFullYear()}
-              </Typography>
-        </Box>
+      <Footer />
     </div>
   );
 }
