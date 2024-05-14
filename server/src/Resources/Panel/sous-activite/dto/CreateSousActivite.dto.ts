@@ -5,5 +5,4 @@ export class CreateSousActiviteDto {
   descriptionAr: string;
   descriptionFr: string;
   activiteId: string;
-  dotationId: string;
 }

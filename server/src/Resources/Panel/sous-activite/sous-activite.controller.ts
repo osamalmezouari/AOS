@@ -15,7 +15,11 @@ import { CreateSousActiviteDto } from './dto/CreateSousActivite.dto';
 @Controller('sous-activite')
 export class SousActiviteController {
   constructor(private readonly sousActiviteService: SousActiviteService) {}
-  @Get()
+  @Get('')
+  async NavBarBuilder() {
+    return await this.sousActiviteService.NavbarBuilder();
+  }
+  @Get('NavBarBuilder')
   findAll(): Promise<SousActivite[]> {
     return this.sousActiviteService.findAll();
   }

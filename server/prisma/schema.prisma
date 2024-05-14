@@ -34,22 +34,25 @@ model Personel {
   condoleance       demandeCondoleance[]
   Zoo               Zoo[]
   // demandeExcursion  demandeExcursion[]
+  demandeExcursion  demandeExcursion[]
+  mariage           mariage[]
+  inscreption       inscreption[]
 }
 
 model Affectation {
-  id              String     @id
-  structureAr     String     @unique
-  StructureFr     String     @unique
-  abrviation      String
-  TypeDepartement String
+  id            String     @id
+  structureAr   String     @unique
+  StructureFr   String     @unique
+  abrviation    String
+  TypeStructure String
   /// Relation to Personel
-  personel        Personel[]
+  personel      Personel[]
 }
 
 model Activitie {
   id             String         @id
-  nomAr          String         @unique
-  nomFr          String         @unique
+  nomAr          String
+  nomFr          String
   ///Relation to sousActivites
   SousActivities SousActivite[]
 
@@ -62,15 +65,12 @@ model SousActivite {
   nomFr             String
   descriptionAr     String
   descriptionFr     String
-  /// Relation pieces
-  pieces            SousActivitiesOnPieces[]
   /// Relation activite
   activite          Activitie                @relation(fields: [activiteId], references: [id])
   activiteId        String
   ///Relation dotation
-  dotation          Dotation                 @relation(fields: [dotationId], references: [id])
-  dotationId        String
-  /// Relation to dommande d'esstivage
+  pieces            SousActivitiesOnPieces[]
+  dotation          Dotation[]
   demandeEsstivage  DemandeEstivage[]
   demandeCredit     demandeCredit[]
   demandePelerinage demandePelerinage[]
@@ -79,8 +79,9 @@ model SousActivite {
   demandeLang       demandeLang[]
   condoleance       demandeCondoleance[]
   Zoo               Zoo[]
+  demandeExcursion  demandeExcursion[]
+  inscreption       inscreption[]
 
-  // demandeExcursion  demandeExcursion[]
   @@unique([nomFr, nomAr, descriptionAr, descriptionFr])
 }
 
@@ -104,30 +105,22 @@ model Pieces {
 }
 
 model Dotation {
-  id             String         @id
-  dotation       Float
-  descriptionAr  String         @unique
-  descriptionFr  String         @unique
+  id              String       @id
+  dotation        Float
+  descriptionAr   String       @unique
+  descriptionFr   String       @unique
   /// Relation to sousActivites
-  SousActivities SousActivite[]
+  SousActivities  SousActivite @relation(fields: [SousActivitieId], references: [id])
+  SousActivitieId String
 
   @@unique([descriptionAr, descriptionFr])
-}
-
-model Vile {
-  id      String   @id
-  vileAr  String
-  vileFr  String
-  /// Relation to centers
-  centres Centre[]
-
-  @@unique([vileAr, vileFr])
 }
 
 model DemandeEstivage {
   id             String       @id
   date_entre     BigInt
   date_sortie    BigInt
+  Status         String?
   effet          DateTime     @default(now())
   appartementId  String?
   /// Relation to centres
@@ -142,9 +135,10 @@ model DemandeEstivage {
 }
 
 model Centre {
-  id              String            @id
-  centreAr        String
-  centreFr        String
+  id       String @id
+  centreAr String
+  centreFr String
+
   /// Relation to demamnde estivage
   demandeEstivage DemandeEstivage[]
   /// Relation to ville
@@ -176,6 +170,7 @@ model demandeCredit {
   id            String   @id
   mantantCredit Decimal
   description   String
+  Status        String?
   effet         DateTime @default(now())
   observation   String?
 
@@ -193,6 +188,7 @@ model demandePelerinage {
   annee       BigInt
   effet       DateTime @default(now())
   observation String?
+  Status      String?
   ///relation to Personel
   Personel    Personel @relation(fields: [personelId], references: [id])
   personelId  String
@@ -206,6 +202,7 @@ model retrait {
   id              String   @id
   date            String
   mantantRetraite Int
+  Status          String?
   effet           DateTime @default(now())
   observation     String?
 
@@ -222,6 +219,7 @@ model demamdeMaladies {
   id                String   @id
   mantantMaladie    BigInt
   MaladieDecription String
+  Status            String?
   effet             DateTime @default(now())
   observation       String?
   ///relation to Personel
@@ -236,6 +234,7 @@ model demamdeMaladies {
 model demandeLang {
   id             String       @id
   effet          DateTime     @default(now())
+  Status         String?
   observation    String?
   /// relation to CentresLang
   CentreLang     CentresLang  @relation(fields: [CentreLangId], references: [id])
@@ -258,6 +257,7 @@ model demandeCondoleance {
   id                 String          @id
   mantantCondoleance Int
   description        String
+  Status             String?
   effet              DateTime        @default(now())
   observation        String?
   ///relation to condoleance
@@ -282,6 +282,7 @@ model Zoo {
   date        BigInt
   adulte      Int
   enfant      Int
+  Status      String?
   effet       DateTime @default(now())
   observation String?
   ///relation to Personel
@@ -293,18 +294,66 @@ model Zoo {
   sousActiviteId String
 }
 
-// model demandeExcursion {
-//   id                 String            @id
-//   Date               BigInt
-//   effet              DateTime          @default(now())
-//   observation        String?
-//   ///relation to details Excursion
-//   detailsExcursion   detailsExcursion?
-//   detailsExcursionId String
-//   /// relation to Personel
-//   Personel           Personel          @relation(fields: [personelId], references: [id])
-//   personelId         String
-//   /// relation to Personel
-//   SousActivite       SousActivite      @relation(fields: [sousActiviteId], references: [id])
-//   sousActiviteId     String
-// }
+model mariage {
+  id          String   @id
+  description String
+  effet       BigInt
+  Status      String?
+  Personel    Personel @relation(fields: [personelId], references: [id])
+  personelId  String
+  Mantant     String?
+  Observation String
+}
+
+model demandeExcursion {
+  id               String       @id
+  Date             BigInt
+  Status           String?
+  effet            DateTime     @default(now())
+  observation      String?
+  ///relation to details Excursion
+  detailsExcursion Excursion?   @relation(fields: [ExcursionId], references: [id])
+  ExcursionId      String
+  /// relation to Personel
+  Personel         Personel     @relation(fields: [personelId], references: [id])
+  personelId       String
+  /// relation to Personel
+  SousActivite     SousActivite @relation(fields: [sousActiviteId], references: [id])
+  sousActiviteId   String
+}
+
+model Vile {
+  id             String      @id
+  vileAr         String
+  vileFr         String
+  // Relation to centers
+  centres        Centre[]
+  excursionsFrom Excursion[] @relation("excursionsFromVile")
+  excursionsTo   Excursion[] @relation("excursionsToVile")
+
+  @@unique([vileAr, vileFr])
+}
+
+model Excursion {
+  id               String             @id
+  Excursion        String
+  Description      String
+  Date             BigInt
+  startVile        Vile               @relation("excursionsFromVile", fields: [vileStartId], references: [id])
+  vileStartId      String
+  endVile          Vile               @relation("excursionsToVile", fields: [vileEndId], references: [id])
+  vileEndId        String
+  demandeExcursion demandeExcursion[]
+}
+
+model inscreption {
+  id              String       @id
+  annee           BigInt
+  effet           DateTime     @default(now())
+  // relation with personel
+  Personel        Personel     @relation(fields: [personelId], references: [id])
+  personelId      String
+  // relation with SousActivitie
+  SousActivitie   SousActivite @relation(fields: [SousActivitieId], references: [id])
+  SousActivitieId String
+}

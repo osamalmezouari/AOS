@@ -34,6 +34,8 @@ export class DotationService {
   }
 
   remove(id: string) {
-    return `This action removes a #${id} dotation`;
+    return this.prismaClient.dotation.delete({
+      where: { id },
+    });
   }
 }

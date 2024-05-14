@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, SousActivite } from '@prisma/client';
 import { CreateSousActiviteDto } from './dto/CreateSousActivite.dto';
 import { UpdateSousActiviteDto } from './dto/UpdateSousActivite.dto';
 import { UuidService } from '../../../Helpers/UUID/uuid.service';
@@ -11,7 +11,7 @@ export class SousActiviteService {
     private readonly prismaClient: PrismaClient,
     private readonly uuid: UuidService,
   ) {}
-  findAll() {
+  findAll(): Promise<SousActivite[]> {
     return this.prismaClient.sousActivite.findMany();
   }
   findOne(id: string) {
@@ -23,6 +23,7 @@ export class SousActiviteService {
       ...createSousActiviteDto,
     };
     return this.prismaClient.sousActivite.create({
+      //@ts-ignore
       data: SousActiviteWithId,
     });
   }
@@ -34,5 +35,18 @@ export class SousActiviteService {
   }
   delete(id: string) {
     return this.prismaClient.sousActivite.delete({ where: { id } });
+  }
+  async NavbarBuilder() {
+    const Activities = await this.prismaClient.activitie.findMany();
+    const SousActivities = await this.findAll();
+    const ActivitieWithSousActivitie = SousActivities.map(
+      (SingleSousActivitie) => {
+        const matchingActivitie = Activities.find((SingleActivitie) => {
+          return SingleSousActivitie.activiteId === SingleActivitie.id;
+        });
+        return [SingleSousActivitie, matchingActivitie];
+      },
+    );
+    return ActivitieWithSousActivitie;
   }
 }

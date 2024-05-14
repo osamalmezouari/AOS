@@ -3,5 +3,5 @@ export class CreateAffectationDto {
   structureAr: string;
   StructureFr: string;
   abrviation: string;
-  TypeDepartement: string;
+  TypeStructure: string;
 }
