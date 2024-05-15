@@ -41,8 +41,8 @@ model Personel {
 
 model Affectation {
   id            String     @id
-  structureAr   String     @unique
-  StructureFr   String     @unique
+  structureAr   String     @db.Text
+  StructureFr   String     @db.Text
   abrviation    String
   TypeStructure String
   /// Relation to Personel
@@ -63,8 +63,9 @@ model SousActivite {
   id                String                   @id
   nomAr             String
   nomFr             String
-  descriptionAr     String
-  descriptionFr     String
+  descriptionAr     String                   @db.Text
+  descriptionFr     String                   @db.Text
+  imgUrl            String                   @db.Text
   /// Relation activite
   activite          Activitie                @relation(fields: [activiteId], references: [id])
   activiteId        String
@@ -82,7 +83,7 @@ model SousActivite {
   demandeExcursion  demandeExcursion[]
   inscreption       inscreption[]
 
-  @@unique([nomFr, nomAr, descriptionAr, descriptionFr])
+  @@unique([nomFr, nomAr])
 }
 
 model SousActivitiesOnPieces {
@@ -96,24 +97,20 @@ model SousActivitiesOnPieces {
 
 model Pieces {
   id             String                   @id
-  nomAr          String
-  nomFr          String
+  nomAr          String                   @db.Text
+  nomFr          String                   @db.Text
   ///Relation to sousActivites
   SousActivities SousActivitiesOnPieces[]
-
-  @@unique([nomAr, nomFr])
 }
 
 model Dotation {
   id              String       @id
   dotation        Float
-  descriptionAr   String       @unique
-  descriptionFr   String       @unique
+  descriptionAr   String       @db.Text
+  descriptionFr   String       @db.Text
   /// Relation to sousActivites
   SousActivities  SousActivite @relation(fields: [SousActivitieId], references: [id])
   SousActivitieId String
-
-  @@unique([descriptionAr, descriptionFr])
 }
 
 model DemandeEstivage {
@@ -135,10 +132,10 @@ model DemandeEstivage {
 }
 
 model Centre {
-  id       String @id
-  centreAr String
-  centreFr String
-
+  id              String            @id
+  centreAr        String            @db.Text
+  centreFr        String            @db.Text
+  imgUrl          String            @db.Text
   /// Relation to demamnde estivage
   demandeEstivage DemandeEstivage[]
   /// Relation to ville
@@ -169,10 +166,10 @@ model TypeEsstivage {
 model demandeCredit {
   id            String   @id
   mantantCredit Decimal
-  description   String
+  description   String   @db.Text
   Status        String?
   effet         DateTime @default(now())
-  observation   String?
+  observation   String?  @db.Text
 
   ///relation to Personel
   Personel   Personel @relation(fields: [personelId], references: [id])
@@ -187,7 +184,7 @@ model demandePelerinage {
   id          String   @id
   annee       BigInt
   effet       DateTime @default(now())
-  observation String?
+  observation String?  @db.Text
   Status      String?
   ///relation to Personel
   Personel    Personel @relation(fields: [personelId], references: [id])
@@ -204,7 +201,7 @@ model retrait {
   mantantRetraite Int
   Status          String?
   effet           DateTime @default(now())
-  observation     String?
+  observation     String?  @db.Text
 
   ///relation to Personel
   Personel   Personel @relation(fields: [personelId], references: [id])
@@ -216,26 +213,25 @@ model retrait {
 }
 
 model demamdeMaladies {
-  id                String   @id
+  id                String       @id
   mantantMaladie    BigInt
-  MaladieDecription String
+  MaladieDecription String       @db.Text
   Status            String?
-  effet             DateTime @default(now())
-  observation       String?
+  effet             DateTime     @default(now())
+  observation       String?      @db.Text
   ///relation to Personel
-  Personel          Personel @relation(fields: [personelId], references: [id])
+  Personel          Personel     @relation(fields: [personelId], references: [id])
   personelId        String
-
   ///relation to Personel
-  SousActivite   SousActivite @relation(fields: [sousActiviteId], references: [id])
-  sousActiviteId String
+  SousActivite      SousActivite @relation(fields: [sousActiviteId], references: [id])
+  sousActiviteId    String
 }
 
 model demandeLang {
   id             String       @id
   effet          DateTime     @default(now())
   Status         String?
-  observation    String?
+  observation    String?      @db.Text
   /// relation to CentresLang
   CentreLang     CentresLang  @relation(fields: [CentreLangId], references: [id])
   CentreLangId   String
@@ -250,16 +246,17 @@ model demandeLang {
 model CentresLang {
   id          String        @id
   nom         String
+  imgUrl      String        @db.Text
   demandeLang demandeLang[]
 }
 
 model demandeCondoleance {
   id                 String          @id
   mantantCondoleance Int
-  description        String
+  description        String          @db.Text
   Status             String?
   effet              DateTime        @default(now())
-  observation        String?
+  observation        String?         @db.Text
   ///relation to condoleance
   typeCondoleance    typeCondoleance @relation(fields: [typeCondoleanceId], references: [id])
   typeCondoleanceId  String
@@ -296,13 +293,13 @@ model Zoo {
 
 model mariage {
   id          String   @id
-  description String
+  description String   @db.Text
   effet       BigInt
   Status      String?
   Personel    Personel @relation(fields: [personelId], references: [id])
   personelId  String
   Mantant     String?
-  Observation String
+  Observation String   @db.Text
 }
 
 model demandeExcursion {
@@ -310,7 +307,7 @@ model demandeExcursion {
   Date             BigInt
   Status           String?
   effet            DateTime     @default(now())
-  observation      String?
+  observation      String?      @db.Text
   ///relation to details Excursion
   detailsExcursion Excursion?   @relation(fields: [ExcursionId], references: [id])
   ExcursionId      String
@@ -337,7 +334,8 @@ model Vile {
 model Excursion {
   id               String             @id
   Excursion        String
-  Description      String
+  Description      String             @db.Text
+  imgUrl           String             @db.Text
   Date             BigInt
   startVile        Vile               @relation("excursionsFromVile", fields: [vileStartId], references: [id])
   vileStartId      String
