@@ -17,11 +17,7 @@ export class SousActiviteController {
   constructor(private readonly sousActiviteService: SousActiviteService) {}
   @Get('')
   async NavBarBuilder() {
-    return await this.sousActiviteService.NavbarBuilder();
-  }
-  @Get('NavBarBuilder')
-  findAll(): Promise<SousActivite[]> {
-    return this.sousActiviteService.findAll();
+    return await this.sousActiviteService.findAll();
   }
   @Get(':id')
   findOne(@Param('id') id: string): Promise<SousActivite> {

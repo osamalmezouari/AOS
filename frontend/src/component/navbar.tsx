@@ -15,8 +15,11 @@ import {
   Login,
   YouTube,
 } from "@mui/icons-material";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const navigate = useNavigate()
   const [anchorEl1, setAnchorEl1] = React.useState<null | HTMLElement>(null);
   const [anchorEl2, setAnchorEl2] = React.useState<null | HTMLElement>(null);
   const [anchorEl3, setAnchorEl3] = React.useState<null | HTMLElement>(null);
@@ -27,6 +30,11 @@ const Navbar = () => {
   const [Activite4, setActivite4] = React.useState<boolean>(false);
   const [Nav, setNav] = React.useState<string>("");
   const [ToggleNavBar, SetToggleNavBar] = React.useState<boolean>(false);
+  const [NavbarData, setNavbarData] = React.useState({
+    loading: true,
+    error: "",
+    data: [],
+  });
   const handleClick1 = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl1(event.currentTarget);
   };
@@ -45,6 +53,7 @@ const Navbar = () => {
     setAnchorEl2(null);
     setAnchorEl3(null);
     setAnchorEl4(null);
+    
   };
 
   React.useEffect(() => {
@@ -56,6 +65,27 @@ const Navbar = () => {
     }
     console.log(Nav);
   }, [Nav]);
+
+  React.useEffect(() => {
+    const fetchNavbar = async () => {
+      try {
+        const res = await axios.get("http://localhost:3000/activite");
+        setNavbarData({
+          loading: true,
+          data: res.data,
+          error: "",
+        });
+        console.log(res.data);
+      } catch (error) {
+        setNavbarData({
+          data: [],
+          error: `Error fetching navbar data:`,
+          loading: false,
+        });
+      }
+    };
+    fetchNavbar();
+  }, []);
   return (
     <>
       <Box
@@ -125,20 +155,24 @@ const Navbar = () => {
                   onClose={handleClose}
                   TransitionComponent={Fade}
                 >
-                  <MenuItem onClick={handleClose} color={"font-bold"}>
-                    Social Loans Service
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>Retirement Grant</MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    Bourse de pèlerinage
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    Allocation de retraite
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    Aide financière pour les cas médicaux graves
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>Condoléances </MenuItem>
+                  {NavbarData.data.length > 0
+                    ? NavbarData.data[2].SousActivities.map(
+                        (singleSousActivitie) => {
+                          return (
+                            <MenuItem
+                              key={singleSousActivitie.id}
+                              onClick={()=>{
+                                navigate(`/AOS/SousActivitie/${singleSousActivitie.id}`, { replace: true });
+                                handleClose();
+                              }}
+                              color={"font-bold"}
+                            >
+                              {singleSousActivitie.nomFr}
+                            </MenuItem>
+                          );
+                        },
+                      )
+                    : ""}
                 </Menu>
               </div>
               <div>
@@ -160,12 +194,24 @@ const Navbar = () => {
                   onClose={handleClose}
                   TransitionComponent={Fade}
                 >
-                  <MenuItem onClick={handleClose}>
-                    Centres de soutien en langue étrangère
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>
-                    Voyages, sorties, camps d'été et activités sportives
-                  </MenuItem>
+                  {NavbarData.data.length > 0
+                    ? NavbarData.data[1].SousActivities.map(
+                        (singleSousActivitie) => {
+                          return (
+                            <MenuItem
+                              key={singleSousActivitie.id}
+                              onClick={()=>{
+                                navigate(`/AOS/SousActivitie/${singleSousActivitie.id}`, { replace: true });
+                                handleClose();
+                              }}
+                              color={"font-bold"}
+                            >
+                              {singleSousActivitie.nomFr}
+                            </MenuItem>
+                          );
+                        },
+                      )
+                    : ""}
                 </Menu>
               </div>
               <div>
@@ -187,9 +233,24 @@ const Navbar = () => {
                   onClose={handleClose}
                   TransitionComponent={Fade}
                 >
-                  <MenuItem onClick={handleClose}>Profile</MenuItem>
-                  <MenuItem onClick={handleClose}>My account</MenuItem>
-                  <MenuItem onClick={handleClose}>Logout</MenuItem>
+                  {NavbarData.data.length > 0
+                    ? NavbarData.data[3].SousActivities.map(
+                        (singleSousActivitie) => {
+                          return (
+                            <MenuItem
+                              key={singleSousActivitie.id}
+                              onClick={()=>{
+                                navigate(`/AOS/SousActivitie/${singleSousActivitie.id}`, { replace: true });
+                                handleClose();
+                              }}
+                              color={"font-bold"}
+                            >
+                              {singleSousActivitie.nomFr}
+                            </MenuItem>
+                          );
+                        },
+                      )
+                    : ""}
                 </Menu>
               </div>
               <div>
@@ -211,10 +272,24 @@ const Navbar = () => {
                   onClose={handleClose}
                   TransitionComponent={Fade}
                 >
-                  <MenuItem onClick={handleClose}>
-                    Centres de soutien en langue étrangère
-                  </MenuItem>
-                  <MenuItem onClick={handleClose}>Centres de vacances</MenuItem>
+                  {NavbarData.data.length > 0
+                    ? NavbarData.data[0].SousActivities.map(
+                        (singleSousActivitie) => {
+                          return (
+                            <MenuItem
+                              key={singleSousActivitie.id}
+                              onClick={()=>{
+                                navigate(`/AOS/SousActivitie/${singleSousActivitie.id}`, { replace: true });
+                                handleClose();
+                              }}
+                              color={"font-bold"}
+                            >
+                              {singleSousActivitie.nomFr}
+                            </MenuItem>
+                          );
+                        },
+                      )
+                    : ""}
                 </Menu>
               </div>
             </Box>

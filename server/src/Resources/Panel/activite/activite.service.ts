@@ -12,7 +12,11 @@ export class ActiviteService {
   ) {}
 
   findAll(): Promise<Activitie[]> {
-    return this.prismaClient.activitie.findMany();
+    return this.prismaClient.activitie.findMany({
+      include: {
+        SousActivities: true,
+      },
+    });
   }
   findOne(id: string): Promise<Activitie> {
     return this.prismaClient.activitie.findUnique({ where: { id } });

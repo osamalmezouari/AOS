@@ -14,16 +14,25 @@ export class SousActiviteService {
   findAll(): Promise<SousActivite[]> {
     return this.prismaClient.sousActivite.findMany();
   }
-  findOne(id: string) {
-    return this.prismaClient.sousActivite.findUnique({ where: { id } });
+  async findOne(id: string) {
+    return this.prismaClient.sousActivite.findUnique({
+      where: { id },
+      include: {
+        pieces: {
+          include: {
+            piece: true,
+          },
+        },
+      },
+    });
   }
+
   create(createSousActiviteDto: CreateSousActiviteDto) {
     const SousActiviteWithId = {
       id: this.uuid,
       ...createSousActiviteDto,
     };
     return this.prismaClient.sousActivite.create({
-      //@ts-ignore
       data: SousActiviteWithId,
     });
   }
@@ -35,18 +44,5 @@ export class SousActiviteService {
   }
   delete(id: string) {
     return this.prismaClient.sousActivite.delete({ where: { id } });
-  }
-  async NavbarBuilder() {
-    const Activities = await this.prismaClient.activitie.findMany();
-    const SousActivities = await this.findAll();
-    const ActivitieWithSousActivitie = SousActivities.map(
-      (SingleSousActivitie) => {
-        const matchingActivitie = Activities.find((SingleActivitie) => {
-          return SingleSousActivitie.activiteId === SingleActivitie.id;
-        });
-        return [SingleSousActivitie, matchingActivitie];
-      },
-    );
-    return ActivitieWithSousActivitie;
   }
 }

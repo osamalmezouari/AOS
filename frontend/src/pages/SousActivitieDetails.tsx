@@ -1,10 +1,37 @@
 import { Box, Container, Typography } from "@mui/material";
 import Navbar from "../component/navbar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FileUpload from "../component/dropfile";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
 const SousActivitieDetails = () => {
   const [DropFile, SetDropfile] = useState<boolean>(false);
+  const [SousActivitieDetails, SetSousActivitieDetails] = useState({
+    loading: true,
+    data: {},
+    error: "",
+  });
+  const { id } = useParams();
+  useEffect(() => {
+    const fetchSousActivitieDetails = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:3000/sous-activite/${id}`
+        );
+        const data = await res.data;
+        SetSousActivitieDetails({
+          data: data,
+          loading: false,
+          error: "",
+        });
+        console.log(SousActivitieDetails.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchSousActivitieDetails();
+  }, [id]);
   return (
     <>
       <Navbar />
@@ -23,39 +50,39 @@ const SousActivitieDetails = () => {
           <Box className={"bg-gray-50 h-full mt-5 rounded p-5 mb-5"}>
             <Box>
               <Box
-                component={"div"}
-                className="w-full bg-makah bg-center h-[320px]  bg-cover "
+                component={"img"}
+                src={`${SousActivitieDetails.data.imgUrl}`}
+                className="w-full bg-makah bg-center h-max  bg-cover "
               ></Box>
               <Box component={"div"} className={"mt-5 "}>
                 <Typography className="font-main capitalize font-bold bg-mainBleu w-max p-2 text-white rounded">
-                  Parlons de {"Allocation de retrait"}
+                  Parlons de {SousActivitieDetails.data.nomFr}
                 </Typography>
-                <Typography className={"mt-2 font-main p-2 "}>
-                  L'Association des Affaires Sociales du Ministère de
-                  l'Industrie, du Commerce et des Technologies Modernes accorde
-                  à ses membres une allocation financière lors de leur départ à
-                  la retraite à l'âge légal. Cette allocation s'élève à 51 000
-                  dirhams en reconnaissance de leurs services exceptionnels
-                  rendus tout au long de leur carrière dans le secteur. De plus,
-                  une cérémonie annuelle est organisée en l'honneur des
-                  retraités, au cours de laquelle ils reçoivent cette allocation
-                  ainsi que des plaques commémoratives.
-                </Typography>
+                {SousActivitieDetails.data ? (
+                  <Typography className={"mt-2 font-main p-2 "}>
+                    {SousActivitieDetails?.data?.descriptionFr}
+                  </Typography>
+                ) : (
+                  ""
+                )}
               </Box>
               <Box component={"div"} className={"mt-5 "}>
                 <Typography className="font-main capitalize font-bold bg-mainBleu w-max p-2 text-white rounded">
                   Les documents requis
                 </Typography>
                 <ul className="pl-10 py-4 list-disc font-secend">
-                  <li>Copie de la décision de mise à la retraite</li>
-                  <li>Copie de la décision de mise à la retraite</li>
-                  <li>Copie de la décision de mise à la retraite</li>
-                  <li>Copie de la décision de mise à la retraite</li>
-                  <li>Copie de la décision de mise à la retraite</li>
+                  {SousActivitieDetails?.data?.pieces?.length > 0 ? (
+                    SousActivitieDetails.data.pieces.map((Singlepiece) => (
+                      <li key={Singlepiece.piece.id}>
+                        {Singlepiece.piece.nomFr}
+                      </li>
+                    ))
+                  ) : (
+                    <li>pas de documents nécessaires pour ce SousActivitie</li>
+                  )}
                 </ul>
               </Box>
             </Box>
-
             <div
               onClick={() => SetDropfile(!DropFile)}
               className="text-white bg-yellow right-0 w-max p-2 rounded cursor-pointer ml-auto"

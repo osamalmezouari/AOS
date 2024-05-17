@@ -1,10 +1,40 @@
 import Navbar from "../component/navbar.tsx";
-import {  Box, Button, Container, Grid, Typography } from "@mui/material";
-import { CollectionsBookmark , Send } from "@mui/icons-material";
+import { Box, Button, Container, Grid, Typography } from "@mui/material";
+import { CollectionsBookmark, Send } from "@mui/icons-material";
 import MultiActionAreaCard from "../component/mui/MultiActionAreaCard.tsx";
 import ActivitieCard from "../component/mui/activitieCard.tsx";
 import Footer from "../component/footer.tsx";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 function Landing() {
+  const [SousActivities, setSousActivities] = useState({
+    loading: true,
+    error: "",
+    data: [],
+  });
+  const navigate = useNavigate()
+  useEffect(() => {
+    const fetchSousActivities = async () => {
+      try {
+        const res = await axios.get("http://localhost:3000/sous-activite");
+        setSousActivities({
+          loading: true,
+          data: res.data,
+          error: "",
+        });
+        console.log(res.data);
+      } catch (error) {
+        setSousActivities({
+          data: [],
+          error: `Error fetching navbar data:`,
+          loading: false,
+        });
+      }
+    };
+    fetchSousActivities();
+  }, []);
   return (
     <div className={"bg-landing h-screen bg-cover "}>
       <Navbar></Navbar>
@@ -71,53 +101,88 @@ function Landing() {
           sx={{ flexGrow: 1 }}
           className="m-auto gap-2 mt-4 mb-6"
         >
-        <ActivitieCard />
-        <ActivitieCard />
-        <ActivitieCard />
-        <ActivitieCard />
-        <ActivitieCard />
-        <ActivitieCard />
-        <ActivitieCard />
-        <ActivitieCard />
-        <ActivitieCard /> 
-        <ActivitieCard />
-        <ActivitieCard /><ActivitieCard />
+          {SousActivities.data.length > 0
+            ? SousActivities.data.map((singleSousActivitie) => {
+                return (
+                  <ActivitieCard
+                    onClick={()=>navigate(`SousActivitie/${singleSousActivitie.id}`)}
+                    imgurl={singleSousActivitie?.imgUrl}
+                    nomAr={singleSousActivitie?.nomAr}
+                    nomFr={singleSousActivitie?.nomFr}
+                  />
+                );
+              })
+            : ""}
         </Grid>
         <Typography className="text-xl flex items-center justify-between font-bold capitalize font-main text-start text-mainBleu underline rounded p-4 h-max">
           Esstivage appartement disponible
-          <Button endIcon={<Send />} className="min-w-[150px] h-12 bg-mainBleu capitalize font-main hover:bg-yellow text-white">Voir Tout</Button>
+          <Button
+            endIcon={<Send />}
+            className="min-w-[150px] h-12 bg-mainBleu capitalize no-underline font-main hover:bg-yellow text-white"
+          >
+            Voir Tout
+          </Button>
         </Typography>
         <Box>
-          <Container className="" maxWidth={'lg'}>
-            <Grid container 
-          justifyContent={"space-between"}
-          sx={{ flexGrow: 1 }}
-          className=" gap-y-2 mt-4 mb-6" >
-            <MultiActionAreaCard />
-            <MultiActionAreaCard />
-            <MultiActionAreaCard />
-          </Grid>
-            
+          <Container className="" maxWidth={"lg"}>
+            <Grid
+              container
+              justifyContent={"space-between"}
+              sx={{ flexGrow: 1 }}
+              className=" gap-y-2 mt-4 mb-6"
+            >
+              <MultiActionAreaCard />
+              <MultiActionAreaCard />
+              <MultiActionAreaCard />
+            </Grid>
           </Container>
-          
-        </Box> 
+        </Box>
         <Typography className="text-xl flex items-center justify-between font-bold capitalize font-main text-start text-mainBleu underline rounded p-4 h-max">
           les Recents Centre disponible
-          <Button endIcon={<Send />} className="min-w-[150px] h-12 bg-mainBleu capitalize font-main hover:bg-yellow text-white">Voir Tout</Button>
+          <Button
+            endIcon={<Send />}
+            className="min-w-[150px] h-12 bg-mainBleu no-underline capitalize font-main hover:bg-yellow text-white"
+          >
+            Voir Tout
+          </Button>
         </Typography>
         <Box>
-          <Container className="" maxWidth={'lg'}>
-            <Grid container 
-          justifyContent={"space-between"}
-          sx={{ flexGrow: 1 }}
-          className=" gap-y-2 mt-4 mb-6" >
-            <MultiActionAreaCard />
-            <MultiActionAreaCard />
-            <MultiActionAreaCard />
-          </Grid>
+          <Container className="" maxWidth={"lg"}>
+            <Grid
+              container
+              justifyContent={"space-between"}
+              sx={{ flexGrow: 1 }}
+              className=" gap-y-2 mt-4 mb-6"
+            >
+              <MultiActionAreaCard />
+              <MultiActionAreaCard />
+              <MultiActionAreaCard />
+            </Grid>
           </Container>
-        </Box> 
-        
+        </Box>
+        <Typography className="text-xl flex items-center justify-between font-bold capitalize font-main text-start text-mainBleu underline rounded p-4 h-max">
+          les Recents Excursion disponible
+          <Button
+            endIcon={<Send />}
+            className="min-w-[150px] h-12 bg-mainBleu no-underline capitalize font-main hover:bg-yellow text-white"
+          >
+            Voir Tout
+          </Button>
+        </Typography>
+        <Box>
+          <Container className="" maxWidth={"lg"}>
+            <Grid
+              container
+              justifyContent={"space-between"}
+              sx={{ flexGrow: 1 }}
+              className=" gap-y-2 mt-4 mb-6"
+            >
+              <MultiActionAreaCard />
+              <MultiActionAreaCard />
+              <MultiActionAreaCard />
+            </Grid>
+          </Container>
+        </Box>
       </Container>
       <Footer />
     </div>
