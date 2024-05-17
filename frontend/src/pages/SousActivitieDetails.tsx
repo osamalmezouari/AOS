@@ -59,7 +59,10 @@ const SousActivitieDetails = () => {
                   Parlons de {SousActivitieDetails.data.nomFr}
                 </Typography>
                 {SousActivitieDetails.data ? (
-                  <Typography className={"mt-2 font-main p-2 "}>
+                  <Typography
+                    className={"mt-2 font-main p-2"}
+                    style={{ whiteSpace: "pre-wrap" }}
+                  >
                     {SousActivitieDetails?.data?.descriptionFr}
                   </Typography>
                 ) : (

@@ -19,7 +19,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [anchorEl1, setAnchorEl1] = React.useState<null | HTMLElement>(null);
   const [anchorEl2, setAnchorEl2] = React.useState<null | HTMLElement>(null);
   const [anchorEl3, setAnchorEl3] = React.useState<null | HTMLElement>(null);
@@ -53,18 +53,23 @@ const Navbar = () => {
     setAnchorEl2(null);
     setAnchorEl3(null);
     setAnchorEl4(null);
-    
   };
 
   React.useEffect(() => {
-    const screenWidth: number = window.innerWidth;
-    if (screenWidth === 1200 || screenWidth <= 1200) {
-      setNav("small");
-    } else if (screenWidth >= 1200) {
-      setNav("large");
-    }
-    console.log(Nav);
-  }, [Nav]);
+    const handleResize = () => {
+      const screenWidth = window.innerWidth;
+      if (screenWidth <= 1200) {
+        setNav("small");
+      } else {
+        setNav("large");
+      }
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   React.useEffect(() => {
     const fetchNavbar = async () => {
@@ -119,7 +124,9 @@ const Navbar = () => {
         </Box>
       </Box>
       <Box
-        className={`bg-white py-2 drop-shadow shadow-secendBleu ${Nav === "large" ? "" : "hidden"}`}
+        className={`bg-white py-2 drop-shadow shadow-secendBleu ${
+          Nav === "large" ? "" : "hidden"
+        }`}
       >
         <Container maxWidth={"lg"}>
           <Box className={"flex items-center gap-2 justify-between w-full"}>
@@ -132,6 +139,8 @@ const Navbar = () => {
               className={
                 "w-[200px] h-28 bg-pngfr bg-cover bg-center flex-grow-1"
               }
+              component={'div'}
+              onClick={()=>navigate(`/AOS`,{replace :true})}
             ></Box>
             <Box
               className={"flex items-center gap-2 justify-between capitalize"}
@@ -161,8 +170,11 @@ const Navbar = () => {
                           return (
                             <MenuItem
                               key={singleSousActivitie.id}
-                              onClick={()=>{
-                                navigate(`/AOS/SousActivitie/${singleSousActivitie.id}`, { replace: true });
+                              onClick={() => {
+                                navigate(
+                                  `/AOS/SousActivitie/${singleSousActivitie.id}`,
+                                  { replace: true }
+                                );
                                 handleClose();
                               }}
                               color={"font-bold"}
@@ -170,7 +182,7 @@ const Navbar = () => {
                               {singleSousActivitie.nomFr}
                             </MenuItem>
                           );
-                        },
+                        }
                       )
                     : ""}
                 </Menu>
@@ -200,8 +212,11 @@ const Navbar = () => {
                           return (
                             <MenuItem
                               key={singleSousActivitie.id}
-                              onClick={()=>{
-                                navigate(`/AOS/SousActivitie/${singleSousActivitie.id}`, { replace: true });
+                              onClick={() => {
+                                navigate(
+                                  `/AOS/SousActivitie/${singleSousActivitie.id}`,
+                                  { replace: true }
+                                );
                                 handleClose();
                               }}
                               color={"font-bold"}
@@ -209,7 +224,7 @@ const Navbar = () => {
                               {singleSousActivitie.nomFr}
                             </MenuItem>
                           );
-                        },
+                        }
                       )
                     : ""}
                 </Menu>
@@ -239,8 +254,11 @@ const Navbar = () => {
                           return (
                             <MenuItem
                               key={singleSousActivitie.id}
-                              onClick={()=>{
-                                navigate(`/AOS/SousActivitie/${singleSousActivitie.id}`, { replace: true });
+                              onClick={() => {
+                                navigate(
+                                  `/AOS/SousActivitie/${singleSousActivitie.id}`,
+                                  { replace: true }
+                                );
                                 handleClose();
                               }}
                               color={"font-bold"}
@@ -248,7 +266,7 @@ const Navbar = () => {
                               {singleSousActivitie.nomFr}
                             </MenuItem>
                           );
-                        },
+                        }
                       )
                     : ""}
                 </Menu>
@@ -278,8 +296,11 @@ const Navbar = () => {
                           return (
                             <MenuItem
                               key={singleSousActivitie.id}
-                              onClick={()=>{
-                                navigate(`/AOS/SousActivitie/${singleSousActivitie.id}`, { replace: true });
+                              onClick={() => {
+                                navigate(
+                                  `/AOS/SousActivitie/${singleSousActivitie.id}`,
+                                  { replace: true }
+                                );
                                 handleClose();
                               }}
                               color={"font-bold"}
@@ -287,7 +308,7 @@ const Navbar = () => {
                               {singleSousActivitie.nomFr}
                             </MenuItem>
                           );
-                        },
+                        }
                       )
                     : ""}
                 </Menu>
@@ -318,7 +339,9 @@ const Navbar = () => {
       {/* small navs */}
 
       <Box
-        className={`bg-white py-2 drop-shadow shadow-secendBleu relative z-20 ${Nav === "small" ? "" : "hidden"}`}
+        className={`bg-white py-2 drop-shadow shadow-secendBleu relative z-20 ${
+          Nav === "small" ? "" : "hidden"
+        }`}
       >
         <Container maxWidth={"lg"}>
           <Box className={"flex items-center gap-2 justify-between w-full"}>
@@ -356,7 +379,11 @@ const Navbar = () => {
         </Container>
       </Box>
       <Box
-        className={`p-6 mt-1 bg-myGray absolute w-full z-10  ${ToggleNavBar ? "top-[120px]" : "-top-[1000px] transition-all duration-300"}`}
+        className={`p-6 mt-1 bg-myGray absolute w-full z-10  ${
+          ToggleNavBar
+            ? "top-[120px]"
+            : "-top-[1000px] transition-all duration-300"
+        }`}
       >
         <Typography
           component={"p"}
