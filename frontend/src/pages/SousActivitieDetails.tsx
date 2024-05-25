@@ -42,7 +42,7 @@ const SousActivitieDetails = () => {
             "bg-mainBleu text-white p-4 mt-12 font-main capitalize rounded font-bold"
           }
         >
-          <Typography>{"Allocation de retrait"}</Typography>
+          <Typography>{SousActivitieDetails.data.nomFr}</Typography>
         </Box>
         {DropFile ? (
           <FileUpload />

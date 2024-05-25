@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { v4 as uuidfunc } from 'uuid';
+import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class UuidService {
-  private readonly uuid: uuidfunc;
   Getuuid() {
-    return this.uuid();
+    return uuid();
   }
 }

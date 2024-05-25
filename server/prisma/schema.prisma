@@ -16,10 +16,10 @@ model Personel {
   nom_ar            String
   prenom_ar         String
   prenom_fr         String
+  password          String
   naissance         String
   email             String               @unique
   echelle           Int
-  adherant          Boolean?             @default(false)
   isAdmin           Boolean?             @default(false)
   /// Relation to Affectation
   Affectation       Affectation          @relation(fields: [AffectationId], references: [id])
@@ -346,7 +346,8 @@ model Excursion {
 
 model inscreption {
   id              String       @id
-  annee           BigInt
+  annee           Int
+  status          Boolean      @default(false)
   effet           DateTime     @default(now())
   // relation with personel
   Personel        Personel     @relation(fields: [personelId], references: [id])

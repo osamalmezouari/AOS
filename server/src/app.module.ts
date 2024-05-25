@@ -24,6 +24,8 @@ import { DemandeCondoleanceModule } from './Resources/Condoleance/demande-condol
 import { TypeCondoleanceModule } from './Resources/Condoleance/type-condoleance/type-condoleance.module';
 import { PrismaModule } from '../prisma/prisma.module';
 import { UuidModule } from './Helpers/UUID/uuid.module';
+import { InscreptionModule } from './Resources/inscreption/inscreption.module';
+import { AuthModule } from './Resources/Auth/auth.module';
 
 @Module({
   imports: [
@@ -53,6 +55,8 @@ import { UuidModule } from './Helpers/UUID/uuid.module';
     TypeCondoleanceModule,
     PrismaModule,
     UuidModule,
+    InscreptionModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],

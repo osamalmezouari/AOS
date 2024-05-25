@@ -7,6 +7,7 @@ import Footer from "../component/footer.tsx";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { SingleSousActivities } from "../interfaces/types.tsx";
 
 function Landing() {
   const [SousActivities, setSousActivities] = useState({
@@ -14,7 +15,7 @@ function Landing() {
     error: "",
     data: [],
   });
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchSousActivities = async () => {
       try {
@@ -102,16 +103,20 @@ function Landing() {
           className="m-auto gap-2 mt-4 mb-6"
         >
           {SousActivities.data.length > 0
-            ? SousActivities.data.map((singleSousActivitie) => {
-                return (
-                  <ActivitieCard
-                    onClick={()=>navigate(`SousActivitie/${singleSousActivitie.id}`)}
-                    imgurl={singleSousActivitie?.imgUrl}
-                    nomAr={singleSousActivitie?.nomAr}
-                    nomFr={singleSousActivitie?.nomFr}
-                  />
-                );
-              })
+            ? SousActivities.data.map(
+                (singleSousActivitie: SingleSousActivities) => {
+                  return (
+                    <ActivitieCard
+                      onClick={() =>
+                        navigate(`SousActivitie/${singleSousActivitie.id}`)
+                      }
+                      imgurl={singleSousActivitie?.imgUrl}
+                      nomAr={singleSousActivitie?.nomAr}
+                      nomFr={singleSousActivitie?.nomFr}
+                    />
+                  );
+                },
+              )
             : ""}
         </Grid>
         <Typography className="text-xl flex items-center justify-between font-bold capitalize font-main text-start text-mainBleu underline rounded p-4 h-max">

@@ -7,6 +7,7 @@ export class CreatepersonelDto {
   nom_ar: string;
   prenom_ar: string;
   prenom_fr: string;
+  password: string;
   naissance: string;
   email: string;
   echelle: number;

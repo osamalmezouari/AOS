@@ -6,17 +6,16 @@ import Fade from "@mui/material/Fade";
 import {
   AppRegistration,
   Dehaze,
-  Email,
   ExpandLess,
   ExpandMore,
-  Facebook,
-  Instagram,
-  LinkedIn,
   Login,
-  YouTube,
 } from "@mui/icons-material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import {
+  ActivitieWithSousActivities,
+  SingleSousActivities,
+} from "../interfaces/types.tsx";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -30,7 +29,11 @@ const Navbar = () => {
   const [Activite4, setActivite4] = React.useState<boolean>(false);
   const [Nav, setNav] = React.useState<string>("");
   const [ToggleNavBar, SetToggleNavBar] = React.useState<boolean>(false);
-  const [NavbarData, setNavbarData] = React.useState({
+  const [NavbarData, setNavbarData] = React.useState<{
+    loading: boolean;
+    error: string;
+    data: ActivitieWithSousActivities[];
+  }>({
     loading: true,
     error: "",
     data: [],
@@ -47,14 +50,12 @@ const Navbar = () => {
   const handleClick4 = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl4(event.currentTarget);
   };
-
   const handleClose = () => {
     setAnchorEl1(null);
     setAnchorEl2(null);
     setAnchorEl3(null);
     setAnchorEl4(null);
   };
-
   React.useEffect(() => {
     const handleResize = () => {
       const screenWidth = window.innerWidth;
@@ -70,7 +71,6 @@ const Navbar = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-
   React.useEffect(() => {
     const fetchNavbar = async () => {
       try {
@@ -91,37 +91,22 @@ const Navbar = () => {
     };
     fetchNavbar();
   }, []);
+  const Json: string = localStorage.getItem("user");
+  const user = JSON.parse(Json);
   return (
     <>
       <Box
-        className={`flex p-4 bg-mainBleu text-white justify-evenly relative z-20`}
+        className={`flex p-4 bg-gray-100 h-24 text-white justify-center relative z-20 border-b-8 border-mainBleu`}
       >
-        <Typography className={"flex gap-2"}>
-          <Email></Email>
-          <p className="font-main">Micmianh@Gmail.mic.ma</p>
-        </Typography>
-        <Box className={"flex gap-2"}>
-          <Facebook
-            className={
-              "hover:text-yellow cursor-pointer transition-all duration-500 "
-            }
-          ></Facebook>
-          <Instagram
-            className={
-              "hover:text-yellow cursor-pointer transition-all duration-500 "
-            }
-          ></Instagram>
-          <LinkedIn
-            className={
-              "hover:text-yellow cursor-pointer transition-all duration-500 "
-            }
-          ></LinkedIn>
-          <YouTube
-            className={
-              "hover:text-yellow cursor-pointer transition-all duration-500 "
-            }
-          ></YouTube>
-        </Box>
+        <Box
+          component={"img"}
+          onClick={() => navigate("/AOS", { replace: true })}
+          src={
+            "https://assomic.ma/wp-content/uploads/2023/07/cropped-logomsnt.png"
+          }
+          className={"bg-center hover:cursor-pointer "}
+        />
+        <Box />
       </Box>
       <Box
         className={`bg-white py-2 drop-shadow shadow-secendBleu ${
@@ -130,18 +115,6 @@ const Navbar = () => {
       >
         <Container maxWidth={"lg"}>
           <Box className={"flex items-center gap-2 justify-between w-full"}>
-            {/*<Avatar
-              sx={{ width: 54, height: 54 }}
-              src={"/public/assets/images/logo.png"}
-              className={"bg-logo"}
-          ></Avatar>*/}
-            <Box
-              className={
-                "w-[200px] h-28 bg-pngfr bg-cover bg-center flex-grow-1"
-              }
-              component={'div'}
-              onClick={()=>navigate(`/AOS`,{replace :true})}
-            ></Box>
             <Box
               className={"flex items-center gap-2 justify-between capitalize"}
             >
@@ -166,14 +139,14 @@ const Navbar = () => {
                 >
                   {NavbarData.data.length > 0
                     ? NavbarData.data[2].SousActivities.map(
-                        (singleSousActivitie) => {
+                        (singleSousActivitie: SingleSousActivities) => {
                           return (
                             <MenuItem
                               key={singleSousActivitie.id}
                               onClick={() => {
                                 navigate(
                                   `/AOS/SousActivitie/${singleSousActivitie.id}`,
-                                  { replace: true }
+                                  { replace: true },
                                 );
                                 handleClose();
                               }}
@@ -182,7 +155,7 @@ const Navbar = () => {
                               {singleSousActivitie.nomFr}
                             </MenuItem>
                           );
-                        }
+                        },
                       )
                     : ""}
                 </Menu>
@@ -215,7 +188,7 @@ const Navbar = () => {
                               onClick={() => {
                                 navigate(
                                   `/AOS/SousActivitie/${singleSousActivitie.id}`,
-                                  { replace: true }
+                                  { replace: true },
                                 );
                                 handleClose();
                               }}
@@ -224,7 +197,7 @@ const Navbar = () => {
                               {singleSousActivitie.nomFr}
                             </MenuItem>
                           );
-                        }
+                        },
                       )
                     : ""}
                 </Menu>
@@ -257,7 +230,7 @@ const Navbar = () => {
                               onClick={() => {
                                 navigate(
                                   `/AOS/SousActivitie/${singleSousActivitie.id}`,
-                                  { replace: true }
+                                  { replace: true },
                                 );
                                 handleClose();
                               }}
@@ -266,7 +239,7 @@ const Navbar = () => {
                               {singleSousActivitie.nomFr}
                             </MenuItem>
                           );
-                        }
+                        },
                       )
                     : ""}
                 </Menu>
@@ -299,7 +272,7 @@ const Navbar = () => {
                               onClick={() => {
                                 navigate(
                                   `/AOS/SousActivitie/${singleSousActivitie.id}`,
-                                  { replace: true }
+                                  { replace: true },
                                 );
                                 handleClose();
                               }}
@@ -308,65 +281,69 @@ const Navbar = () => {
                               {singleSousActivitie.nomFr}
                             </MenuItem>
                           );
-                        }
+                        },
                       )
                     : ""}
                 </Menu>
               </div>
             </Box>
-            <Box className={"flex gap-x-2"}>
-              <Button
-                className={
-                  "bg-mainBleu w-max font-main text-white hover:bg-yellow transition-all duration-700 capitalize"
-                }
-                startIcon={<AppRegistration />}
-              >
-                inscription
-              </Button>
-              <Button
-                className={
-                  "bg-mainBleu w-max font-main text-white hover:bg-yellow transition-all duration-700 capitalize"
-                }
-                startIcon={<Login />}
-              >
-                se conecter
-              </Button>
-            </Box>
+            {!user && (
+              <Box className={"flex gap-x-2"}>
+                <Button
+                  className={
+                    "bg-mainBleu w-max font-main text-white hover:bg-yellow transition-all duration-700 capitalize"
+                  }
+                  startIcon={<AppRegistration />}
+                  onClick={() => navigate(`/AOS/Inscreption`)}
+                >
+                  inscription
+                </Button>
+
+                <Button
+                  className={
+                    "bg-mainBleu w-max font-main text-white hover:bg-yellow transition-all duration-700 capitalize"
+                  }
+                  onClick={() => navigate(`/AOS/SeConecter`)}
+                  startIcon={<Login />}
+                >
+                  se conecter
+                </Button>
+              </Box>
+            )}
           </Box>
         </Container>
       </Box>
-
       {/* small navs */}
-
       <Box
         className={`bg-white py-2 drop-shadow shadow-secendBleu relative z-20 ${
           Nav === "small" ? "" : "hidden"
         }`}
       >
         <Container maxWidth={"lg"}>
-          <Box className={"flex items-center gap-2 justify-between w-full"}>
-            <Box
-              className={
-                "w-[300px] h-[60px] bg-pngfr bg-cover bg-center flex-grow-1"
-              }
-            ></Box>
+          <Box className={" w-full flex justify-between"}>
             <Box className={"flex gap-x-2"}>
-              <Button
-                className={
-                  "bg-mainBleu w-max font-main text-white hover:bg-yellow transition-all duration-700 capitalize"
-                }
-                startIcon={<AppRegistration />}
-              >
-                inscription
-              </Button>
-              <Button
-                className={
-                  "bg-mainBleu w-max font-main text-white hover:bg-yellow transition-all duration-700 capitalize"
-                }
-                startIcon={<Login />}
-              >
-                se conecter
-              </Button>
+              {!user && (
+                <Button
+                  className={
+                    "bg-mainBleu w-max font-main text-white hover:bg-yellow transition-all duration-700 capitalize"
+                  }
+                  startIcon={<AppRegistration />}
+                >
+                  inscription
+                </Button>
+              )}
+              {!user && (
+                <Button
+                  className={
+                    "bg-mainBleu w-max font-main text-white hover:bg-yellow transition-all duration-700 capitalize"
+                  }
+                  startIcon={<Login />}
+                >
+                  se conecter
+                </Button>
+              )}
+            </Box>
+            <Box>
               <Button
                 onClick={() => SetToggleNavBar(!ToggleNavBar)}
                 size="large"
@@ -395,79 +372,115 @@ const Navbar = () => {
             {Activite1 ? <ExpandLess /> : <ExpandMore />}
           </Button>
         </Typography>
-        <Box className={`px-10 flex flex-col ${Activite1 ? "" : "hidden"}`}>
-          <Button className="w-max bg-main font-main capitalize">
-            Social Loans Service
-          </Button>
-          <Button className="w-max bg-main font-main capitalize">
-            Social Loans Service
-          </Button>
-          <Button className="w-max bg-main font-main capitalize">
-            Social Loans Service
-          </Button>
+        <Box className={`px-5 flex flex-col ${Activite1 ? "" : "hidden"}`}>
+          {NavbarData.data.length > 0
+            ? NavbarData.data[2].SousActivities.map((singleSousActivitie) => {
+                return (
+                  <Button
+                    className="w-[300px] bg-main font-main capitalize"
+                    key={singleSousActivitie.id}
+                    onClick={() => {
+                      navigate(`/AOS/SousActivitie/${singleSousActivitie.id}`, {
+                        replace: true,
+                      });
+                      handleClose();
+                    }}
+                  >
+                    {singleSousActivitie.nomFr}
+                  </Button>
+                );
+              })
+            : ""}
         </Box>
         <Typography
           component={"p"}
           onClick={() => setActivite2(!Activite2)}
           className="flex items-center justify-between font-main font-bold w-full text-start p-2 hover:bg-mainBleu hover:text-white transition-all duration-200 hover:pl-6 cursor-pointer rounded"
         >
-          Aides financières
+          Activities des loisirs
           <Button className="text-white">
             {Activite4 ? <ExpandLess /> : <ExpandMore />}
           </Button>
         </Typography>
         <Box className={`px-10 flex flex-col ${Activite2 ? "" : "hidden"}`}>
-          <Button className="w-max bg-main font-main capitalize">
-            Social Loans Service
-          </Button>
-          <Button className="w-max bg-main font-main capitalize">
-            Social Loans Service
-          </Button>
-          <Button className="w-max bg-main font-main capitalize">
-            Social Loans Service
-          </Button>
+          {NavbarData.data.length > 0
+            ? NavbarData.data[1].SousActivities.map((singleSousActivitie) => {
+                return (
+                  <Button
+                    className="w-[240px] bg-main font-main capitalize"
+                    key={singleSousActivitie.id}
+                    onClick={() => {
+                      navigate(`/AOS/SousActivitie/${singleSousActivitie.id}`, {
+                        replace: true,
+                      });
+                      handleClose();
+                    }}
+                  >
+                    {singleSousActivitie.nomFr}
+                  </Button>
+                );
+              })
+            : ""}
         </Box>
         <Typography
           component={"p"}
           onClick={() => setActivite3(!Activite3)}
           className="flex items-center justify-between font-main font-bold w-full text-start p-2 hover:bg-mainBleu hover:text-white transition-all duration-200 hover:pl-6 cursor-pointer rounded"
         >
-          Aides financières
+          Garantie Et Aide
           <Button className="text-white">
             {Activite3 ? <ExpandLess /> : <ExpandMore />}
           </Button>
         </Typography>
         <Box className={`px-10 flex flex-col ${Activite3 ? "" : "hidden"}`}>
-          <Button className="w-max bg-main font-main capitalize">
-            Social Loans Service
-          </Button>
-          <Button className="w-max bg-main font-main capitalize">
-            Social Loans Service
-          </Button>
-          <Button className="w-max bg-main font-main capitalize">
-            Social Loans Service
-          </Button>
+          {NavbarData.data.length > 0
+            ? NavbarData.data[3].SousActivities.map((singleSousActivitie) => {
+                return (
+                  <Button
+                    className="w-[240px] bg-main font-main capitalize"
+                    key={singleSousActivitie.id}
+                    onClick={() => {
+                      navigate(`/AOS/SousActivitie/${singleSousActivitie.id}`, {
+                        replace: true,
+                      });
+                      handleClose();
+                    }}
+                  >
+                    {singleSousActivitie.nomFr}
+                  </Button>
+                );
+              })
+            : ""}
         </Box>
         <Typography
           component={"p"}
           onClick={() => setActivite4(!Activite4)}
           className="flex items-center justify-between font-main font-bold w-full text-start p-2 hover:bg-mainBleu hover:text-white transition-all duration-200 hover:pl-6 cursor-pointer rounded"
         >
-          Aides financières
+          Activities Culturelles
           <Button className="text-white">
             {Activite4 ? <ExpandLess /> : <ExpandMore />}
           </Button>
         </Typography>
         <Box className={`px-10 flex flex-col ${Activite4 ? "" : "hidden"}`}>
-          <Button className="w-max bg-main font-main capitalize">
-            Social Loans Service
-          </Button>
-          <Button className="w-max bg-main font-main capitalize">
-            Social Loans Service
-          </Button>
-          <Button className="w-max bg-main font-main capitalize">
-            Social Loans Service
-          </Button>
+          {NavbarData.data.length > 0
+            ? NavbarData.data[0].SousActivities.map((singleSousActivitie) => {
+                return (
+                  <Button
+                    className="w-[240px] bg-main font-main capitalize"
+                    key={singleSousActivitie.id}
+                    onClick={() => {
+                      navigate(`/AOS/SousActivitie/${singleSousActivitie.id}`, {
+                        replace: true,
+                      });
+                      handleClose();
+                    }}
+                  >
+                    {singleSousActivitie.nomFr}
+                  </Button>
+                );
+              })
+            : ""}
         </Box>
       </Box>
     </>
