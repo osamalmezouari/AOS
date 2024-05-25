@@ -96,13 +96,13 @@ const Navbar = () => {
   return (
     <>
       <Box
-        className={`flex p-4 bg-gray-100 h-24 text-white justify-center relative z-20 border-b-8 border-mainBleu`}
+        className={`flex p-4  bg-secendBlue h-16 text-white justify-center relative z-20 border-b-8 border-mainBleu`}
       >
         <Box
           component={"img"}
           onClick={() => navigate("/AOS", { replace: true })}
           src={
-            "https://assomic.ma/wp-content/uploads/2023/07/cropped-logomsnt.png"
+            "https://github.com/osamalmezouari/Mic-Minah/blob/master/frontend/public/assets/images/unnamed.jpg?raw=true"
           }
           className={"bg-center hover:cursor-pointer "}
         />
