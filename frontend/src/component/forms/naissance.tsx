@@ -82,7 +82,9 @@ const Naissance: React.FC = () => {
       files,
     }));
   };
-
+  useEffect(()=>{
+    console.log(formState)
+  },[formState])
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {

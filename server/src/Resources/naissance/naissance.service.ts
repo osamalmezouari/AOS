@@ -85,8 +85,8 @@ export class NaissanceService {
           id: this.uuid.Getuuid(),
           personelId: createNaissanceDto.personelId,
           sousActiviteId: '1',
-          nombre: createNaissanceDto.nombre,
-          Date: createNaissanceDto.Date,
+          nombre: createNaissanceDto.numberOfChildren,
+          Date: createNaissanceDto.date,
         },
       });
     } catch (error) {
