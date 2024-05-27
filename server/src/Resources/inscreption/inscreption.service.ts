@@ -85,7 +85,7 @@ export class InscriptionService {
       userinscriptionStatus
     ) {
       throw new HttpException(
-        'tu es deja inscreptioner aller pour se conecter vous',
+        'Vous êtes déjà inscrit. Veuillez vous connecter',
         HttpStatus.UNAUTHORIZED,
       );
     } else {

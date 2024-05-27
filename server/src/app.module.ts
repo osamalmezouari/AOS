@@ -17,7 +17,6 @@ import { DemandeMaladiesModule } from './Resources/Maladies/demande-maladies/dem
 import { DemandeLangModule } from './Resources/Language/demande-lang/demande-lang.module';
 import { ZooModule } from './Resources/Zoo/demande-zoo/zoo.module';
 import { DemandeExcursionModule } from './Resources/Excursion/demande-excursion/demande-excursion.module';
-import { CentresLinguistiqueModule } from './Resources/Language/centres-linguistique/centres-linguistique.module';
 import { DetailsExcursionModule } from './Resources/Excursion/details-excursion/details-excursion.module';
 import { ExcursionModule } from './Resources/Excursion/excursion/excursion.module';
 import { DemandeCondoleanceModule } from './Resources/Condoleance/demande-condoleance/demande-condoleance.module';
@@ -50,7 +49,6 @@ import { NaissanceModule } from './Resources/naissance/naissance.module';
     DemandeLangModule,
     ZooModule,
     DemandeExcursionModule,
-    CentresLinguistiqueModule,
     DetailsExcursionModule,
     ExcursionModule,
     DemandeCondoleanceModule,

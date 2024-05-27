@@ -26,7 +26,7 @@ export class NaissanceService {
   async create(createNaissanceDto: CreateNaissanceDto) {
     const currentyear = getYear(new Date());
     const matchingPersonel = await this.prisma.personel.findUnique({
-      where: { id: createNaissanceDto.personelId },
+      where: { id : createNaissanceDto.personelId },
     });
     const Checknaissanceontraiter = await this.prisma.naissance.findFirst({
       where: {
