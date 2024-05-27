@@ -366,7 +366,7 @@ const Navbar = () => {
         </Container>
       </Box>
       <Box
-        className={`p-6 mt-1 bg-myGray absolute w-full z-10  ${
+        className={`p-6 mt-6 bg-myGray absolute w-full z-10  ${
           ToggleNavBar
             ? "top-[120px]"
             : "-top-[1000px] transition-all duration-300"
@@ -387,7 +387,7 @@ const Navbar = () => {
             ? NavbarData.data[2].SousActivities.map((singleSousActivitie) => {
                 return (
                   <Button
-                    className="w-[300px] bg-main font-main capitalize"
+                    className="mr-auto w-max bg-main font-main capitalize"
                     key={singleSousActivitie.id}
                     onClick={() => {
                       navigate(`/AOS/SousActivitie/${singleSousActivitie.id}`, {
@@ -417,7 +417,7 @@ const Navbar = () => {
             ? NavbarData.data[1].SousActivities.map((singleSousActivitie) => {
                 return (
                   <Button
-                    className="w-[240px] bg-main font-main capitalize"
+                    className="mr-auto w-max bg-main font-main capitalize"
                     key={singleSousActivitie.id}
                     onClick={() => {
                       navigate(`/AOS/SousActivitie/${singleSousActivitie.id}`, {
@@ -447,7 +447,7 @@ const Navbar = () => {
             ? NavbarData.data[3].SousActivities.map((singleSousActivitie) => {
                 return (
                   <Button
-                    className="w-[240px] bg-main font-main capitalize"
+                    className="mr-auto w-max bg-main font-main capitalize"
                     key={singleSousActivitie.id}
                     onClick={() => {
                       navigate(`/AOS/SousActivitie/${singleSousActivitie.id}`, {
@@ -477,7 +477,7 @@ const Navbar = () => {
             ? NavbarData.data[0].SousActivities.map((singleSousActivitie) => {
                 return (
                   <Button
-                    className="w-[240px] bg-main font-main capitalize"
+                    className="mr-auto w-max bg-main font-main capitalize"
                     key={singleSousActivitie.id}
                     onClick={() => {
                       navigate(`/AOS/SousActivitie/${singleSousActivitie.id}`, {

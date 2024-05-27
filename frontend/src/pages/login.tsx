@@ -6,7 +6,7 @@ import {
   TextField,
   Button,
   Grid,
-  Alert, CircularProgress,
+  Alert,
 } from "@mui/material";
 import React, { FormEvent, useState } from "react";
 import Navbar from "../component/navbar";
@@ -35,7 +35,7 @@ const Login = () => {
       console.log(response.data);
       if (response.data.status === 200) {
         SetStatus({
-          error: false,
+          error: "",
           success: true,
         });
         localStorage.setItem("user", JSON.stringify(response.data));

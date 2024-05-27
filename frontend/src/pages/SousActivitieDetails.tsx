@@ -37,7 +37,7 @@ const SousActivitieDetails = () => {
     }
 
   };
-  
+
   useEffect(() => {
     const fetchSousActivitieDetails = async () => {
       try {
@@ -126,12 +126,12 @@ const SousActivitieDetails = () => {
                   )}
                 </ul>
               </Box>
-              <div
+              {data?.pieces && data.pieces.length > 0 ? <div
                 onClick={() => CheckDemade()}
                 className="text-white bg-yellow right-0 w-max p-2 rounded cursor-pointer ml-auto"
               >
                 Envoyer les documents
-              </div>
+              </div>:""}
               
             </Grid>
           </Grid>

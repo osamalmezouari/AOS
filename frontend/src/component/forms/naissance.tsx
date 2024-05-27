@@ -16,6 +16,8 @@ import { PORT } from "../../../env.ts";
 import Navbar from "../navbar.tsx";
 
 const Naissance: React.FC = () => {
+  const userDataString = JSON.parse(localStorage.getItem("user"));
+  const user = userDataString;
   const [sentStatus, setSentStatus] = useState<{
     success: boolean;
     inprogress: boolean;
@@ -27,15 +29,18 @@ const Naissance: React.FC = () => {
     error: "",
     alert: "",
   });
+
   const [maxFiles, setMaxFiles] = useState<number>(0);
   const [formState, setFormState] = useState<{
     date: string;
     numberOfChildren: number;
     files: File[];
+    personelId:string
   }>({
     date: "",
     numberOfChildren: 0,
     files: [],
+    personelId :user.id
   });
 
   useEffect(() => {
@@ -87,18 +92,8 @@ const Naissance: React.FC = () => {
         error: "",
         alert: "",
       });
-      const formData = new FormData();
-      formData.append("date", formState.date);
-      formData.append(
-        "numberOfChildren",
-        formState.numberOfChildren.toString(),
-      );
-      formState.files.forEach((file) => {
-        formData.append("files", file);
-      });
       const response = await axios.post(
-        `http://localhost:${PORT}/naissance`,
-        formData,
+        `http://localhost:${PORT}/naissance`, formState,
         {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -128,6 +123,7 @@ const Naissance: React.FC = () => {
           alert: "",
         });
       } else {
+        console.log(error)
         setSentStatus({
           success: false,
           error: "An error occurred",
