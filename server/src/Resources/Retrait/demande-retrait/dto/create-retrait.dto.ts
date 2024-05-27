@@ -1,9 +1,7 @@
 export class CreateRetraitDto {
   id: string;
   date: string;
-  mantantRetraite: number;
-  effet: Date;
-  observation?: string | null;
+  files: Array<Express.Multer.File>;
   personelId: string;
   sousActiviteId: string;
 }

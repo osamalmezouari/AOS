@@ -15,6 +15,14 @@ export interface SingleSousActivities {
   activiteId: string;
 }
 
+export interface SingleSousActivitiesWithpieces {
+  id: number;
+  nomFr: string;
+  descriptionFr: string;
+  imgUrl: string;
+  pieces: { piece: { id: number; nomFr: string } }[];
+}
+
 export interface ActivitieWithSousActivities {
   id: string;
   nomAr: string;

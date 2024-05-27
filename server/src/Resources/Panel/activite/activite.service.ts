@@ -11,7 +11,7 @@ export class ActiviteService {
     private readonly uuid: UuidService,
   ) {}
 
-  findAll(): Promise<Activitie[]> {
+  async findAll(): Promise<Activitie[]> {
     return this.prismaClient.activitie.findMany({
       include: {
         SousActivities: true,

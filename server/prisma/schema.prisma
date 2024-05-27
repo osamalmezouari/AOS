@@ -37,6 +37,7 @@ model Personel {
   demandeExcursion  demandeExcursion[]
   mariage           mariage[]
   inscreption       inscreption[]
+  Naissance         naissance[]
 }
 
 model Affectation {
@@ -82,6 +83,8 @@ model SousActivite {
   Zoo               Zoo[]
   demandeExcursion  demandeExcursion[]
   inscreption       inscreption[]
+  mariage           mariage[]
+  naissance         naissance[]
 
   @@unique([nomFr, nomAr])
 }
@@ -198,7 +201,7 @@ model demandePelerinage {
 model retrait {
   id              String   @id
   date            String
-  mantantRetraite Int
+  mantantRetraite Int?
   Status          String?
   effet           DateTime @default(now())
   observation     String?  @db.Text
@@ -292,14 +295,16 @@ model Zoo {
 }
 
 model mariage {
-  id          String   @id
-  description String   @db.Text
-  effet       BigInt
-  Status      String?
-  Personel    Personel @relation(fields: [personelId], references: [id])
-  personelId  String
-  Mantant     String?
-  Observation String   @db.Text
+  id             String       @id
+  description    String       @db.Text
+  effet          DateTime     @default(now())
+  Status         String?
+  SousActivities SousActivite @relation(fields: [sousActiviteId], references: [id])
+  sousActiviteId String
+  Personel       Personel     @relation(fields: [personelId], references: [id])
+  personelId     String
+  Mantant        String?
+  Observation    String?      @db.Text
 }
 
 model demandeExcursion {
@@ -342,6 +347,23 @@ model Excursion {
   endVile          Vile               @relation("excursionsToVile", fields: [vileEndId], references: [id])
   vileEndId        String
   demandeExcursion demandeExcursion[]
+}
+
+model naissance {
+  id      String @id
+  Date    String
+  mantant Int?
+
+  nombre         Int
+  Status         String?
+  effet          DateTime     @default(now())
+  observation    String?      @db.Text
+  /// relation to Personel
+  Personel       Personel     @relation(fields: [personelId], references: [id])
+  personelId     String
+  /// relation to Personel
+  SousActivite   SousActivite @relation(fields: [sousActiviteId], references: [id])
+  sousActiviteId String
 }
 
 model inscreption {

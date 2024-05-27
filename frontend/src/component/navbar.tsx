@@ -16,6 +16,7 @@ import {
   ActivitieWithSousActivities,
   SingleSousActivities,
 } from "../interfaces/types.tsx";
+import { PORT } from "../../env.ts";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -74,7 +75,7 @@ const Navbar = () => {
   React.useEffect(() => {
     const fetchNavbar = async () => {
       try {
-        const res = await axios.get("http://localhost:3000/activite");
+        const res = await axios.get(`http://localhost:${PORT}/activite`);
         setNavbarData({
           loading: true,
           data: res.data,
@@ -96,15 +97,17 @@ const Navbar = () => {
   return (
     <>
       <Box
-        className={`flex p-4  bg-secendBlue h-16 text-white justify-center relative z-20 border-b-8 border-mainBleu`}
+        component={"div"}
+        style={{ backgroundColor: "#F5FCFE" }}
+        className={`flex p-4  bg-secendBlue h-24 text-white justify-center relative z-20 border-b-8 border-mainBleu`}
       >
         <Box
           component={"img"}
           onClick={() => navigate("/AOS", { replace: true })}
           src={
-            "https://github.com/osamalmezouari/Mic-Minah/blob/master/frontend/public/assets/images/unnamed.jpg?raw=true"
+            "https://github.com/osamalmezouari/Mic-Minah/blob/master/frontend/public/assets/images/unnamed-removebg-preview.png?raw=true"
           }
-          className={"bg-center hover:cursor-pointer "}
+          className={"bg-center bg-contain hover:cursor-pointer "}
         />
         <Box />
       </Box>
@@ -114,7 +117,13 @@ const Navbar = () => {
         }`}
       >
         <Container maxWidth={"lg"}>
-          <Box className={"flex items-center gap-2 justify-between w-full"}>
+          <Box
+            className={
+              user
+                ? `flex items-center gap-2 justify-center w-full`
+                : `flex items-center gap-2 justify-between w-full`
+            }
+          >
             <Box
               className={"flex items-center gap-2 justify-between capitalize"}
             >
@@ -296,9 +305,8 @@ const Navbar = () => {
                   startIcon={<AppRegistration />}
                   onClick={() => navigate(`/AOS/Inscreption`)}
                 >
-                  inscription
+                  Demande d'Inscreption
                 </Button>
-
                 <Button
                   className={
                     "bg-mainBleu w-max font-main text-white hover:bg-yellow transition-all duration-700 capitalize"
@@ -327,9 +335,10 @@ const Navbar = () => {
                   className={
                     "bg-mainBleu w-max font-main text-white hover:bg-yellow transition-all duration-700 capitalize"
                   }
+                  onClick={() => navigate(`/AOS/Inscreption`)}
                   startIcon={<AppRegistration />}
                 >
-                  inscription
+                  Demande d'Inscreption
                 </Button>
               )}
               {!user && (
@@ -338,6 +347,7 @@ const Navbar = () => {
                     "bg-mainBleu w-max font-main text-white hover:bg-yellow transition-all duration-700 capitalize"
                   }
                   startIcon={<Login />}
+                  onClick={() => navigate(`/AOS/SeConecter`)}
                 >
                   se conecter
                 </Button>

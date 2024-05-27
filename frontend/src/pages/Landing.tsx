@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { SingleSousActivities } from "../interfaces/types.tsx";
+import { PORT } from "../../env.ts";
 
 function Landing() {
   const [SousActivities, setSousActivities] = useState({
@@ -19,7 +20,7 @@ function Landing() {
   useEffect(() => {
     const fetchSousActivities = async () => {
       try {
-        const res = await axios.get("http://localhost:3000/sous-activite");
+        const res = await axios.get(`http://localhost:${PORT}/sous-activite`);
         setSousActivities({
           loading: true,
           data: res.data,

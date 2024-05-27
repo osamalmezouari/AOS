@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Alert,
   Box,
@@ -12,12 +12,10 @@ import {
 } from "@mui/material";
 import Navbar from "../component/navbar"; // Adjust the path if necessary
 import axios from "axios";
-import {
-  AccountBox,
-  DocumentScanner,
-  ErrorOutlineRounded,
-  Verified,
-} from "@mui/icons-material";
+import { ErrorOutlineRounded, Verified } from "@mui/icons-material";
+import { PORT } from "../../env.ts";
+import { useNavigate } from "react-router-dom";
+
 interface FormState {
   email: string;
   password: string;
@@ -25,26 +23,32 @@ interface FormState {
 }
 
 const Register: React.FC = () => {
+  const navigate = useNavigate();
   const [sentStatus, setSentStatus] = useState({
     success: false,
     inprogress: false,
     dejainscri: "",
-    error: false,
+    error: "",
   });
   const [formState, setFormState] = useState<FormState>({
     email: "",
     password: "",
     file: null,
   });
-
+  useEffect(() => {
+    if (sentStatus.success) {
+      navigate("/AOS/SeConecter", { replace: true });
+    }
+  }, [sentStatus.success]);
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(sentStatus);
+
     setSentStatus({
       inprogress: true,
       success: false,
       dejainscri: "",
-      error: false,
+      error: "",
     });
     const formData = new FormData();
     formData.append("email", formState.email);
@@ -54,7 +58,7 @@ const Register: React.FC = () => {
     }
     try {
       const response = await axios.post(
-        "http://localhost:3000/inscriptions",
+        `http://localhost:${PORT}/inscriptions`,
         formData,
         {
           headers: {
@@ -63,26 +67,28 @@ const Register: React.FC = () => {
         },
       );
       console.log("Response:", response.data);
-      setSentStatus({
-        inprogress: false,
-        success: true,
-        dejainscri: "",
-        error: false,
-      });
+      setTimeout(() => {
+        setSentStatus({
+          inprogress: false,
+          success: true,
+          dejainscri: "",
+          error: "",
+        });
+      }, 4000);
     } catch (error: any) {
       if (error.response.status === 401) {
         setSentStatus({
           inprogress: false,
           success: false,
           dejainscri: error.response.data.message,
-          error: false,
+          error: "",
         });
       } else {
         setSentStatus({
           inprogress: false,
           success: false,
           dejainscri: "",
-          error: true,
+          error: error.response.data.message,
         });
       }
     }
@@ -127,7 +133,7 @@ const Register: React.FC = () => {
             }}
             className="mr-auto rounded font-main flex gap-2 items-center text-white  w-full p-4 "
           >
-            Inscreption
+            demande d inscreption
           </Typography>
           <Box component="form" sx={{ mt: 3 }} onSubmit={handleRegister}>
             <Grid container spacing={2}>
@@ -190,8 +196,8 @@ const Register: React.FC = () => {
               </Alert>
             )}
             {sentStatus.error && (
-              <Alert className={"mt-4"} severity="warning">
-                ton email ou ton mot de passe est pas corect
+              <Alert className={"mt-4"} severity="info">
+                {sentStatus.error}
               </Alert>
             )}
             {sentStatus.success && (
@@ -210,9 +216,8 @@ const Register: React.FC = () => {
               {sentStatus.inprogress && (
                 <CircularProgress color="inherit" size={20} />
               )}
-              {sentStatus.success && <Verified size={20} />}
-              {sentStatus.error ||
-                (sentStatus.dejainscri && <ErrorOutlineRounded size={20} />)}
+              {sentStatus.success && <Verified fontSize={'small'} />}
+              {(sentStatus.error || sentStatus.dejainscri) && <ErrorOutlineRounded fontSize="small"/>}
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>

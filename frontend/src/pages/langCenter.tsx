@@ -10,7 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import Navbar from "../component/navbar";
-import { Copyright, Search } from "@mui/icons-material";
+import { Search } from "@mui/icons-material";
 import MultiActionAreaCard from "../component/mui/MultiActionAreaCard";
 import Footer from "../component/footer";
 

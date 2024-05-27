@@ -36,15 +36,26 @@ export class InscriptionService {
         annee: currentYear,
       },
     });
+    const CheckPrevInscreptionFalse = await this.prisma.inscreption.findFirst({
+      where: {
+        personelId: matchingPersonel && matchingPersonel.id,
+        status: false,
+      },
+    });
+    if (CheckPrevInscreptionFalse) {
+      throw new HttpException(
+        'tu as deja un demande pas encore traiter tu peux modifier ce demande dans votre profile',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
     if (
       matchingPersonel &&
       createInscriptionDto.password === matchingPersonel.password &&
       userinscriptionStatus === null
     ) {
       const matchingPersonelId = matchingPersonel.id;
-
       if (createInscriptionDto.file) {
-        const dir = `C:\\AOS\\${matchingPersonel.nom_fr}\\${new Date().getFullYear()}\\Aides_financières\\inscription`;
+        const dir = `C:\\AOS\\${matchingPersonel.matricule}\\${new Date().getFullYear()}\\Aides_financières\\inscription`;
         fs.mkdirSync(dir, { recursive: true });
         const filePath = path.join(dir, createInscriptionDto.file.originalname);
         if (fs.existsSync(filePath)) {

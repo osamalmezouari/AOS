@@ -26,6 +26,8 @@ import { PrismaModule } from '../prisma/prisma.module';
 import { UuidModule } from './Helpers/UUID/uuid.module';
 import { InscreptionModule } from './Resources/inscreption/inscreption.module';
 import { AuthModule } from './Resources/Auth/auth.module';
+import { MariageModule } from './Resources/Mariage/mariage.module';
+import { NaissanceModule } from './Resources/naissance/naissance.module';
 
 @Module({
   imports: [
@@ -57,6 +59,8 @@ import { AuthModule } from './Resources/Auth/auth.module';
     UuidModule,
     InscreptionModule,
     AuthModule,
+    MariageModule,
+    NaissanceModule,
   ],
   controllers: [],
   providers: [],

@@ -6,10 +6,13 @@ import {
   Patch,
   Param,
   Delete,
+  UseInterceptors,
+  UploadedFiles,
 } from '@nestjs/common';
 import { RetraitService } from './retrait.service';
 import { CreateRetraitDto } from './dto/create-retrait.dto';
 import { UpdateRetraitDto } from './dto/update-retrait.dto';
+import { AnyFilesInterceptor } from '@nestjs/platform-express';
 
 @Controller('retrait')
 export class RetraitController {
@@ -24,8 +27,13 @@ export class RetraitController {
   findOne(@Param('id') id: string) {
     return this.retraitService.findOne(id);
   }
-  @Post()
-  create(@Body() createRetraitDto: CreateRetraitDto) {
+  @Post('')
+  @UseInterceptors(AnyFilesInterceptor())
+  create(
+    @Body() createRetraitDto: CreateRetraitDto,
+    @UploadedFiles() files: Array<Express.Multer.File>,
+  ) {
+    createRetraitDto.files = files;
     return this.retraitService.create(createRetraitDto);
   }
   @Patch(':id')

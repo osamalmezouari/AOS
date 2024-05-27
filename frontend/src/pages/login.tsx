@@ -12,33 +12,28 @@ import { FormEvent, useState } from "react";
 import Navbar from "../component/navbar";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { AccountBox } from "@mui/icons-material";
+import { PORT } from "../../env.ts";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [Status, SetStatus] = useState<{
     success: boolean;
-    error: boolean;
+    error: string;
   }>({
     success: false,
-    error: false,
+    error: "",
   });
   const navigate = useNavigate();
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`http://localhost:3000/auth`, {
+      const response = await axios.post(`http://localhost:${PORT}/auth`, {
         email,
         password,
       });
       console.log(response.data);
-      if (response.data === 401) {
-        SetStatus({
-          success: false,
-          error: true,
-        });
-      } else if (response.data.status === 200) {
+      if (response.data.status === 200) {
         SetStatus({
           error: false,
           success: true,
@@ -49,7 +44,12 @@ const Login = () => {
         }, 3000);
       }
     } catch (error) {
-      console.log(error);
+      if (error.response.status === 400) {
+        SetStatus({
+          success: false,
+          error: error.response.data.message,
+        });
+      }
     }
   };
 
@@ -110,22 +110,18 @@ const Login = () => {
                   Vous avez conecter avec success
                 </Alert>
               )}
-              {Status.error && (
-                <Alert severity="warning">
-                  email ou mot de passe incorect{" "}
-                </Alert>
-              )}
+              {Status.error && <Alert severity="warning">{Status.error}</Alert>}
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Login
+                Se conecter
               </Button>
               <Grid container justifyContent={"flex-end"}>
                 <Grid item>
-                  <Typography>Don't have an account? Register</Typography>
+                  <Typography>Pas de compte ? Inscrivez-vous.</Typography>
                 </Grid>
               </Grid>
             </Box>
