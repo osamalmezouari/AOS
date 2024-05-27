@@ -6,12 +6,12 @@ import {
   TextField,
   Button,
   Grid,
-  Alert,
+  Alert, CircularProgress,
 } from "@mui/material";
-import { FormEvent, useState } from "react";
+import React, { FormEvent, useState } from "react";
 import Navbar from "../component/navbar";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import { PORT } from "../../env.ts";
 
 const Login = () => {
@@ -121,7 +121,7 @@ const Login = () => {
               </Button>
               <Grid container justifyContent={"flex-end"}>
                 <Grid item>
-                  <Typography>Pas de compte ? Inscrivez-vous.</Typography>
+                  <Typography>Pas de compte ? <NavLink to={'/AOS/Inscreption'} className={'underline'}>Inscrivez-vous.</NavLink></Typography>
                 </Grid>
               </Grid>
             </Box>

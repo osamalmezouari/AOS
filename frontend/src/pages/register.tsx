@@ -14,7 +14,7 @@ import Navbar from "../component/navbar"; // Adjust the path if necessary
 import axios from "axios";
 import { ErrorOutlineRounded, Verified } from "@mui/icons-material";
 import { PORT } from "../../env.ts";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 
 interface FormState {
   email: string;
@@ -222,7 +222,7 @@ const Register: React.FC = () => {
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Typography>
-                  Vous avez déjà un compte? Connexion on haut
+                  Vous avez déjà un compte? <NavLink to={'/AOS/SeConecter'} className={'underline'}>Conectez vous.</NavLink>
                 </Typography>
               </Grid>
             </Grid>

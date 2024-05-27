@@ -1,4 +1,4 @@
-import { Box, Button, Container, Grid, Typography } from "@mui/material";
+import { Alert, Box, Button, Container, Grid, Typography } from "@mui/material";
 import Navbar from "../component/navbar";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -25,6 +25,9 @@ const SousActivitieDetails = () => {
   const user = localStorage.getItem("user");
 
   const CheckDemade = () => {
+    if(!user){
+      navigate('/AOS/SeConecter')
+    }
     if (id === "1" && user) {
       navigate("/AOS/SousActivitie/DemandeMriage", { replace: true });
     } else if (id === "4" && user) {
@@ -32,8 +35,9 @@ const SousActivitieDetails = () => {
     } else if (id === "13" && user) {
       navigate("/AOS/SousActivitie/DemandeNaissance", { replace: true });
     }
-  };
 
+  };
+  
   useEffect(() => {
     const fetchSousActivitieDetails = async () => {
       try {
@@ -128,6 +132,7 @@ const SousActivitieDetails = () => {
               >
                 Envoyer les documents
               </div>
+              
             </Grid>
           </Grid>
         </Box>
