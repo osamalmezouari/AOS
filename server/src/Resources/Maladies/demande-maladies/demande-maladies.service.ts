@@ -86,7 +86,7 @@ export class DemandeMaladiesService {
         data: {
           id: this.uuid.Getuuid(),
           personelId: createDemandeMaladyDto.personelId,
-          sousActiviteId: '1',
+          sousActiviteId: '5',
           Decription: createDemandeMaladyDto.description,
         },
       });

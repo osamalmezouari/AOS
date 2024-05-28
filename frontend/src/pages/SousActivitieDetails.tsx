@@ -1,7 +1,7 @@
-import { Alert, Box, Button, Container, Grid, Typography } from "@mui/material";
+import { Box,  Container, Grid, Typography } from "@mui/material";
 import Navbar from "../component/navbar";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios, {AxiosError} from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { SingleSousActivitiesWithpieces } from "../interfaces/types.tsx";
 import { PORT } from "../../env.ts";
@@ -53,6 +53,9 @@ const SousActivitieDetails = () => {
     else if(id ==='15' && user){
       navigate('/AOS/SousActivitie/lang', { replace: true });
     }
+    else if(id === '11' && user){
+      navigate('/AOS/SousActivitie/Zoo', { replace: true });
+    }
   };
 
   useEffect(() => {
@@ -68,7 +71,7 @@ const SousActivitieDetails = () => {
           error: "",
         });
         console.log(data);
-      } catch (error) {
+      } catch (error : AxiosError) {
         SetSousActivitieDetails({
           data: null,
           loading: false,

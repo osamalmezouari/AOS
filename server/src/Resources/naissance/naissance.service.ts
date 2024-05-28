@@ -84,7 +84,7 @@ export class NaissanceService {
         data: {
           id: this.uuid.Getuuid(),
           personelId: createNaissanceDto.personelId,
-          sousActiviteId: '1',
+          sousActiviteId: '13',
           nombre: createNaissanceDto.numberOfChildren,
           Date: createNaissanceDto.date,
         },

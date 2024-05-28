@@ -90,7 +90,7 @@ export class RetraitService {
           id: this.uuid.Getuuid(),
           date: createRetraitDto.date,
           personelId: createRetraitDto.personelId,
-          sousActiviteId: createRetraitDto.sousActiviteId,
+          sousActiviteId: '4',
         },
       });
     } catch (error) {

@@ -273,11 +273,12 @@ model typeCondoleance {
 
 model Zoo {
   id          String   @id
-  date        BigInt
+  date        String
   adulte      Int
   enfant      Int
   Status      String?
   effet       DateTime @default(now())
+  description String
   observation String?
   ///relation to Personel
   Personel    Personel @relation(fields: [personelId], references: [id])

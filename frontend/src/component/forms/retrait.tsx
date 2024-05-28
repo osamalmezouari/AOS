@@ -20,7 +20,6 @@ interface FormState {
   date: string;
   files: File[];
   personelId: string;
-  sousActiviteId: string;
 }
 
 const Retrait: React.FC = () => {
@@ -43,7 +42,6 @@ const Retrait: React.FC = () => {
     date: "",
     files: [],
     personelId: user.id,
-    sousActiviteId: "4",
   });
 
   const handleChange = (
@@ -180,7 +178,7 @@ const Retrait: React.FC = () => {
                   fullWidth
                   name="date"
                   label="Date"
-                  type="text"
+                  type="date"
                   placeholder="JJ/MM/AAAA"
                   value={formState.date}
                   onChange={handleChange}

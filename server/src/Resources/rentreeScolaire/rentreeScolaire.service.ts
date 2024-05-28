@@ -88,7 +88,7 @@ export class RentreeScolaireService {
         data: {
           id: this.uuid.Getuuid(),
           personelId: createrentreeScolaireDto.personelId,
-          sousActiviteId: '1',
+          sousActiviteId: '14',
           nombre: createrentreeScolaireDto.numberOfChildren,
           Date: createrentreeScolaireDto.date,
         },

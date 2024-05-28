@@ -91,7 +91,7 @@ export class DemandePelerinageService {
       data: {
         id: this.uuid.Getuuid(),
         personelId: createDemandePelerinageDto.personelId,
-        sousActiviteId: '1',
+        sousActiviteId: '2',
         annee: currentyear,
       },
     });

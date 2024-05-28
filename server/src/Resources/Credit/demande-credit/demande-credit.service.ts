@@ -81,7 +81,7 @@ export class DemandeCreditService {
         data: {
           id: this.uuid.Getuuid(),
           personelId: createDemandeCreditDto.personelId,
-          sousActiviteId: '1',
+          sousActiviteId: '3',
           mantantCredit: 10,
           description: createDemandeCreditDto.description,
         },

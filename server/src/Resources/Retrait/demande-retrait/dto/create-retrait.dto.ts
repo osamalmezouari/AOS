@@ -3,5 +3,4 @@ export class CreateRetraitDto {
   date: string;
   files: Array<Express.Multer.File>;
   personelId: string;
-  sousActiviteId: string;
 }

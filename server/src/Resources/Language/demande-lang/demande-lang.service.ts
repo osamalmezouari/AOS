@@ -82,7 +82,7 @@ export class DemandeLangService {
           id: this.uuid.Getuuid(),
           personelId: createDemandeLangDto.personelId,
           description: createDemandeLangDto.description,
-          sousActiviteId: '1',
+          sousActiviteId: '14',
         },
       });
     } catch (error) {

@@ -11,7 +11,7 @@ import { ZooService } from './zoo.service';
 import { CreateZooDto } from './dto/create-zoo.dto';
 import { UpdateZooDto } from './dto/update-zoo.dto';
 
-@Controller('zoo')
+@Controller('demande-zoo')
 export class ZooController {
   constructor(private readonly zooService: ZooService) {}
 

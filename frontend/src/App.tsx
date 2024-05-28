@@ -13,6 +13,7 @@ import Maladies from "./component/forms/Maladies.tsx";
 import Prets from "./component/forms/Prets.tsx";
 import RentreeScolaire from "./component/forms/rentreeScolaire.tsx";
 import Lang from "./component/forms/lang.tsx";
+import Zoo from "./component/forms/zoo.tsx";
 
 function App() {
   return (
@@ -53,6 +54,7 @@ function App() {
           <Route element={<RentreeScolaire />} path={'/AOS/SousActivitie/rentree-scolaire'}/>
           <Route element={<Prets />} path={'/AOS/SousActivitie/Prets'}/>
           <Route element={<Lang />} path={'/AOS/SousActivitie/Lang'}/>
+          <Route element={<Zoo />} path={'/AOS/SousActivitie/Zoo'} />
         </Routes>
       </BrowserRouter>
     </>

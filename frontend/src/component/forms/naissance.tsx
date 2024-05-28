@@ -171,7 +171,7 @@ const Naissance: React.FC = () => {
                   fullWidth
                   name="date"
                   label="Date Naissance"
-                  type="text"
+                  type="date"
                   placeholder="DD/MM/YYYY"
                   value={formState.date}
                   onChange={handleChange}

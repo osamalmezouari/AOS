@@ -82,7 +82,7 @@ export class DemandeCondoleanceService {
         data: {
           id: this.uuid.Getuuid(),
           personelId: createCondoleanceDto.personelId,
-          sousActiviteId: '1',
+          sousActiviteId: '6',
           typeCondoleanceId: createCondoleanceDto.selectedDeceased,
           description: createCondoleanceDto.description,
         },

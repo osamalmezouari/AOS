@@ -1,10 +1,13 @@
+import { Transform } from 'class-transformer';
+
 export class CreateZooDto {
   id: string;
   date: bigint;
+  @Transform(({ value }) => parseInt(value, 10), { toClassOnly: true })
   adulte: number;
+  @Transform(({ value }) => parseInt(value, 10), { toClassOnly: true })
   enfant: number;
-  effet: Date;
-  observation: string | null;
   personelId: string;
   sousActiviteId: string;
+  description: string;
 }
