@@ -1,9 +1,6 @@
 export class CreateDemandeMaladyDto {
   id: string;
-  mantantMaladie: bigint | number;
-  MaladieDecription: string;
-  effet: Date;
-  observation: string;
+  description: string;
   personelId: string;
-  sousActiviteId: string;
+  files: Array<Express.Multer.File>;
 }

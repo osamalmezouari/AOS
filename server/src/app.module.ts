@@ -27,6 +27,7 @@ import { InscreptionModule } from './Resources/inscreption/inscreption.module';
 import { AuthModule } from './Resources/Auth/auth.module';
 import { MariageModule } from './Resources/Mariage/mariage.module';
 import { NaissanceModule } from './Resources/naissance/naissance.module';
+import { RentreeScolaireModule } from './Resources/rentreeScolaire/rentreeScolaire.module';
 
 @Module({
   imports: [
@@ -59,6 +60,8 @@ import { NaissanceModule } from './Resources/naissance/naissance.module';
     AuthModule,
     MariageModule,
     NaissanceModule,
+    DemandePelerinageModule,
+    RentreeScolaireModule,
   ],
   controllers: [],
   providers: [],

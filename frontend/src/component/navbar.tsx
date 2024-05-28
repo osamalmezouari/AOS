@@ -356,7 +356,7 @@ const Navbar = () => {
             <Box>
               <Button
                 onClick={() => SetToggleNavBar(!ToggleNavBar)}
-                size="large"
+                size="small"
                 className="bg-mainBleu text-white hover:bg-yellow duration-500 transition-all"
               >
                 <Dehaze />

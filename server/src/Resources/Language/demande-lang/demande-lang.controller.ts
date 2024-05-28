@@ -6,19 +6,17 @@ import {
   Patch,
   Param,
   Delete,
+  UseInterceptors,
+  UploadedFiles,
 } from '@nestjs/common';
 import { DemandeLangService } from './demande-lang.service';
 import { CreateDemandeLangDto } from './dto/create-demande-lang.dto';
 import { UpdateDemandeLangDto } from './dto/update-demande-lang.dto';
+import { AnyFilesInterceptor } from '@nestjs/platform-express';
 
 @Controller('demande-lang')
 export class DemandeLangController {
   constructor(private readonly demandeLangService: DemandeLangService) {}
-
-  @Post()
-  create(@Body() createDemandeLangDto: CreateDemandeLangDto) {
-    return this.demandeLangService.create(createDemandeLangDto);
-  }
 
   @Get()
   findAll() {
@@ -29,7 +27,15 @@ export class DemandeLangController {
   findOne(@Param('id') id: string) {
     return this.demandeLangService.findOne(id);
   }
-
+  @UseInterceptors(AnyFilesInterceptor())
+  @Post()
+  create(
+    @Body() createDemandeLangDto: CreateDemandeLangDto,
+    @UploadedFiles() files: Array<Express.Multer.File>,
+  ) {
+    createDemandeLangDto.files = files;
+    return this.demandeLangService.create(createDemandeLangDto);
+  }
   @Patch(':id')
   update(
     @Param('id') id: string,

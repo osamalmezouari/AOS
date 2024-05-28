@@ -26,7 +26,7 @@ export class NaissanceService {
   async create(createNaissanceDto: CreateNaissanceDto) {
     const currentyear = getYear(new Date());
     const matchingPersonel = await this.prisma.personel.findUnique({
-      where: { id : createNaissanceDto.personelId },
+      where: { id: createNaissanceDto.personelId },
     });
     const Checknaissanceontraiter = await this.prisma.naissance.findFirst({
       where: {
@@ -66,7 +66,7 @@ export class NaissanceService {
     }
     try {
       if (createNaissanceDto.files && matchingPersonel.matricule) {
-        const dir = `C:\\AOS\\${matchingPersonel.matricule}\\${currentyear}\\Aides_financières\\Demandes-naissances}`;
+        const dir = `C:\\AOS\\${matchingPersonel.matricule}\\${currentyear}\\Aides_financières\\Demandes-naissances`;
         fs.mkdirSync(dir, { recursive: true });
         const filesFolder = path.join(
           dir,

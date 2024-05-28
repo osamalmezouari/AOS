@@ -32,3 +32,9 @@ export interface ActivitieWithSousActivities {
 export interface NavbarPropsType {
   loginDisplay: boolean;
 }
+
+export interface CondoleanceTypes {
+  id:string;
+  nomAr:string;
+  nomFr:string;
+}

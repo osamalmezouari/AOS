@@ -1,50 +1,52 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CreateDemandeMaladyDto } from './dto/create-demande-malady.dto';
-import { UpdateDemandeMaladyDto } from './dto/update-demande-malady.dto';
 import { PrismaClient } from '@prisma/client';
-import { UuidService } from '../../../Helpers/UUID/uuid.service';
+import { UuidService } from '../../Helpers/UUID/uuid.service';
 import { format, getYear } from 'date-fns';
 import * as fs from 'fs';
 import * as path from 'path';
+import { CreaterentreeScolaireDto } from './dto/createrentreeScolaire.dto';
+import { UpdaterentreeScolaireDto } from './dto/updaterentreeScolaire.dto';
 
 @Injectable()
-export class DemandeMaladiesService {
+export class RentreeScolaireService {
   constructor(
     private readonly prisma: PrismaClient,
     private readonly uuid: UuidService,
-  ) {}
+  ) {
+    console.log(this.uuid);
+  }
   findAll() {
-    return this.prisma.demamdeMaladies.findMany();
+    return this.prisma.rentreeScolaire.findMany();
   }
 
   findOne(id: string) {
-    return this.prisma.demamdeMaladies.findUnique({ where: { id } });
+    return this.prisma.rentreeScolaire.findUnique({ where: { id } });
   }
-  async create(createDemandeMaladyDto: CreateDemandeMaladyDto) {
+
+  async create(createrentreeScolaireDto: CreaterentreeScolaireDto) {
     const currentyear = getYear(new Date());
-    console.log(createDemandeMaladyDto);
     const matchingPersonel = await this.prisma.personel.findUnique({
-      where: { id: createDemandeMaladyDto.personelId },
+      where: { id: createrentreeScolaireDto.personelId },
     });
-    const Checknaissanceontraiter = await this.prisma.demamdeMaladies.findFirst(
+    const Checknaissanceontraiter = await this.prisma.rentreeScolaire.findFirst(
       {
         where: {
-          personelId: createDemandeMaladyDto.personelId,
+          personelId: createrentreeScolaireDto.personelId,
           Status: 'En traitement',
         },
       },
     );
     const Checknaissancepasencorevue =
-      await this.prisma.demamdeMaladies.findFirst({
+      await this.prisma.rentreeScolaire.findFirst({
         where: {
-          personelId: createDemandeMaladyDto.personelId,
+          personelId: createrentreeScolaireDto.personelId,
           Status: null,
         },
       });
-    const ChecknaissanceDocnecess = await this.prisma.demamdeMaladies.findFirst(
+    const ChecknaissanceDocnecess = await this.prisma.rentreeScolaire.findFirst(
       {
         where: {
-          personelId: createDemandeMaladyDto.personelId,
+          personelId: createrentreeScolaireDto.personelId,
           Status: 'Document nécessaire ou pas valide',
         },
       },
@@ -68,26 +70,27 @@ export class DemandeMaladiesService {
       );
     }
     try {
-      if (createDemandeMaladyDto.files && matchingPersonel.matricule) {
-        const dir = `C:\\AOS\\${matchingPersonel.matricule}\\${currentyear}\\Aides_financières\\Demandes-Maladies`;
+      if (createrentreeScolaireDto && matchingPersonel.matricule) {
+        const dir = `C:\\AOS\\${matchingPersonel.matricule}\\${currentyear}\\Aides_financières\\Demandes-rentree-scolaire`;
         fs.mkdirSync(dir, { recursive: true });
         const filesFolder = path.join(
           dir,
           `${format(new Date(), 'dd-MM-yyyy-HH-mm-ss')}`,
         );
         fs.mkdirSync(filesFolder, { recursive: true });
-        createDemandeMaladyDto.files.map((file) => {
+        createrentreeScolaireDto.files.map((file) => {
           const filePath = path.join(filesFolder, file.originalname);
           fs.writeFileSync(filePath, file.buffer);
           console.log(`File written at ${filePath}`);
         });
       }
-      return this.prisma.demamdeMaladies.create({
+      return this.prisma.rentreeScolaire.create({
         data: {
           id: this.uuid.Getuuid(),
-          personelId: createDemandeMaladyDto.personelId,
+          personelId: createrentreeScolaireDto.personelId,
           sousActiviteId: '1',
-          Decription: createDemandeMaladyDto.description,
+          nombre: createrentreeScolaireDto.numberOfChildren,
+          Date: createrentreeScolaireDto.date,
         },
       });
     } catch (error) {
@@ -95,16 +98,11 @@ export class DemandeMaladiesService {
     }
   }
 
-  update(id: string, updateDemandeMaladyDto: UpdateDemandeMaladyDto) {
-    return this.prisma.demamdeMaladies.update({
-      where: { id },
-      data: updateDemandeMaladyDto,
-    });
+  update(id: string, updatenaissanceDto: UpdaterentreeScolaireDto) {
+    return updatenaissanceDto;
   }
 
   remove(id: string) {
-    return this.prisma.demamdeMaladies.delete({
-      where: { id },
-    });
+    return this.prisma.naissance.delete({ where: { id } });
   }
 }

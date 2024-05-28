@@ -33,6 +33,7 @@ model Personel {
   demandeLang       demandeLang[]
   condoleance       demandeCondoleance[]
   Zoo               Zoo[]
+  rentreeScolaire   rentreeScolaire[]
   // demandeExcursion  demandeExcursion[]
   demandeExcursion  demandeExcursion[]
   mariage           mariage[]
@@ -85,6 +86,7 @@ model SousActivite {
   inscreption       inscreption[]
   mariage           mariage[]
   naissance         naissance[]
+  rentreeScolaire   rentreeScolaire[]
 
   @@unique([nomFr, nomAr])
 }
@@ -168,7 +170,7 @@ model TypeEsstivage {
 
 model demandeCredit {
   id            String   @id
-  mantantCredit Decimal
+  mantantCredit Int
   description   String   @db.Text
   Status        String?
   effet         DateTime @default(now())
@@ -185,7 +187,7 @@ model demandeCredit {
 
 model demandePelerinage {
   id          String   @id
-  annee       BigInt
+  annee       Int
   effet       DateTime @default(now())
   observation String?  @db.Text
   Status      String?
@@ -216,28 +218,26 @@ model retrait {
 }
 
 model demamdeMaladies {
-  id                String       @id
-  mantantMaladie    BigInt
-  MaladieDecription String       @db.Text
-  Status            String?
-  effet             DateTime     @default(now())
-  observation       String?      @db.Text
+  id             String       @id
+  mantantMaladie Int?
+  Decription     String       @db.Text
+  Status         String?
+  effet          DateTime     @default(now())
+  observation    String?      @db.Text
   ///relation to Personel
-  Personel          Personel     @relation(fields: [personelId], references: [id])
-  personelId        String
+  Personel       Personel     @relation(fields: [personelId], references: [id])
+  personelId     String
   ///relation to Personel
-  SousActivite      SousActivite @relation(fields: [sousActiviteId], references: [id])
-  sousActiviteId    String
+  SousActivite   SousActivite @relation(fields: [sousActiviteId], references: [id])
+  sousActiviteId String
 }
 
 model demandeLang {
   id             String       @id
   effet          DateTime     @default(now())
+  description    String       @db.Text
   Status         String?
   observation    String?      @db.Text
-  /// relation to CentresLang
-  CentreLang     CentresLang  @relation(fields: [CentreLangId], references: [id])
-  CentreLangId   String
   /// relation to Personel
   Personel       Personel     @relation(fields: [personelId], references: [id])
   personelId     String
@@ -246,16 +246,9 @@ model demandeLang {
   sousActiviteId String
 }
 
-model CentresLang {
-  id          String        @id
-  nom         String
-  imgUrl      String        @db.Text
-  demandeLang demandeLang[]
-}
-
 model demandeCondoleance {
   id                 String          @id
-  mantantCondoleance Int
+  mantantCondoleance Int?
   description        String          @db.Text
   Status             String?
   effet              DateTime        @default(now())
@@ -273,7 +266,8 @@ model demandeCondoleance {
 
 model typeCondoleance {
   id          String               @id
-  nom         String
+  nomFr       String
+  nomAr       String
   condoleance demandeCondoleance[]
 }
 
@@ -354,6 +348,22 @@ model naissance {
   Date    String
   mantant Int?
 
+  nombre         Int
+  Status         String?
+  effet          DateTime     @default(now())
+  observation    String?      @db.Text
+  /// relation to Personel
+  Personel       Personel     @relation(fields: [personelId], references: [id])
+  personelId     String
+  /// relation to Personel
+  SousActivite   SousActivite @relation(fields: [sousActiviteId], references: [id])
+  sousActiviteId String
+}
+
+model rentreeScolaire {
+  id             String       @id
+  Date           String
+  mantant        Int?
   nombre         Int
   Status         String?
   effet          DateTime     @default(now())

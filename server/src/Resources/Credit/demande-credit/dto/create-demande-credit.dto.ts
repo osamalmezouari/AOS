@@ -1,9 +1,10 @@
+import { Transform } from 'class-transformer';
+
 export class CreateDemandeCreditDto {
   id: string;
+  @Transform(({ value }) => parseInt(value, 10))
   mantantCredit: number;
   description: string;
-  effet: Date;
-  observation?: string | null;
   personelId: string;
-  sousActiviteId: string;
+  files: Array<Express.Multer.File>;
 }

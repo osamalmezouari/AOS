@@ -1,8 +1,5 @@
 export class CreateDemandeLangDto {
-  id: string;
-  effet: Date;
-  observation: string;
-  CentreLangId: string;
+  description: string;
   personelId: string;
-  sousActiviteId: string;
+  files: Array<Express.Multer.File>;
 }

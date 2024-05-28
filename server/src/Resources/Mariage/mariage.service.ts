@@ -28,55 +28,38 @@ export class MariageService {
     const matchingPersonel = await this.prisma.personel.findUnique({
       where: { id: createmariage.personelId },
     });
-    const CheckdemandeLmit = await this.prisma.mariage.findMany({
-      where: { personelId: createmariage.personelId },
-    });
-    const CheckmariageAccepted = await this.prisma.mariage.findMany({
-      where: { personelId: createmariage.personelId, Status: 'ACCEPTE' },
-    });
-    const Checkmariageontraiter = await this.prisma.mariage.findFirst({
+    const Checkontraiter = await this.prisma.mariage.findFirst({
       where: {
         personelId: createmariage.personelId,
         Status: 'En traitement',
       },
     });
-    const Checkmariagepasencorevue = await this.prisma.mariage.findFirst({
+    const Checkpasencorevue = await this.prisma.mariage.findFirst({
       where: {
         personelId: createmariage.personelId,
         Status: '',
       },
     });
-    const CheckmariageDocnecess = await this.prisma.mariage.findFirst({
+    const CheckDocnecess = await this.prisma.mariage.findFirst({
       where: {
         personelId: createmariage.personelId,
         Status: 'Document nécessaire ou pas valide',
       },
     });
-    if (Checkmariagepasencorevue) {
+    if (Checkpasencorevue) {
       throw new HttpException(
         "Vous avez déjà une demande n est pas n'a pas encore été examinée par l'administrateur.",
         HttpStatus.BAD_REQUEST,
       );
     }
-    if (CheckmariageDocnecess) {
+    if (CheckDocnecess) {
       throw new HttpException(
         'Vous avez déjà une demande avec des documents nécessaires ou pas valide. Vous pouvez modifier les documents dans votre profil.',
         HttpStatus.BAD_REQUEST,
       );
     }
-    if (CheckmariageAccepted.length === 4) {
-      throw new HttpException(
-        'Vous avez 4 demande accepete , Ce demande est 4 fois dans la vie, vous avez déjà pris ce demande 4 fois.',
-        HttpStatus.BAD_REQUEST,
-      );
-    }
-    if (CheckdemandeLmit.length > 4) {
-      throw new HttpException(
-        'Ce demande est 4 fois dans la vie, vous avez déjà pris ce demande 4 fois.',
-        HttpStatus.BAD_REQUEST,
-      );
-    }
-    if (Checkmariageontraiter) {
+
+    if (Checkontraiter) {
       throw new HttpException(
         'Vous avez déjà une demande en cours de traitement. Vous pouvez modifier les documents.',
         HttpStatus.BAD_REQUEST,

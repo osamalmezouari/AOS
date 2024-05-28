@@ -6,21 +6,19 @@ import {
   Patch,
   Param,
   Delete,
+  UseInterceptors,
+  UploadedFiles,
 } from '@nestjs/common';
 import { DemandeCondoleanceService } from './demande-condoleance.service';
 import { CreateDemandeCondoleanceDto } from './dto/create-demande-condoleance.dto';
 import { UpdateDemandeCondoleanceDto } from './dto/update-demande-condoleance.dto';
+import { AnyFilesInterceptor } from '@nestjs/platform-express';
 
 @Controller('demande-condoleance')
 export class DemandeCondoleanceController {
   constructor(
     private readonly demandeCondoleanceService: DemandeCondoleanceService,
   ) {}
-
-  @Post()
-  create(@Body() createDemandeCondoleanceDto: CreateDemandeCondoleanceDto) {
-    return this.demandeCondoleanceService.create(createDemandeCondoleanceDto);
-  }
 
   @Get()
   findAll() {
@@ -30,6 +28,16 @@ export class DemandeCondoleanceController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.demandeCondoleanceService.findOne(id);
+  }
+
+  @UseInterceptors(AnyFilesInterceptor())
+  @Post()
+  create(
+    @Body() createDemandeCondoleanceDto: CreateDemandeCondoleanceDto,
+    @UploadedFiles() files: Array<Express.Multer.File>,
+  ) {
+    createDemandeCondoleanceDto.files = files;
+    return this.demandeCondoleanceService.create(createDemandeCondoleanceDto);
   }
 
   @Patch(':id')

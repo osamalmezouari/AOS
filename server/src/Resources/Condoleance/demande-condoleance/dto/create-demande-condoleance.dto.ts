@@ -1,10 +1,6 @@
 export class CreateDemandeCondoleanceDto {
-  id: string;
-  mantantCondoleance: number;
   description: string;
-  effet: Date;
-  observation?: string | null;
-  typeCondoleanceId: string;
+  files: Array<Express.Multer.File>;
   personelId: string;
-  sousActiviteId: string;
+  selectedDeceased: string;
 }

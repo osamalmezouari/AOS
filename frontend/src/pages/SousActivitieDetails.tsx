@@ -35,7 +35,24 @@ const SousActivitieDetails = () => {
     } else if (id === "13" && user) {
       navigate("/AOS/SousActivitie/DemandeNaissance", { replace: true });
     }
-
+    else if(id ==='2' && user){
+      navigate("/AOS/SousActivitie/Pelerinage", { replace: true });
+    }
+    else if(id ==='6' && user) {
+      navigate("/AOS/SousActivitie/Condoleance", { replace: true });
+    }
+    else if (id === "5" && user) {
+      navigate('/AOS/SousActivitie/Maladies', { replace: true });
+    }
+    else if(id === '3' && user ){
+      navigate('/AOS/SousActivitie/Prets', { replace: true });
+    }
+    else if(id === '14' && user ){
+      navigate('/AOS/SousActivitie/rentree-scolaire', { replace: true });
+    }
+    else if(id ==='15' && user){
+      navigate('/AOS/SousActivitie/lang', { replace: true });
+    }
   };
 
   useEffect(() => {

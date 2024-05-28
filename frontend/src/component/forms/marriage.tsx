@@ -15,7 +15,6 @@ import Navbar from "../navbar.tsx";
 import axios from "axios";
 import { SingleSousActivitiesWithpieces } from "../../interfaces/types.tsx";
 import { PORT } from "../../../env.ts";
-import { se } from "date-fns/locale";
 
 interface FormState {
   description: string;
@@ -271,11 +270,11 @@ const Marriage: React.FC = () => {
               {sentStatus.inprogress && (
                 <CircularProgress color="inherit" size={20} />
               )}
-              {sentStatus.success && <Verified color="inherit" size={20} />}
+              {sentStatus.success && <Verified color="inherit" fontSize={'small'} />}
               {sentStatus.error ||
               sentStatus.description > 200 ||
               sentStatus.alert ? (
-                <ErrorOutlineRounded color="inherit" size={20} />
+                <ErrorOutlineRounded color="inherit" fontSize={'small'} />
               ) : (
                 ""
               )}

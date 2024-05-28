@@ -1,4 +1,5 @@
 export class CreateTypeCondoleanceDto {
   id: string;
-  nom: string;
+  nomAr: string;
+  nomFr: string;
 }

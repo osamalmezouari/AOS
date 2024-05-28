@@ -2,7 +2,6 @@ import { Inject, Injectable } from '@nestjs/common';
 import { CreateTypeCondoleanceDto } from './dto/create-type-condoleance.dto';
 import { UpdateTypeCondoleanceDto } from './dto/update-type-condoleance.dto';
 import { PrismaClient } from '@prisma/client';
-import { Getuuid } from '../../../Helpers/constants/tokens';
 import { UuidService } from '../../../Helpers/UUID/uuid.service';
 
 @Injectable()
@@ -19,7 +18,7 @@ export class TypeCondoleanceService {
   }
   create(createTypeCondoleanceDto: CreateTypeCondoleanceDto) {
     const TypeWithId = {
-      id: this.uuid,
+      id: this.uuid.Getuuid(),
       ...createTypeCondoleanceDto,
     };
     return this.prismaClient.typeCondoleance.create({ data: TypeWithId });
