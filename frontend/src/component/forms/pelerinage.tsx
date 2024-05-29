@@ -134,7 +134,7 @@ const Pelerinage: React.FC = () => {
     return (
         <div className="bg-landing h-screen">
             <Navbar />
-            <Container maxWidth="sm">
+            <Container maxWidth="sm" className={"w-full flex items-center justify-center h-[80vh]"}>
                 <CssBaseline />
                 <Box
                     sx={{
@@ -143,6 +143,7 @@ const Pelerinage: React.FC = () => {
                         flexDirection: "column",
                         alignItems: "center",
                     }}
+                    className={'w-full'}
                 >
                     <Typography
                         variant="h5"

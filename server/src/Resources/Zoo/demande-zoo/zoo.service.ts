@@ -20,9 +20,10 @@ export class ZooService {
   }
   create(createZooDto: CreateZooDto) {
     const ZooWithID = {
+      ...createZooDto,
       id: this.uuid.Getuuid(),
       sousActiviteId: '11',
-      ...createZooDto,
+      personelId: createZooDto.personelId,
     };
     return this.prismaClient.zoo.create({ data: ZooWithID });
   }

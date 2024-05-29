@@ -6,10 +6,13 @@ import {
   Patch,
   Param,
   Delete,
+  UploadedFiles,
+  UseInterceptors,
 } from '@nestjs/common';
 import { DemandeExcursionService } from './demande-excursion.service';
 import { CreateDemandeExcursionDto } from './dto/create-demande-excursion.dto';
 import { UpdateDemandeExcursionDto } from './dto/update-demande-excursion.dto';
+import { AnyFilesInterceptor } from '@nestjs/platform-express';
 
 @Controller('demande-excursion')
 export class DemandeExcursionController {
@@ -17,8 +20,13 @@ export class DemandeExcursionController {
     private readonly demandeExcursionService: DemandeExcursionService,
   ) {}
 
+  @UseInterceptors(AnyFilesInterceptor())
   @Post()
-  create(@Body() createDemandeExcursionDto: CreateDemandeExcursionDto) {
+  create(
+    @Body() createDemandeExcursionDto: CreateDemandeExcursionDto,
+    @UploadedFiles() files: Array<Express.Multer.File>,
+  ) {
+    createDemandeExcursionDto.files = files;
     return this.demandeExcursionService.create(createDemandeExcursionDto);
   }
 
@@ -29,19 +37,19 @@ export class DemandeExcursionController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.demandeExcursionService.findOne(+id);
+    return this.demandeExcursionService.findOne(id);
   }
 
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateDemandeExcursionDto: UpdateDemandeExcursionDto,
-  ) {
-    return this.demandeExcursionService.update(+id, updateDemandeExcursionDto);
-  }
+  //@Patch(':id')
+  //update(
+  //@Param('id') id: string,
+  // @Body() updateDemandeExcursionDto: UpdateDemandeExcursionDto,
+  //) {
+  //return this.demandeExcursionService.update(id, updateDemandeExcursionDto);
+  //}
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.demandeExcursionService.remove(+id);
+    return this.demandeExcursionService.remove(id);
   }
 }

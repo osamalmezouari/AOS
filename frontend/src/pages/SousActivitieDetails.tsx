@@ -1,7 +1,7 @@
-import { Box,  Container, Grid, Typography } from "@mui/material";
+import { Box, Container, Grid, Typography } from "@mui/material";
 import Navbar from "../component/navbar";
 import { useEffect, useState } from "react";
-import axios, {AxiosError} from "axios";
+import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { SingleSousActivitiesWithpieces } from "../interfaces/types.tsx";
 import { PORT } from "../../env.ts";
@@ -25,8 +25,8 @@ const SousActivitieDetails = () => {
   const user = localStorage.getItem("user");
 
   const CheckDemade = () => {
-    if(!user){
-      navigate('/AOS/SeConecter')
+    if (!user) {
+      navigate("/AOS/SeConecter");
     }
     if (id === "1" && user) {
       navigate("/AOS/SousActivitie/DemandeMriage", { replace: true });
@@ -34,27 +34,24 @@ const SousActivitieDetails = () => {
       navigate("/AOS/SousActivitie/DemandeRetrait", { replace: true });
     } else if (id === "13" && user) {
       navigate("/AOS/SousActivitie/DemandeNaissance", { replace: true });
-    }
-    else if(id ==='2' && user){
+    } else if (id === "2" && user) {
       navigate("/AOS/SousActivitie/Pelerinage", { replace: true });
-    }
-    else if(id ==='6' && user) {
+    } else if (id === "6" && user) {
       navigate("/AOS/SousActivitie/Condoleance", { replace: true });
-    }
-    else if (id === "5" && user) {
-      navigate('/AOS/SousActivitie/Maladies', { replace: true });
-    }
-    else if(id === '3' && user ){
-      navigate('/AOS/SousActivitie/Prets', { replace: true });
-    }
-    else if(id === '14' && user ){
-      navigate('/AOS/SousActivitie/rentree-scolaire', { replace: true });
-    }
-    else if(id ==='15' && user){
-      navigate('/AOS/SousActivitie/lang', { replace: true });
-    }
-    else if(id === '11' && user){
-      navigate('/AOS/SousActivitie/Zoo', { replace: true });
+    } else if (id === "5" && user) {
+      navigate("/AOS/SousActivitie/Maladies", { replace: true });
+    } else if (id === "3" && user) {
+      navigate("/AOS/SousActivitie/Prets", { replace: true });
+    } else if (id === "14" && user) {
+      navigate("/AOS/SousActivitie/rentree-scolaire", { replace: true });
+    } else if (id === "15" && user) {
+      navigate("/AOS/SousActivitie/lang", { replace: true });
+    } else if (id === "11" && user) {
+      navigate("/AOS/SousActivitie/Zoo", { replace: true });
+    } else if (id === "10" && user) {
+      navigate("/AOS/SousActivitie/Esstivage", { replace: true });
+    } else if (id === "12" && user) {
+      navigate("/AOS/SousActivitie/Excursion", { replace: true });
     }
   };
 
@@ -62,7 +59,7 @@ const SousActivitieDetails = () => {
     const fetchSousActivitieDetails = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:${PORT}/sous-activite/${id}`,
+          `http://localhost:${PORT}/sous-activite/${id}`
         );
         const data: SingleSousActivitiesWithpieces = res.data;
         SetSousActivitieDetails({
@@ -71,7 +68,7 @@ const SousActivitieDetails = () => {
           error: "",
         });
         console.log(data);
-      } catch (error : AxiosError) {
+      } catch (error) {
         SetSousActivitieDetails({
           data: null,
           loading: false,
@@ -142,17 +139,23 @@ const SousActivitieDetails = () => {
                       </li>
                     ))
                   ) : (
-                    <li>pas de documents nécessaires pour ce SousActivitie</li>
+                    <li>
+                      pas de documents nécessaires pour la demande{" "}
+                      {SousActivitieDetails.data?.nomFr}
+                    </li>
                   )}
                 </ul>
               </Box>
-              {data?.pieces && data.pieces.length > 0 ? <div
-                onClick={() => CheckDemade()}
-                className="text-white bg-yellow right-0 w-max p-2 rounded cursor-pointer ml-auto"
-              >
-                Envoyer les documents
-              </div>:""}
-              
+              {data?.pieces && data.pieces.length > 0 ? (
+                <div
+                  onClick={() => CheckDemade()}
+                  className="text-white bg-yellow right-0 w-max p-2 rounded cursor-pointer ml-auto"
+                >
+                  Envoyer les documents
+                </div>
+              ) : (
+                ""
+              )}
             </Grid>
           </Grid>
         </Box>

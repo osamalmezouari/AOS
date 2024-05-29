@@ -14,6 +14,8 @@ import Prets from "./component/forms/Prets.tsx";
 import RentreeScolaire from "./component/forms/rentreeScolaire.tsx";
 import Lang from "./component/forms/lang.tsx";
 import Zoo from "./component/forms/zoo.tsx";
+import Esstivage from "./component/forms/Esstivage.tsx";
+import Excursion from "./component/forms/Excursion.tsx";
 
 function App() {
   return (
@@ -55,6 +57,8 @@ function App() {
           <Route element={<Prets />} path={'/AOS/SousActivitie/Prets'}/>
           <Route element={<Lang />} path={'/AOS/SousActivitie/Lang'}/>
           <Route element={<Zoo />} path={'/AOS/SousActivitie/Zoo'} />
+          <Route element={<Esstivage />} path={'/AOS/SousActivitie/Esstivage'}/>
+          <Route element={<Excursion />} path="AOS/SousActivitie/Excursion" ></Route>
         </Routes>
       </BrowserRouter>
     </>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Alert,
   Box,
@@ -7,82 +7,106 @@ import {
   Container,
   CssBaseline,
   Grid,
-  TextField,
   Typography,
+  MenuItem,
+  Select,
+  InputLabel,
+  FormControl,
 } from "@mui/material";
 import { ErrorOutlineRounded, Verified } from "@mui/icons-material";
-import Navbar from "../navbar.tsx";
 import axios from "axios";
-import { SingleSousActivitiesWithpieces } from "../../interfaces/types.tsx";
 import { PORT } from "../../../env.ts";
+import Navbar from "../navbar.tsx";
+import { ExcursionType } from "../../interfaces/types.tsx";
 
-interface FormState {
-  description: string;
-  files: File[];
-}
-
-const Marriage: React.FC = () => {
+const Excursion: React.FC = () => {
   const userDataString = localStorage.getItem("user");
   const JSONDATA = userDataString ? JSON.parse(userDataString) : null;
+  const user = JSONDATA;
+
   const [sentStatus, setSentStatus] = useState<{
     success: boolean;
     inprogress: boolean;
     error: string;
     alert: string;
-    description: number;
   }>({
     success: false,
     inprogress: false,
     error: "",
     alert: "",
-    description: 0,
-  });
-  const [pieces, setPieces] = useState<number>(1);
-  const [formState, setFormState] = useState<FormState>({
-    description: "",
-    files: [],
   });
 
+  const [maxFiles, setMaxFiles] = useState<number>(0);
+  const [ExcursionDispo, setExcursionDispo] = useState<ExcursionType[]>([]);
+  const [formState, setFormState] = useState<{
+    description: string;
+    ExcursionId: string;
+    files: File[];
+    personelId: string;
+    sousActiviteId: string;
+  }>({
+    description: "",
+    ExcursionId: "",
+    files: [],
+    personelId: user.id,
+    sousActiviteId: "12",
+  });
+
+  useEffect(() => {
+    const fetchMaxFiles = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:${PORT}/sous-activite/12`
+        );
+        const maxPieces = res.data.pieces.length;
+        setMaxFiles(maxPieces);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchMaxFiles();
+  }, []);
+
+  useEffect(() => {
+    const fetchExcursionOptions = async () => {
+      try {
+      
+        const res = await axios.get(`http://localhost:${PORT}/excursion/excursionDispo`);
+        setExcursionDispo(res.data);
+        console.log(ExcursionDispo)
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchExcursionOptions();
+  }, []);
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    e:
+      | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+      | React.ChangeEvent<{ name?: string; value: unknown }>
   ) => {
     const { name, value } = e.target;
-    setSentStatus({
-      success: false,
-      inprogress: false,
-      error: "",
+    setSentStatus((prevStatus) => ({
+      ...prevStatus,
       alert: "",
-      description: value.length,
-    });
-    if (name === "description" && value.length > 200) {
-      setSentStatus({
-        success: false,
-        inprogress: false,
-        error: "",
-        alert: "",
-        description: value.length,
-      });
-      return;
-    }
-    console.log(sentStatus);
+    }));
+
     setFormState((prevState) => ({
       ...prevState,
-      [name]: value,
+      [name || ""]: value,
     }));
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
-    if (files.length > pieces) {
-      setSentStatus({
-        success: false,
-        inprogress: false,
-        error: "",
-        alert: "max fechier pour disponbile pour ce demande est 3",
-        description: 0,
-      });
+    if (files.length > maxFiles) {
+      setSentStatus((prevStatus) => ({
+        ...prevStatus,
+        alert: `Maximum files allowed is ${maxFiles}`,
+      }));
       return;
     }
+
     setFormState((prevState) => ({
       ...prevState,
       files,
@@ -90,7 +114,6 @@ const Marriage: React.FC = () => {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    const user = JSONDATA;
     e.preventDefault();
     try {
       setSentStatus({
@@ -98,27 +121,24 @@ const Marriage: React.FC = () => {
         success: false,
         error: "",
         alert: "",
-        description: 0,
       });
+      console.log(formState);
       const response = await axios.post(
-        `http://localhost:${PORT}/mariage`,
-        {
-          ...formState,
-          personelId: user.id,
-        },
+        `http://localhost:${PORT}/demande-excursion`,
+        formState,
         {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-        },
+        }
       );
+
       if (response.status === 201) {
         setSentStatus({
           success: true,
           error: "",
           inprogress: false,
           alert: "",
-          description: 0,
         });
       }
     } catch (error) {
@@ -130,41 +150,24 @@ const Marriage: React.FC = () => {
         setSentStatus({
           success: false,
           inprogress: false,
-          alert: "",
-          description: 0,
           error: error.response.data.message || "An error occurred",
+          alert: "",
         });
       } else {
         setSentStatus({
           success: false,
           inprogress: false,
+          error: "An error occurred",
           alert: "",
-          description: 0,
-          error: error.response.data.message || "An error occurred",
         });
       }
     }
   };
 
-  useEffect(() => {
-    const fetchSousActivitiePieces = async () => {
-      try {
-        const res = await axios.get(`http://localhost:${PORT}/sous-activite/1`);
-        const data: SingleSousActivitiesWithpieces = res.data;
-        setPieces(data.pieces.length);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchSousActivitiePieces();
-  }, []);
-  useEffect(() => {
-    console.log(sentStatus);
-  }, [sentStatus]);
   return (
     <div className="bg-landing h-screen">
-      {<Navbar />}
-      <Container maxWidth="sm" className={"w-full flex items-center justify-center h-[80vh]"} >
+      <Navbar />
+      <Container maxWidth="sm" className="w-full flex items-center justify-center h-[80vh]">
         <CssBaseline />
         <Box
           sx={{
@@ -182,7 +185,7 @@ const Marriage: React.FC = () => {
             }}
             className="mr-auto rounded font-main flex gap-2 items-center text-white capitalize w-full p-4"
           >
-            demande de marriage
+            Demande d'Excursion
           </Typography>
           <Box
             component="form"
@@ -190,23 +193,26 @@ const Marriage: React.FC = () => {
             onSubmit={handleSubmit}
             className={"w-full"}
           >
-            <Grid container spacing={2}>
+            <Grid container spacing={2} >
               <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="description"
-                  label="Description"
-                  type="text"
-                  value={formState.description}
-                  onChange={handleChange}
-                  multiline
-                  rows={4}
-                  inputProps={{ maxLength: 500 }}
-                />
-                <Typography className="text-sm text-gray-500 mt-1">
-                  {`Maximum ${sentStatus.description || 0} / 200 characters`}
-                </Typography>
+                <FormControl fullWidth required>
+                  <InputLabel id="select-deceased-label">Excursion</InputLabel>
+                  <Select
+                    labelId="select-deceased-label"
+                    id="select-deceased"
+                    name="selectedDeceased"
+                    value={formState.ExcursionId}
+                    onChange={handleChange}
+                    label="le type de Décédé"
+                  >
+                    {ExcursionDispo &&
+                      ExcursionDispo.map((Type) => (
+                        <MenuItem key={Type.id} value={Type.id}>
+                          {Type.nom}
+                        </MenuItem>
+                      ))}
+                  </Select>
+                </FormControl>
               </Grid>
               <Grid item xs={12}>
                 <input
@@ -227,16 +233,16 @@ const Marriage: React.FC = () => {
                       mb: 2,
                     }}
                   >
-                    Importer les Fechiers
+                    Importer les Fichiers
                   </Button>
                 </label>
                 {formState.files.length > 0 ? (
                   <Typography>{formState.files.length} files chosen</Typography>
                 ) : (
-                  <Typography>No fechier selectioner</Typography>
+                  <Typography>No fichier selectioné</Typography>
                 )}
                 <Typography className="text-sm text-gray-500 mt-1">
-                  Max {pieces} Fechiers
+                  Max {maxFiles} Fichiers
                 </Typography>
               </Grid>
             </Grid>
@@ -247,17 +253,12 @@ const Marriage: React.FC = () => {
             )}
             {sentStatus.success && (
               <Alert className="mt-4" severity="success">
-                le form est envouyer avec succes
-              </Alert>
-            )}
-            {sentStatus.description > 200 && (
-              <Alert className="mt-4" severity="info">
-                max charachters est 200
+                Le formulaire a été envoyé avec succès
               </Alert>
             )}
             {sentStatus.alert && (
               <Alert className="mt-4" severity="info">
-                {`max fechier est  ${pieces} pour ce demande`}
+                {sentStatus.alert}
               </Alert>
             )}
             <Button
@@ -266,19 +267,14 @@ const Marriage: React.FC = () => {
               sx={{ mt: 3, mb: 2 }}
               type="submit"
               className="bg-mainBleu hover:bg-yellow transition-all duration-500 flex gap-x-4"
+              disabled={sentStatus.inprogress}
             >
-              Envouyer
+              Envoyer
               {sentStatus.inprogress && (
-                <CircularProgress color="inherit" size={20} />
+                <CircularProgress color="inherit" size={100} />
               )}
-              {sentStatus.success && <Verified color="inherit" fontSize={'small'} />}
-              {sentStatus.error ||
-              sentStatus.description > 200 ||
-              sentStatus.alert ? (
-                <ErrorOutlineRounded color="inherit" fontSize={'small'} />
-              ) : (
-                ""
-              )}
+              {sentStatus.success && <Verified fontSize="small" />}
+              {sentStatus.error && <ErrorOutlineRounded fontSize="small" />}
             </Button>
           </Box>
         </Box>
@@ -287,4 +283,4 @@ const Marriage: React.FC = () => {
   );
 };
 
-export default Marriage;
+export default Excursion;

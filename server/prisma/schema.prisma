@@ -120,14 +120,15 @@ model Dotation {
 
 model DemandeEstivage {
   id             String       @id
-  date_entre     BigInt
-  date_sortie    BigInt
+  date_entre     String
+  date_sortie    String
   Status         String?
   effet          DateTime     @default(now())
   appartementId  String?
+  type String
   /// Relation to centres
   centre         Centre       @relation(fields: [centreId], references: [id])
-  centreId       String
+  centreId       String        @default("0")
   /// Relation to Personel
   personel       Personel     @relation(fields: [personelId], references: [id])
   personelId     String
@@ -146,9 +147,6 @@ model Centre {
   /// Relation to ville
   Vile            Vile              @relation(fields: [vileId], references: [id])
   vileId          String
-  /// Relation to typeEsstivage
-  TypeEstivage    TypeEsstivage     @relation(fields: [TypeEstivageId], references: [id])
-  TypeEstivageId  String
   /// Relation to Appartements
   appartements    Appartement[]
 }
@@ -159,13 +157,6 @@ model Appartement {
   /// Relation to centers
   centre   Centre @relation(fields: [centreId], references: [id])
   centreId String
-}
-
-model TypeEsstivage {
-  id     String   @id
-  type   String
-  /// Relation to centers
-  centre Centre[]
 }
 
 model demandeCredit {
@@ -304,19 +295,18 @@ model mariage {
 
 model demandeExcursion {
   id               String       @id
-  Date             BigInt
+  Date             String
   Status           String?
   effet            DateTime     @default(now())
   observation      String?      @db.Text
-  ///relation to details Excursion
-  detailsExcursion Excursion?   @relation(fields: [ExcursionId], references: [id])
-  ExcursionId      String
   /// relation to Personel
   Personel         Personel     @relation(fields: [personelId], references: [id])
   personelId       String
   /// relation to Personel
   SousActivite     SousActivite @relation(fields: [sousActiviteId], references: [id])
   sousActiviteId   String
+  Excursion Excursion @relation(fields : [ExcursionId],references:[id])
+  ExcursionId String
 }
 
 model Vile {
@@ -333,15 +323,17 @@ model Vile {
 
 model Excursion {
   id               String             @id
-  Excursion        String
+  nom        String
   Description      String             @db.Text
   imgUrl           String             @db.Text
   Date             BigInt
+  nombre           Int
   startVile        Vile               @relation("excursionsFromVile", fields: [vileStartId], references: [id])
   vileStartId      String
   endVile          Vile               @relation("excursionsToVile", fields: [vileEndId], references: [id])
   vileEndId        String
   demandeExcursion demandeExcursion[]
+  
 }
 
 model naissance {

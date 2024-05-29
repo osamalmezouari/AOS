@@ -38,3 +38,21 @@ export interface CondoleanceTypes {
   nomAr:string;
   nomFr:string;
 }
+
+export interface Centre {
+  id :string,
+  centreAr:string,
+  centreFr:string,
+  imgUrl:string,
+  vileId:string
+}
+
+export interface ExcursionType {
+  id : string,
+  nom : string,
+  description : string,
+  Date :number,
+  nombre : string
+  vileEndId :string
+  vileStartId : string
+}

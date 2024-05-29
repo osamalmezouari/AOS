@@ -116,7 +116,7 @@ const Zoo: React.FC = () => {
     return (
         <div className="bg-landing h-screen">
             <Navbar />
-            <Container maxWidth="sm">
+            <Container maxWidth="sm" className={"w-full flex items-center justify-center h-[80vh]"}>
                 <CssBaseline />
                 <Box
                     sx={{
@@ -125,6 +125,7 @@ const Zoo: React.FC = () => {
                         flexDirection: "column",
                         alignItems: "center",
                     }}
+                    className={'w-full'}
                 >
                     <Typography
                         variant="h5"
@@ -133,7 +134,7 @@ const Zoo: React.FC = () => {
                         }}
                         className="mr-auto rounded font-main flex gap-2 items-center text-white capitalize w-full p-4"
                     >
-                        Veuillez remplir le formulaire
+                        Demande de Zoo
                     </Typography>
                     <Box
                         component="form"

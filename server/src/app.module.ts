@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ActiviteModule } from './Resources/Panel/activite/activite.module';
 import { PiecesModule } from './Resources/Panel/pieces/pieces.module';
-import { TypedemandeestivageModule } from './Resources/Estivage/typedemandeestivage/typedemandeestivage.module';
 import { CentresModule } from './Resources/Estivage/centres/centres.module';
 import { DemandeEstivageModule } from './Resources/Estivage/demande-estivage/demande-estivage.module';
 import { DotationModule } from './Resources/Panel/dotation/dotation.module';
@@ -17,7 +16,6 @@ import { DemandeMaladiesModule } from './Resources/Maladies/demande-maladies/dem
 import { DemandeLangModule } from './Resources/Language/demande-lang/demande-lang.module';
 import { ZooModule } from './Resources/Zoo/demande-zoo/zoo.module';
 import { DemandeExcursionModule } from './Resources/Excursion/demande-excursion/demande-excursion.module';
-import { DetailsExcursionModule } from './Resources/Excursion/details-excursion/details-excursion.module';
 import { ExcursionModule } from './Resources/Excursion/excursion/excursion.module';
 import { DemandeCondoleanceModule } from './Resources/Condoleance/demande-condoleance/demande-condoleance.module';
 import { TypeCondoleanceModule } from './Resources/Condoleance/type-condoleance/type-condoleance.module';
@@ -38,7 +36,6 @@ import { RentreeScolaireModule } from './Resources/rentreeScolaire/rentreeScolai
     DotationModule,
     DemandeEstivageModule,
     CentresModule,
-    TypedemandeestivageModule,
     AffectationModule,
     AppartementsModule,
     CentresModule,
@@ -50,7 +47,6 @@ import { RentreeScolaireModule } from './Resources/rentreeScolaire/rentreeScolai
     DemandeLangModule,
     ZooModule,
     DemandeExcursionModule,
-    DetailsExcursionModule,
     ExcursionModule,
     DemandeCondoleanceModule,
     TypeCondoleanceModule,

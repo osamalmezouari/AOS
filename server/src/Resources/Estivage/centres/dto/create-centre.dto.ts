@@ -4,5 +4,4 @@ export class CreateCentreDto {
   centreFr: string;
   imgUrl: string;
   vileId: string;
-  TypeEstivageId: string;
 }

@@ -18,6 +18,12 @@ export class CentresController {
   findAll() {
     return this.centresService.findAll();
   }
+  @Get('CentresWithEmptyAppartements/:dateStart')
+  findCentresWithEmptyAppartements(@Param('dateStart') dateStart: string) {
+    return this.centresService.findCentresWithEmptyAppartements({
+      dateStart,
+    });
+  }
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.centresService.findOne(id);
