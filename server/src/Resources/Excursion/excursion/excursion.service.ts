@@ -19,15 +19,31 @@ export class ExcursionService {
   findOne(id: number) {
     return `This action returns a #${id} excursion`;
   }
-  excursionDispo() {
-    return this.prisma.excursion.findMany({
-      where: {
-        Date: {
-          gt: 1716964893803,
+  async excursionDispo(): Promise<any[]> {
+    try {
+      const now = new Date().getTime(); // Get current date and time in milliseconds
+      const excursions = await this.prisma.excursion.findMany({
+        where: {
+          Date: {
+            gt: now, // Compare with current date and time
+          },
         },
-      },
-    });
+      });
+
+      // Convert BigInt values to strings
+      const serializedExcursions = excursions.map(excursion => ({
+        ...excursion,
+        Date: excursion.Date.toString(),
+      }));
+
+      return serializedExcursions;
+    } catch (error) {
+      // Handle errors appropriately
+      console.error(error);
+      throw new Error('Failed to fetch excursions');
+    }
   }
+  
   //create(createExcursionDto: CreateExcursionDto) {
   //return 'This action adds a new excursion';
   //}

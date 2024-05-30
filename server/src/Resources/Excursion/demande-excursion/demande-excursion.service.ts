@@ -6,7 +6,6 @@ import { UuidService } from 'src/Helpers/UUID/uuid.service';
 import { getYear } from 'date-fns';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
-import { find } from 'rxjs';
 
 @Injectable()
 export class DemandeExcursionService {

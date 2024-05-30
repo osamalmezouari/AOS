@@ -70,16 +70,16 @@ const Excursion: React.FC = () => {
   useEffect(() => {
     const fetchExcursionOptions = async () => {
       try {
-      
         const res = await axios.get(`http://localhost:${PORT}/excursion/excursionDispo`);
         setExcursionDispo(res.data);
-        console.log(ExcursionDispo)
+        console.log(ExcursionDispo);
       } catch (error) {
         console.log(error);
       }
     };
     fetchExcursionOptions();
   }, []);
+
   const handleChange = (
     e:
       | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -198,12 +198,12 @@ const Excursion: React.FC = () => {
                 <FormControl fullWidth required>
                   <InputLabel id="select-deceased-label">Excursion</InputLabel>
                   <Select
-                    labelId="select-deceased-label"
-                    id="select-deceased"
-                    name="selectedDeceased"
+                    labelId="select-Excursion"
+                    id="select-Excursion"
+                    name="ExcursionId"
                     value={formState.ExcursionId}
                     onChange={handleChange}
-                    label="le type de Décédé"
+                    label="Excursion" 
                   >
                     {ExcursionDispo &&
                       ExcursionDispo.map((Type) => (
@@ -237,12 +237,12 @@ const Excursion: React.FC = () => {
                   </Button>
                 </label>
                 {formState.files.length > 0 ? (
-                  <Typography>{formState.files.length} files chosen</Typography>
+                  <Typography>{formState.files.length} fichiers choisis</Typography>
                 ) : (
-                  <Typography>No fichier selectioné</Typography>
+                  <Typography>Aucun fichier sélectionné</Typography>
                 )}
                 <Typography className="text-sm text-gray-500 mt-1">
-                  Max {maxFiles} Fichiers
+                  Max {maxFiles} fichiers
                 </Typography>
               </Grid>
             </Grid>
@@ -284,3 +284,4 @@ const Excursion: React.FC = () => {
 };
 
 export default Excursion;
+

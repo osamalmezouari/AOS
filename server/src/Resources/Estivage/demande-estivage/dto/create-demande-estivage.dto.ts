@@ -8,4 +8,5 @@ export class CreateDemandeEstivageDto {
   sousActiviteId: string;
   files: Array<Express.Multer.File>;
   type: string;
+  montant: string;
 }
