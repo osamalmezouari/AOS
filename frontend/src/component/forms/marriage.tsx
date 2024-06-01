@@ -164,7 +164,7 @@ const Marriage: React.FC = () => {
   return (
     <div className="bg-landing h-screen">
       {<Navbar />}
-      <Container maxWidth="sm" className={"w-full flex items-center justify-center h-[80vh]"} >
+      <Container maxWidth="sm" className={"w-full flex items-center justify-center h-[70vh]"} >
         <CssBaseline />
         <Box
           sx={{

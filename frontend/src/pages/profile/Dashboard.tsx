@@ -1,7 +1,7 @@
 import { AccountBalance, Hiking, Logout, MedicalInformation, MenuBook, MenuOutlined, Poll, PollOutlined, TravelExploreOutlined, Widgets } from "@mui/icons-material";
 import { Avatar, Box, Container, Grid, Typography } from "@mui/material";
-import LatestOrdersTable from "../table";
-import StickyHeadTable from "../table";
+import LatestOrdersTable from "./table";
+import StickyHeadTable from "./table";
 import PolarAreaChart from "./chart";
 
 const Profile = () => {

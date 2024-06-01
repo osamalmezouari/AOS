@@ -16,7 +16,8 @@ import Lang from "./component/forms/lang.tsx";
 import Zoo from "./component/forms/zoo.tsx";
 import Esstivage from "./component/forms/Esstivage.tsx";
 import Excursion from "./component/forms/Excursion.tsx";
-import Profile from "./pages/profile.tsx";
+import Profile from "./pages/profile/Dashboard.tsx";
+import Activitie from "./pages/profile/Activitie.tsx";
 
 function App() {
   return (
@@ -60,7 +61,8 @@ function App() {
           <Route element={<Zoo />} path={'/AOS/SousActivitie/Zoo'} />
           <Route element={<Esstivage />} path={'/AOS/SousActivitie/Esstivage'}/>
           <Route element={<Excursion />} path="AOS/SousActivitie/Excursion" ></Route>
-          <Route element={<Profile />} path="test" />
+          <Route element={<Profile />} path="UserDashboard" />
+          <Route element={<Activitie />} path="Activitie" ></Route>
         </Routes>
       </BrowserRouter>
     </>
