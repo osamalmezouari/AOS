@@ -25,6 +25,7 @@ export class MariageService {
   async create(createmariage: CreatemariageDto) {
     console.log(createmariage);
     const currentyear = getYear(new Date());
+    const MariageUUID = this.uuid.Getuuid()
     const matchingPersonel = await this.prisma.personel.findUnique({
       where: { id: createmariage.personelId },
     });
@@ -67,15 +68,10 @@ export class MariageService {
     }
     try {
       if (createmariage.files) {
-        const dir = `C:\\AOS\\${matchingPersonel.matricule}\\${currentyear}\\Aides_financières\\Demandes-Mariages`;
+        const dir = `C:\\AOS\\${matchingPersonel.matricule}\\${currentyear}\\Aides_financières\\Demandes-Mariages\\${MariageUUID}`;
         fs.mkdirSync(dir, { recursive: true });
-        const filesFolder = path.join(
-          dir,
-          `${format(new Date(), 'dd-MM-yyyy-HH-mm-ss')}`,
-        );
-        fs.mkdirSync(filesFolder, { recursive: true });
         createmariage.files.map((file) => {
-          const filePath = path.join(filesFolder, file.originalname);
+          const filePath = path.join(dir, file.originalname);
           fs.writeFileSync(filePath, file.buffer);
           console.log(`File written at ${filePath}`);
         });
