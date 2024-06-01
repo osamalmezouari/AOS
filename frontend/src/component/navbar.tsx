@@ -1,14 +1,17 @@
 import * as React from "react";
-import { Box, Button, Container, Typography } from "@mui/material";
+import { Avatar, Box, Button, Container, Typography } from "@mui/material";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Fade from "@mui/material/Fade";
 import {
+  AccountCircle,
   AppRegistration,
   Dehaze,
   ExpandLess,
   ExpandMore,
   Login,
+  Logout,
+  Settings,
 } from "@mui/icons-material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -17,6 +20,7 @@ import {
   SingleSousActivities,
 } from "../interfaces/types.tsx";
 import { PORT } from "../../env.ts";
+import { PiArrowsInFill } from "react-icons/pi";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -60,7 +64,7 @@ const Navbar = () => {
   React.useEffect(() => {
     const handleResize = () => {
       const screenWidth = window.innerWidth;
-      if (screenWidth <= 1200) {
+      if (screenWidth <= 900) {
         setNav("small");
       } else {
         setNav("large");
@@ -112,17 +116,13 @@ const Navbar = () => {
         <Box />
       </Box>
       <Box
-        className={`bg-white py-2 drop-shadow shadow-secendBleu ${
+        className={`bg-white py-6 drop-shadow shadow-secendBleu ${
           Nav === "large" ? "" : "hidden"
         }`}
       >
-        <Container maxWidth={"lg"}>
+        <Container maxWidth={"md"}>
           <Box
-            className={
-              user
-                ? `flex items-center gap-2 justify-center w-full`
-                : `flex items-center gap-2 justify-between w-full`
-            }
+            className={'flex items-center gap-2 justify-between w-full'}
           >
             <Box
               className={"flex items-center gap-2 justify-between capitalize"}
@@ -296,7 +296,7 @@ const Navbar = () => {
                 </Menu>
               </div>
             </Box>
-            {!user && (
+            {!user ? (
               <Box className={"flex gap-x-2"}>
                 <Button
                   className={
@@ -316,6 +316,11 @@ const Navbar = () => {
                 >
                   se conecter
                 </Button>
+              </Box>
+            ): (
+              <Box className={'flex gap-2'}>
+                <Logout fontSize="large" className="bg-mainBleu text-white p-1 rounded hover:bg-yellow duration-500 transition cursor-pointer"/>  
+                <AccountCircle fontSize="large" className="bg-mainBleu text-white p-1 rounded hover:bg-yellow duration-500 transition cursor-pointer"/>  
               </Box>
             )}
           </Box>
