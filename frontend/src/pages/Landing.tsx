@@ -101,7 +101,7 @@ function Landing() {
           container
           justifyContent={""}
           sx={{ flexGrow: 1 }}
-          className="m-auto gap-2 mt-4 mb-6"
+          className="m-auto gap-2 mt-4 mb-6 overflow-y-scroll h-[270px]"
         >
           {SousActivities.data.length > 0
             ? SousActivities.data.map(
