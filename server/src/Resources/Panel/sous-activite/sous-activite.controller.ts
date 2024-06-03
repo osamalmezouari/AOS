@@ -23,6 +23,11 @@ export class SousActiviteController {
   findOne(@Param('id') id: string): Promise<SousActivite> {
     return this.sousActiviteService.findOne(id);
   }
+  @Get('Profile/State/:id')
+  async PersonelDashboardState(@Param('id') id: string) {
+    return this.sousActiviteService.PersonelDashboardState(id);
+  }
+
   @Post()
   async create(@Body() createSousActiviteDto: CreateSousActiviteDto) {
     return this.sousActiviteService.create(createSousActiviteDto);

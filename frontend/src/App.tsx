@@ -18,6 +18,7 @@ import Esstivage from "./component/forms/Esstivage.tsx";
 import Excursion from "./component/forms/Excursion.tsx";
 import Profile from "./pages/profile/Dashboard.tsx";
 import Activitie from "./pages/profile/Activitie.tsx";
+import SousActivitieDatatable from "./pages/profile/SousActivitieDatatable.tsx";
 
 function App() {
   return (
@@ -61,8 +62,9 @@ function App() {
           <Route element={<Zoo />} path={'/AOS/SousActivitie/Zoo'} />
           <Route element={<Esstivage />} path={'/AOS/SousActivitie/Esstivage'}/>
           <Route element={<Excursion />} path="AOS/SousActivitie/Excursion" ></Route>
-          <Route element={<Profile />} path="UserDashboard" />
-          <Route element={<Activitie />} path="Activitie" ></Route>
+          <Route element={<Profile />} path="/AOS/Profile/dashboard" />
+          <Route element={<Activitie />} path="/AOS/Profile/Activitie/:id" ></Route>
+          <Route element={<SousActivitieDatatable />} path="SousActivitie" ></Route>
         </Routes>
       </BrowserRouter>
     </>

@@ -38,13 +38,13 @@ export class MariageService {
     const Checkpasencorevue = await this.prisma.mariage.findFirst({
       where: {
         personelId: createmariage.personelId,
-        Status: '',
+        Status: null,
       },
     });
     const CheckDocnecess = await this.prisma.mariage.findFirst({
       where: {
         personelId: createmariage.personelId,
-        Status: 'Document nécessaire ou pas valide',
+        Status: 'Documents requis',
       },
     });
     if (Checkpasencorevue) {

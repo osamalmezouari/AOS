@@ -43,7 +43,7 @@ export class NaissanceService {
     const ChecknaissanceDocnecess = await this.prisma.naissance.findFirst({
       where: {
         personelId: createNaissanceDto.personelId,
-        Status: 'Document nécessaire ou pas valide',
+        Status: 'Documents requis',
       },
     });
     if (Checknaissancepasencorevue) {

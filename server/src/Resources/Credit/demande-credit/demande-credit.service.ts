@@ -41,7 +41,7 @@ export class DemandeCreditService {
     const CheckDocnecess = await this.prisma.demandeCredit.findFirst({
       where: {
         personelId: createDemandeCreditDto.personelId,
-        Status: 'Document nécessaire ou pas valide',
+        Status: 'Documents requis',
       },
     });
     if (Checkpasencorevue) {

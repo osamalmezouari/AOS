@@ -49,7 +49,7 @@ export class DemandePelerinageService {
       await this.prisma.demandePelerinage.findFirst({
         where: {
           personelId: createDemandePelerinageDto.personelId,
-          Status: 'Document nécessaire ou pas valide',
+          Status: 'Documents requis',
           annee: currentyear,
         },
       });

@@ -47,7 +47,7 @@ export class RentreeScolaireService {
       {
         where: {
           personelId: createrentreeScolaireDto.personelId,
-          Status: 'Document nécessaire ou pas valide',
+          Status: 'Documents requis',
         },
       },
     );

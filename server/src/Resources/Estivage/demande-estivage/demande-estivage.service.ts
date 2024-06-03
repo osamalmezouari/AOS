@@ -47,7 +47,7 @@ export class DemandeEstivageService {
     const CheckDocnecess = await this.prismaClient.demandeEstivage.findFirst({
       where: {
         personelId: createDemandeEstivageDto.personelId,
-        Status: 'Document nécessaire ou pas valide',
+        Status: 'Documents requis',
       },
     });
     if (Checknpasencorevue) {

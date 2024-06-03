@@ -41,7 +41,7 @@ export class DemandeCondoleanceService {
     const CheckDocnecess = await this.prisma.demandeCondoleance.findFirst({
       where: {
         personelId: createCondoleanceDto.personelId,
-        Status: 'Document nécessaire ou pas valide',
+        Status: 'Documents requis',
       },
     });
     if (Checkpasencorevue) {

@@ -45,7 +45,7 @@ export class DemandeMaladiesService {
       {
         where: {
           personelId: createDemandeMaladyDto.personelId,
-          Status: 'Document nécessaire ou pas valide',
+          Status: 'Documents requis',
         },
       },
     );

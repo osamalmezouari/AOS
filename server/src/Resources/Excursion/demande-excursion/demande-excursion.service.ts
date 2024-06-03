@@ -54,7 +54,7 @@ export class DemandeExcursionService {
     const CheckDocnecess = await this.prisma.naissance.findFirst({
       where: {
         personelId: createDemandeExcursionDto.personelId,
-        Status: 'Document nécessaire ou pas valide',
+        Status: 'Documents requis',
       },
     });
     const findnombrelimit = await this.prisma.excursion.findUnique({
@@ -68,7 +68,7 @@ export class DemandeExcursionService {
     const findRecordsnmber = await this.prisma.demandeExcursion.findMany({
       where: {
         id: createDemandeExcursionDto.ExcursionId,
-        Status: 'ACCEPTE',
+        Status: 'Approuvées',
       },
       select: {
         id: true,

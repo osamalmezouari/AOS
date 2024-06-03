@@ -1,35 +1,15 @@
-import { AccountBalance, Hiking, Logout, MedicalInformation, MenuBook, MenuOutlined, Poll, PollOutlined, TravelExploreOutlined, Widgets } from "@mui/icons-material";
-import { Avatar, Box, Container, Grid, Typography } from "@mui/material";
-import LatestOrdersTable from "./table";
-import StickyHeadTable from "./table";
+import {PollOutlined, Widgets } from "@mui/icons-material";
+import { Box, Container, Grid, Typography } from "@mui/material";
+import StickyHeadTable from "./tableInfo";
 import PolarAreaChart from "./chart";
+import SideBar from "../../component/sidebar";
+import Header from "../../component/header";
 
 const Profile = () => {
     return <Box className="">
         <Box>
-            <Box className="w-24 h-screen absolute bg-gray-100 text-white flex flex-col items-center py-6 gap-6 justify-between">
-                <Box>
-                    <Avatar src="D:\Oussama\PROJECTS\AOS\frontend\public\assets\images\logo.jpg" />
-                </Box>
-                <Box className={'flex flex-col gap-2 text-gray-600'}>
-                    <Box className={'bg-mainBleu px-4 py-2 rounded hover:bg-yellow duration-500 text-white transition cursor-pointer'} ><AccountBalance fontSize="small" /></Box>
-                    <Box className={'bg-mainBleu px-4 py-2 rounded hover:bg-yellow duration-500 text-white transition  cursor-pointer'}><MedicalInformation fontSize="small" /></Box>
-                    <Box className={'bg-mainBleu px-4 py-2 rounded hover:bg-yellow duration-500 text-white transition cursor-pointer'}><Hiking fontSize="small" /></Box>
-                    <Box className={'bg-mainBleu px-4 py-2 rounded hover:bg-yellow duration-500 text-white transition cursor-pointer'}><TravelExploreOutlined fontSize="small" /></Box>
-                </Box>
-                <Box>
-                    <Logout className="text-gray-700 w-12" fontSize="small" />
-                </Box>
-            </Box>
-            <Box className="pl-32 pr-16 w-full  fixed flex gap-2 h-24 top-0 items-center justify-between border-2">
-                <MenuOutlined />
-                <Box className={'flex gap-x-2 font-main items-center'}>
-                    <Avatar src="frontend\public\assets\images\maroc.png" />
-                    <Box>
-                        <Typography>Oussama lmezouari</Typography>
-                    </Box>
-                </Box>
-            </Box>
+            <SideBar />
+            <Header />
             <Container maxWidth='lg' className="pt-28">
                 <Grid container gap={2}>
                     <Box className={'w-full mb-4 mt-4'}>

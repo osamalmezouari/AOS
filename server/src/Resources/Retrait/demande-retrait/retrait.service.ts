@@ -30,46 +30,46 @@ export class RetraitService {
       throw new HttpException('Personel not found', HttpStatus.NOT_FOUND);
     }
 
-    const CheckRetraitAccepted = await this.prismaClient.retrait.findFirst({
-      where: { personelId: createRetraitDto.personelId, Status: 'ACCEPTE' },
+    const CheckAccepted = await this.prismaClient.retrait.findFirst({
+      where: { personelId: createRetraitDto.personelId, Status: 'Approuvées' },
     });
-    const CheckRetraitontraiter = await this.prismaClient.retrait.findFirst({
+    const Checkontraiter = await this.prismaClient.retrait.findFirst({
       where: {
         personelId: createRetraitDto.personelId,
         Status: 'En traitement',
       },
     });
-    const CheckRetraitpasencorevue = await this.prismaClient.retrait.findFirst({
+    const Checkpasencorevue = await this.prismaClient.retrait.findFirst({
       where: {
         personelId: createRetraitDto.personelId,
-        Status: '',
+        Status: null,
       },
     });
-    const CheckRetraitDocnecess = await this.prismaClient.retrait.findFirst({
+    const CheckDocnecess = await this.prismaClient.retrait.findFirst({
       where: {
         personelId: createRetraitDto.personelId,
-        Status: 'Document nécessaire ou pas valide',
+        Status: 'Documents requis',
       },
     });
-    if (CheckRetraitpasencorevue) {
+    if (Checkpasencorevue) {
       throw new HttpException(
         "Vous avez déjà une demande n est pas n'a pas encore été examinée par l'administrateur.",
         HttpStatus.BAD_REQUEST,
       );
     }
-    if (CheckRetraitDocnecess) {
+    if (CheckDocnecess) {
       throw new HttpException(
         'Vous avez déjà une demande avec des documents nécessaires ou pas valide. Vous pouvez modifier les documents dans votre profil.',
         HttpStatus.BAD_REQUEST,
       );
     }
-    if (CheckRetraitAccepted) {
+    if (CheckAccepted) {
       throw new HttpException(
         'Ce demande est unique dans la vie, vous avez déjà pris ce retrait.',
         HttpStatus.BAD_REQUEST,
       );
     }
-    if (CheckRetraitontraiter) {
+    if (Checkontraiter) {
       throw new HttpException(
         'Vous avez déjà une demande en cours de traitement. Vous pouvez modifier les documents.',
         HttpStatus.BAD_REQUEST,
