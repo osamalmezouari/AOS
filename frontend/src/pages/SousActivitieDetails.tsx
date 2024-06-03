@@ -108,12 +108,12 @@ const SousActivitieDetails = () => {
         >
           <Grid container className={"justify-between items-center "}>
             <Grid
-              xl={12}
+              xl={5.8}
               component={"img"}
               src={data?.imgUrl}
               className="w-max bg-center bg-contain bg-repeat h-max rounded-xl"
             ></Grid>
-            <Grid xl={12}>
+            <Grid xl={5.8}>
               <Box component={"div"} className={"mt-5"}>
                 <Typography className="font-main capitalize font-bold bg-mainBleu p-2 text-white rounded">
                   Parlons de {data?.nomFr}
