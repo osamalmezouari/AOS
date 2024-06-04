@@ -19,6 +19,7 @@ import Excursion from "./component/forms/Excursion.tsx";
 import Profile from "./pages/profile/Dashboard.tsx";
 import Activitie from "./pages/profile/Activitie.tsx";
 import SousActivitieDatatable from "./pages/profile/SousActivitie.tsx";
+import ViewCard from "./pages/profile/viewCard.tsx";
 
 function App() {
   return (
@@ -74,6 +75,12 @@ function App() {
             element={<SousActivitieDatatable />}
             path="/AOS/Profile/Activitie/Gererdemandes/:id"
           ></Route>
+          <Route
+            element={<ViewCard/>}
+            path="AOS/viewcard"
+          >
+
+          </Route>
         </Routes>
       </BrowserRouter>
     </>

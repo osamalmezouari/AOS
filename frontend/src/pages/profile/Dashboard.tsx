@@ -1,11 +1,11 @@
 import { PollOutlined, Widgets } from "@mui/icons-material";
 import { Box, Container, Grid, Typography } from "@mui/material";
-import PolarAreaChart from "./DashboardChart";
+import PolarAreaChart from "./ProfileDashboardChart";
 import SideBar from "../../component/sidebar";
 import Header from "../../component/header";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import TableInfo from "./DashboardTable";
+import TableInfo from "./ProfileDashboardTable";
 
 const Profile = () => {
   const userDataString = localStorage.getItem("user");

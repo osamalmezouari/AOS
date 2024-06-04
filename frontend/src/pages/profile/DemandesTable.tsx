@@ -129,14 +129,14 @@ const DemandesManageTable = ({ data }: Props) => {
 
                 <td className="px-6 py-4">{demande.effet.slice(0, 10)}</td>
                 <td>
-                  <Box className="flex gap-6 items-center justify-start">
+                  <Box className="flex gap-1 items-center justify-start">
                     <Visibility
-                      fontSize="small"
-                      className="hover:text-green-400 cursor-pointer duration-500 transition-all"
+                      fontSize="large"
+                      className="hover:bg-green-400 w-12 p-2 rounded hover:text-white cursor-pointer duration-500 transition-all"
                     />
                     <Edit
-                      fontSize="small"
-                      className="hover:text-mainBleu cursor-pointer duration-500 transition-all"
+                      fontSize="large"
+                      className="hover:bg-blue-400 w-12 p-2 rounded hover:text-white cursor-pointer duration-500 transition-all"
                     />
                   </Box>
                 </td>

@@ -1,4 +1,4 @@
-import { AccountBalance, Add, PlusOne } from "@mui/icons-material";
+import { AccountBalance } from "@mui/icons-material";
 import { Box, Button, Container, Grid, Typography } from "@mui/material";
 import SideBar from "../../component/sidebar";
 import Header from "../../component/header";
@@ -86,7 +86,11 @@ const Activitie = () => {
                             className="p-2 flex items-end justify-end w-full h-full max-h-[250px] rounded shadow-md bg-cover bg-center"
                           >
                             <Button
-                              onClick={() => navigate(`/AOS/Profile/Activitie/Gererdemandes/${singleSousActivities.id}`)}
+                              onClick={() =>
+                                navigate(
+                                  `/AOS/Profile/Activitie/Gererdemandes/${singleSousActivities.id}`
+                                )
+                              }
                               className="bg-mainBleu w-max h-max text-white duration-500 hover:bg-yellow p-2 font-secend font-bold  capitalize"
                             >
                               {singleSousActivities.nomFr}

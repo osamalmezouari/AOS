@@ -12,6 +12,7 @@ const SousActivitieDatatable = () => {
   const userDataString = localStorage.getItem("user");
   const JSONDATA = userDataString ? JSON.parse(userDataString) : null;
   const user = JSONDATA;
+  const [toogleObserv, SetToogleObserv] = useState({})
   const [DataTable, setDatatable] = useState<{
     data: DemadesDataType | [];
     loading: boolean;
