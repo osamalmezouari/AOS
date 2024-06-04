@@ -6,7 +6,10 @@ const ViewCard = () => {
       display="flex"
       justifyContent="center"
       alignItems="center"
-      minHeight="100vh" // Full viewport height to center vertically
+      minHeight="100vh"
+      component={'div'}
+      className="bg-center bg-cover"
+      style={{backgroundImage:`url(https://raw.githubusercontent.com/osamalmezouari/AOS/master/frontend/public/assets/images/linebg.jpg)`}}
     >
       <Grid
         container
