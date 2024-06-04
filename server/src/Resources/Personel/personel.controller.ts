@@ -23,6 +23,21 @@ export class PersonelController {
   async findOne(@Param('id') id: string): Promise<Personel> {
     return this.personelService.findOne(id);
   }
+
+  @Get('DemandesWithDetails/:id')
+  async PersonelDemandesWithDetails(@Param('id') id: string) {
+    return this.personelService.PersonelDemandesWithDetails(id);
+  }
+  @Get('SingleSousActivitiesdemandesWithDetails/:id/:sousActivitieId')
+  async SingleSousActivitiesdemandesWithDetails(
+    @Param('id') id: string,
+    @Param('sousActivitieId') sousActivitieId: string,
+  ) {
+    return this.personelService.SingleSousActivitiesdemandesWithDetails(
+      id,
+      sousActivitieId,
+    );
+  }
   @Post()
   async create(@Body() createpersonelDto: CreatepersonelDto) {
     return this.personelService.create(createpersonelDto);

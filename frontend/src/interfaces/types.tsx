@@ -34,25 +34,35 @@ export interface NavbarPropsType {
 }
 
 export interface CondoleanceTypes {
-  id:string;
-  nomAr:string;
-  nomFr:string;
+  id: string;
+  nomAr: string;
+  nomFr: string;
 }
 
 export interface Centre {
-  id :string,
-  centreAr:string,
-  centreFr:string,
-  imgUrl:string,
-  vileId:string
+  id: string;
+  centreAr: string;
+  centreFr: string;
+  imgUrl: string;
+  vileId: string;
 }
 
 export interface ExcursionType {
-  id : string,
-  nom : string,
-  description : string,
-  Date :number,
-  nombre : string
-  vileEndId :string
-  vileStartId : string
+  id: string;
+  nom: string;
+  description: string;
+  Date: number;
+  nombre: string;
+  vileEndId: string;
+  vileStartId: string;
+}
+
+export interface DemadesDataType {
+  Status: "Approuvée" | "Documents requis" | "refre" | "En traitement" | null;
+  id: string;
+  effet: string;
+  SousActivite: {
+    nomAr: string;
+    nomFr: string;
+  };
 }

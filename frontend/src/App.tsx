@@ -18,7 +18,7 @@ import Esstivage from "./component/forms/Esstivage.tsx";
 import Excursion from "./component/forms/Excursion.tsx";
 import Profile from "./pages/profile/Dashboard.tsx";
 import Activitie from "./pages/profile/Activitie.tsx";
-import SousActivitieDatatable from "./pages/profile/SousActivitieDatatable.tsx";
+import SousActivitieDatatable from "./pages/profile/SousActivitie.tsx";
 
 function App() {
   return (
@@ -44,27 +44,36 @@ function App() {
             element={<Naissance />}
             path={"AOS/SousActivitie/DemandeNaissance"}
           />
+          <Route element={<Pelerinage />} path="AOS/SousActivitie/Pelerinage" />
           <Route
-            element={<Pelerinage />}
-            path="AOS/SousActivitie/Pelerinage"
+            element={<Condoleance />}
+            path={"AOS/SousActivitie/Condoleance"}
+          />
+          <Route element={<Maladies />} path={"AOS/SousActivitie/Maladies"} />
+          <Route
+            element={<RentreeScolaire />}
+            path={"/AOS/SousActivitie/rentree-scolaire"}
+          />
+          <Route element={<Prets />} path={"/AOS/SousActivitie/Prets"} />
+          <Route element={<Lang />} path={"/AOS/SousActivitie/Lang"} />
+          <Route element={<Zoo />} path={"/AOS/SousActivitie/Zoo"} />
+          <Route
+            element={<Esstivage />}
+            path={"/AOS/SousActivitie/Esstivage"}
           />
           <Route
-              element={<Condoleance />}
-            path={'AOS/SousActivitie/Condoleance'}
-          />
-          <Route
-              element={<Maladies />}
-              path={'AOS/SousActivitie/Maladies'}
-          />
-          <Route element={<RentreeScolaire />} path={'/AOS/SousActivitie/rentree-scolaire'}/>
-          <Route element={<Prets />} path={'/AOS/SousActivitie/Prets'}/>
-          <Route element={<Lang />} path={'/AOS/SousActivitie/Lang'}/>
-          <Route element={<Zoo />} path={'/AOS/SousActivitie/Zoo'} />
-          <Route element={<Esstivage />} path={'/AOS/SousActivitie/Esstivage'}/>
-          <Route element={<Excursion />} path="AOS/SousActivitie/Excursion" ></Route>
+            element={<Excursion />}
+            path="AOS/SousActivitie/Excursion"
+          ></Route>
           <Route element={<Profile />} path="/AOS/Profile/dashboard" />
-          <Route element={<Activitie />} path="/AOS/Profile/Activitie/:id" ></Route>
-          <Route element={<SousActivitieDatatable />} path="SousActivitie" ></Route>
+          <Route
+            element={<Activitie />}
+            path="/AOS/Profile/Activitie/:id"
+          ></Route>
+          <Route
+            element={<SousActivitieDatatable />}
+            path="/AOS/Profile/Activitie/Gererdemandes/:id"
+          ></Route>
         </Routes>
       </BrowserRouter>
     </>

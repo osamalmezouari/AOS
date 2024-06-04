@@ -9,9 +9,10 @@ import {
 } from "../../interfaces/types";
 import axios from "axios";
 import { PORT } from "../../../env";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const Activitie = () => {
+  const navigate = useNavigate();
   const [ActivitieWithSousActivities, setNavbarData] = useState<{
     loading: boolean;
     error: string;
@@ -23,7 +24,7 @@ const Activitie = () => {
   });
 
   useEffect(() => {
-    const fetchNavbar = async () => {
+    const FetchSousActivities = async () => {
       try {
         const res = await axios.get(`http://localhost:${PORT}/activite`);
         setNavbarData({
@@ -40,7 +41,7 @@ const Activitie = () => {
         });
       }
     };
-    fetchNavbar();
+    FetchSousActivities();
   }, []);
   const { id } = useParams();
 
@@ -84,7 +85,10 @@ const Activitie = () => {
                             }}
                             className="p-2 flex items-end justify-end w-full h-full max-h-[250px] rounded shadow-md bg-cover bg-center"
                           >
-                            <Button className="bg-mainBleu w-max h-max text-white duration-500 hover:bg-yellow p-2 font-secend font-bold  capitalize">
+                            <Button
+                              onClick={() => navigate(`/AOS/Profile/Activitie/Gererdemandes/${singleSousActivities.id}`)}
+                              className="bg-mainBleu w-max h-max text-white duration-500 hover:bg-yellow p-2 font-secend font-bold  capitalize"
+                            >
                               {singleSousActivities.nomFr}
                             </Button>
                           </Grid>

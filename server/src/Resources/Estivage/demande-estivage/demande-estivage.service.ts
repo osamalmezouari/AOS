@@ -21,7 +21,7 @@ export class DemandeEstivageService {
       where: { id },
       include: {
         personel: true,
-        sousActivite: true,
+        SousActivite: true,
         centre: true,
       },
     });

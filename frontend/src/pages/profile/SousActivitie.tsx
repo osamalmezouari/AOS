@@ -1,32 +1,36 @@
-import { PollOutlined, Widgets } from "@mui/icons-material";
+import { PollSharp, Settings } from "@mui/icons-material";
 import { Box, Container, Grid, Typography } from "@mui/material";
-import PolarAreaChart from "./DashboardChart";
 import SideBar from "../../component/sidebar";
 import Header from "../../component/header";
+import DemandesManageTable from "./DemandesTable";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import TableInfo from "./DashboardTable";
-
-const Profile = () => {
+import { useParams } from "react-router-dom";
+import { DemadesDataType } from "../../interfaces/types";
+const SousActivitieDatatable = () => {
+  const { id } = useParams();
   const userDataString = localStorage.getItem("user");
   const JSONDATA = userDataString ? JSON.parse(userDataString) : null;
   const user = JSONDATA;
+  const [DataTable, setDatatable] = useState<{
+    data: DemadesDataType | [];
+    loading: boolean;
+  }>({
+    data: [],
+    loading: true,
+  });
   const [Statdata, setStatData] = useState({
     approuved: 0,
     refused: 0,
     Docrequired: 0,
     inProgress: 0,
   });
-  const [DataTable, setDatatable] = useState({
-    data: [],
-    loading: true,
-  });
 
   useEffect(() => {
     const getStatDashboardProfile = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:3400/sous-activite/Profile/State/${user.id}`
+          `http://localhost:3400/sous-activite/singlesousActivitie/${user.id}/${id}`
         );
         const data = await res.data;
         const approuved = data.filter(
@@ -53,12 +57,11 @@ const Profile = () => {
     };
     getStatDashboardProfile();
   }, [user.id]);
-
   useEffect(() => {
     const personeldemandesDetails = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:3400/personel/DemandesWithDetails/${user.id}`
+          `http://localhost:3400/personel/SingleSousActivitiesdemandesWithDetails/${user.id}/${id}`
         );
         const data = await res.data;
         setDatatable({
@@ -77,20 +80,20 @@ const Profile = () => {
   }, [user.id]);
 
   return (
-    <Box className="">
+    <Box>
       <Box>
         <SideBar />
         <Header />
-        <Container maxWidth="lg" className="pt-28">
-          <Grid container gap={2}>
-            <Box className={"w-full mb-4 mt-4"}>
+        <Container maxWidth="lg" className="h-[90vh] pt-32">
+          <Grid container className="gap-y-6">
+            <Box className={"w-full mt-4"}>
               <Box className={"flex items-center gap-2"}>
-                <PollOutlined
+                <PollSharp
                   fontSize="large"
                   className="bg-mainBleu text-white p-2 rounded"
                 />
-                <Typography className="font-secend capitalize text-2xl text-mainBleu ">
-                  Suivation de demandes
+                <Typography className="font-main capitalize text-2xl text-mainBleu ">
+                  {DataTable?.data[0]?.SousActivite.nomFr}
                 </Typography>
               </Box>
             </Box>
@@ -144,24 +147,19 @@ const Profile = () => {
                 </Typography>
               </Grid>
             </Grid>
-            <Box className={"w-full mt-8"}>
+            <Box className={"w-full mt-4"}>
               <Box className={"flex items-center gap-2"}>
-                <Widgets
+                <Settings
                   fontSize="large"
                   className="bg-mainBleu text-white p-2 rounded"
                 />
-                <Typography className="font-secend capitalize text-2xl text-mainBleu ">
-                  Table des demandes
+                <Typography className="font-main capitalize text-2xl text-mainBleu ">
+                  gérez vos demandes
                 </Typography>
               </Box>
             </Box>
-            <Grid item xs={12} sm={12} md={12} lg={6} className="py-6 items-start">
-              <TableInfo
-                data={DataTable.data}
-              />
-            </Grid>
-            <Grid item xs={12} sm={12} md={12} lg={5.5} className="m-auto">
-              <PolarAreaChart  data={Statdata} />
+            <Grid item xl={12}>
+              <DemandesManageTable data={DataTable.data} />
             </Grid>
           </Grid>
         </Container>
@@ -170,4 +168,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default SousActivitieDatatable;

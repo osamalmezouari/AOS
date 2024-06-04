@@ -28,74 +28,154 @@ export class SousActiviteService {
   }
 
   async PersonelDashboardState(id: string) {
+    const currentYear = new Date().getFullYear();
+    const startDate = new Date(`${currentYear}-01-01T00:00:00.000Z`);
+    const endDate = new Date(`${currentYear + 1}-01-01T00:00:00.000Z`);
     const demandesEstivage = await this.prismaClient.demandeEstivage.findMany({
-      where: { personelId: id },
+      where: {
+        personelId: id,
+        effet: {
+          gte: startDate,
+          lt: endDate,
+        },
+      },
       select: { Status: true },
     });
 
     const demandesPelerinage =
       await this.prismaClient.demandePelerinage.findMany({
-        where: { personelId: id },
+        where: {
+          personelId: id,
+          effet: {
+            gte: startDate,
+            lt: endDate,
+          },
+        },
         select: { Status: true },
       });
 
     const demandesMarriage = await this.prismaClient.mariage.findMany({
-      where: { personelId: id },
+      where: {
+        personelId: id,
+        effet: {
+          gte: startDate,
+          lt: endDate,
+        },
+      },
       select: { Status: true },
     });
 
     const demandesCredit = await this.prismaClient.demandeCredit.findMany({
-      where: { personelId: id },
+      where: {
+        personelId: id,
+        effet: {
+          gte: startDate,
+          lt: endDate,
+        },
+      },
       select: { Status: true },
     });
 
     const demandesMaladies = await this.prismaClient.demamdeMaladies.findMany({
-      where: { personelId: id },
+      where: {
+        personelId: id,
+        effet: {
+          gte: startDate,
+          lt: endDate,
+        },
+      },
       select: { Status: true },
     });
 
     const demandesLang = await this.prismaClient.demandeLang.findMany({
-      where: { personelId: id },
+      where: {
+        personelId: id,
+        effet: {
+          gte: startDate,
+          lt: endDate,
+        },
+      },
       select: { Status: true },
     });
 
     const demandesCondoleance =
       await this.prismaClient.demandeCondoleance.findMany({
-        where: { personelId: id },
+        where: {
+          personelId: id,
+          effet: {
+            gte: startDate,
+            lt: endDate,
+          },
+        },
         select: { Status: true },
       });
 
     const demandesZoo = await this.prismaClient.zoo.findMany({
-      where: { personelId: id },
+      where: {
+        personelId: id,
+        effet: {
+          gte: startDate,
+          lt: endDate,
+        },
+      },
       select: { Status: true },
     });
 
     const demandesRentreeScolaire =
       await this.prismaClient.rentreeScolaire.findMany({
-        where: { personelId: id },
+        where: {
+          personelId: id,
+          effet: {
+            gte: startDate,
+            lt: endDate,
+          },
+        },
         select: { Status: true },
       });
 
     const demandesExcursion = await this.prismaClient.demandeExcursion.findMany(
       {
-        where: { personelId: id },
+        where: {
+          personelId: id,
+          effet: {
+            gte: startDate,
+            lt: endDate,
+          },
+        },
         select: { Status: true },
       },
     );
 
     const demandesNaissance = await this.prismaClient.naissance.findMany({
-      where: { personelId: id },
+      where: {
+        personelId: id,
+        effet: {
+          gte: startDate,
+          lt: endDate,
+        },
+      },
       select: { Status: true },
     });
 
     const demandesRetrait = await this.prismaClient.retrait.findMany({
-      where: { personelId: id },
+      where: {
+        personelId: id,
+        effet: {
+          gte: startDate,
+          lt: endDate,
+        },
+      },
       select: { Status: true },
     });
 
     const demandesInscreption = await this.prismaClient.inscreption.findMany({
-      where: { personelId: id },
-      select: { status: true },
+      where: {
+        personelId: id,
+        effet: {
+          gte: startDate,
+          lt: endDate,
+        },
+      },
     });
 
     return [
@@ -111,8 +191,182 @@ export class SousActiviteService {
       ...demandesExcursion.map((demande) => demande.Status),
       ...demandesNaissance.map((demande) => demande.Status),
       ...demandesRetrait.map((demande) => demande.Status),
-      ...demandesInscreption.map((demande) => demande.status), 
+      ...demandesInscreption.map((demande) => demande.status),
     ];
+  }
+
+  async PersonelStateforSingleSousActivitie(
+    id: string,
+    sousActiviteId: string,
+  ) {
+    const currentYear = new Date().getFullYear();
+    const startDate = new Date(`${currentYear}-01-01T00:00:00.000Z`);
+    const endDate = new Date(`${currentYear + 1}-01-01T00:00:00.000Z`);
+    if (sousActiviteId === '1') {
+      const data = this.prismaClient.mariage.findMany({
+        where: {
+          personelId: id,
+          effet: {
+            gte: startDate,
+            lt: endDate,
+          },
+        },
+        select: {
+          Status: true,
+        },
+      });
+      return (await data).map((item) => item.Status);
+    }
+    if (sousActiviteId === '2') {
+      const data = this.prismaClient.demandePelerinage.findMany({
+        where: {
+          personelId: id,
+          effet: {
+            gte: startDate,
+            lt: endDate,
+          },
+        },
+        select: {
+          Status: true,
+        },
+      });
+      return (await data).map((item) => item.Status);
+    }
+    if (sousActiviteId === '3') {
+      const data = this.prismaClient.demandeCredit.findMany({
+        where: {
+          personelId: id,
+          effet: {
+            gte: startDate,
+            lt: endDate,
+          },
+        },
+        select: {
+          Status: true,
+        },
+      });
+      return (await data).map((item) => item.Status);
+    }
+    if (sousActiviteId === '4') {
+      const data = this.prismaClient.retrait.findMany({
+        where: {
+          personelId: id,
+          effet: {
+            gte: startDate,
+            lt: endDate,
+          },
+        },
+        select: {
+          Status: true,
+        },
+      });
+      return (await data).map((item) => item.Status);
+    }
+    if (sousActiviteId === '5') {
+      const data = this.prismaClient.demamdeMaladies.findMany({
+        where: {
+          personelId: id,
+          effet: {
+            gte: startDate,
+            lt: endDate,
+          },
+        },
+        select: {
+          Status: true,
+        },
+      });
+      return (await data).map((item) => item.Status);
+    }
+    if (sousActiviteId === '6') {
+      const data = this.prismaClient.demandeCondoleance.findMany({
+        where: {
+          personelId: id,
+          effet: {
+            gte: startDate,
+            lt: endDate,
+          },
+        },
+        select: {
+          Status: true,
+        },
+      });
+      return (await data).map((item) => item.Status);
+    }
+    if (sousActiviteId === '10') {
+      const data = this.prismaClient.demandeEstivage.findMany({
+        where: {
+          personelId: id,
+          effet: {
+            gte: startDate,
+            lt: endDate,
+          },
+        },
+        select: {
+          Status: true,
+        },
+      });
+      return (await data).map((item) => item.Status);
+    }
+    if (sousActiviteId === '11') {
+      const data = this.prismaClient.zoo.findMany({
+        where: {
+          personelId: id,
+          effet: {
+            gte: startDate,
+            lt: endDate,
+          },
+        },
+        select: {
+          Status: true,
+        },
+      });
+      return (await data).map((item) => item.Status);
+    }
+    if (sousActiviteId === '12') {
+      const data = this.prismaClient.demandeExcursion.findMany({
+        where: {
+          personelId: id,
+          effet: {
+            gte: startDate,
+            lt: endDate,
+          },
+        },
+        select: {
+          Status: true,
+        },
+      });
+      return (await data).map((item) => item.Status);
+    }
+    if (sousActiviteId === '13') {
+      const data = this.prismaClient.naissance.findMany({
+        where: {
+          personelId: id,
+          effet: {
+            gte: startDate,
+            lt: endDate,
+          },
+        },
+        select: {
+          Status: true,
+        },
+      });
+      return (await data).map((item) => item.Status);
+    }
+    if (sousActiviteId === '14') {
+      const data = this.prismaClient.rentreeScolaire.findMany({
+        where: {
+          personelId: id,
+          effet: {
+            gte: startDate,
+            lt: endDate,
+          },
+        },
+        select: {
+          Status: true,
+        },
+      });
+      return (await data).map((item) => item.Status);
+    }
   }
 
   create(createSousActiviteDto: CreateSousActiviteDto) {
