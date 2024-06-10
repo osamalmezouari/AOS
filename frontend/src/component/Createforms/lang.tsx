@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Alert,
     Box,
@@ -11,50 +11,37 @@ import {
     Typography,
 } from "@mui/material";
 import { ErrorOutlineRounded, Verified } from "@mui/icons-material";
-import axios from "axios";
-import { PORT } from "../../../env.ts";
 import Navbar from "../navbar.tsx";
+import axios from "axios";
+import { SingleSousActivitiesWithpieces } from "../../interfaces/types.tsx";
+import { PORT } from "../../../env.ts";
 
-const Maladies: React.FC = () => {
-    const userDataString = JSON.parse(localStorage.getItem("user"));
-    const user = userDataString;
+interface FormState {
+    description: string;
+    files: File[];
+}
+
+const Lang: React.FC = () => {
+    const userDataString = localStorage.getItem("user");
+    const JSONDATA = userDataString ? JSON.parse(userDataString) : null;
     const [sentStatus, setSentStatus] = useState<{
         success: boolean;
         inprogress: boolean;
         error: string;
         alert: string;
+        description: number;
     }>({
         success: false,
         inprogress: false,
         error: "",
         alert: "",
+        description: 0,
     });
-
-    const [maxFiles, setMaxFiles] = useState<number>(0);
-    const [formState, setFormState] = useState<{
-        description: string;
-        files: File[];
-        personelId: string;
-    }>({
+    const [pieces, setPieces] = useState<number>(1);
+    const [formState, setFormState] = useState<FormState>({
         description: "",
         files: [],
-        personelId: user.id,
     });
-
-    useEffect(() => {
-        const fetchMaxFiles = async () => {
-            try {
-                const res = await axios.get(
-                    `http://localhost:${PORT}/sous-activite/5`,
-                );
-                const maxPieces = res.data.pieces.length;
-                setMaxFiles(maxPieces);
-            } catch (error) {
-                console.log(error);
-            }
-        };
-        fetchMaxFiles();
-    }, []);
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -65,7 +52,19 @@ const Maladies: React.FC = () => {
             inprogress: false,
             error: "",
             alert: "",
+            description: value.length,
         });
+        if (name === "description" && value.length > 200) {
+            setSentStatus({
+                success: false,
+                inprogress: false,
+                error: "",
+                alert: "",
+                description: value.length,
+            });
+            return;
+        }
+        console.log(sentStatus);
         setFormState((prevState) => ({
             ...prevState,
             [name]: value,
@@ -74,17 +73,24 @@ const Maladies: React.FC = () => {
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = Array.from(e.target.files || []);
+        if (files.length > pieces) {
+            setSentStatus({
+                success: false,
+                inprogress: false,
+                error: "",
+                alert: "max fechier pour disponbile pour ce demande est 3",
+                description: 0,
+            });
+            return;
+        }
         setFormState((prevState) => ({
             ...prevState,
             files,
         }));
     };
 
-    useEffect(() => {
-        console.log(formState);
-    }, [formState]);
-
     const handleSubmit = async (e: React.FormEvent) => {
+        const user = JSONDATA;
         e.preventDefault();
         try {
             setSentStatus({
@@ -92,34 +98,28 @@ const Maladies: React.FC = () => {
                 success: false,
                 error: "",
                 alert: "",
+                description: 0,
             });
-
-            const formData = new FormData();
-            formData.append("description", formState.description);
-            formData.append("personelId", formState.personelId);
-            formState.files.forEach((file) => {
-                formData.append("files", file);
-            });
-
             const response = await axios.post(
-                `http://localhost:${PORT}/demande-maladies`,
-                formData,
+                `http://localhost:${PORT}/demande-lang`,
+                {
+                    ...formState,
+                    personelId: user.id,
+                },
                 {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     },
                 },
             );
-
             if (response.status === 201) {
-                setTimeout(() => {
-                    setSentStatus({
-                        success: true,
-                        error: "",
-                        inprogress: false,
-                        alert: "",
-                    });
-                }, 2000);
+                setSentStatus({
+                    success: true,
+                    error: "",
+                    inprogress: false,
+                    alert: "",
+                    description: 0,
+                });
             }
         } catch (error) {
             if (
@@ -129,26 +129,39 @@ const Maladies: React.FC = () => {
             ) {
                 setSentStatus({
                     success: false,
-                    error: error.response.data.message || "An error occurred",
                     inprogress: false,
                     alert: "",
+                    description: 0,
+                    error: error.response.data.message || "An error occurred",
                 });
             } else {
-                console.log(error);
                 setSentStatus({
                     success: false,
-                    error: "An error occurred",
                     inprogress: false,
                     alert: "",
+                    description: 0,
+                    error: error.response.data.message || "An error occurred",
                 });
             }
         }
     };
 
+    useEffect(() => {
+        const fetchSousActivitiePieces = async () => {
+            try {
+                const res = await axios.get(`http://localhost:${PORT}/sous-activite/15`);
+                const data: SingleSousActivitiesWithpieces = res.data;
+                setPieces(data.pieces.length);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        fetchSousActivitiePieces();
+    }, []);
     return (
         <div className="bg-landing h-screen">
-            <Navbar />
-            <Container maxWidth="sm" className={"w-full flex items-center justify-center h-[80vh]"}>
+            {<Navbar />}
+            <Container maxWidth="sm" className="w-full flex items-center justify-center h-[80vh]">
                 <CssBaseline />
                 <Box
                     sx={{
@@ -157,7 +170,7 @@ const Maladies: React.FC = () => {
                         flexDirection: "column",
                         alignItems: "center",
                     }}
-                    className={'w-full'}
+                    className ={'w-full'}
                 >
                     <Typography
                         variant="h5"
@@ -166,7 +179,7 @@ const Maladies: React.FC = () => {
                         }}
                         className="mr-auto rounded font-main flex gap-2 items-center text-white capitalize w-full p-4"
                     >
-                        Demande de Maladies
+                        demande de language
                     </Typography>
                     <Box
                         component="form"
@@ -186,10 +199,10 @@ const Maladies: React.FC = () => {
                                     onChange={handleChange}
                                     multiline
                                     rows={4}
-                                    inputProps={{ maxLength: 300 }}
+                                    inputProps={{ maxLength: 500 }}
                                 />
                                 <Typography className="text-sm text-gray-500 mt-1">
-                                    {`Maximum ${formState.description.length} / 300 characters`}
+                                    {`Maximum ${sentStatus.description || 0} / 200 characters`}
                                 </Typography>
                             </Grid>
                             <Grid item xs={12}>
@@ -211,16 +224,16 @@ const Maladies: React.FC = () => {
                                             mb: 2,
                                         }}
                                     >
-                                        Importer les Fichiers
+                                        Importer les Fechiers
                                     </Button>
                                 </label>
                                 {formState.files.length > 0 ? (
                                     <Typography>{formState.files.length} files chosen</Typography>
                                 ) : (
-                                    <Typography>No fichier selectioné</Typography>
+                                    <Typography>No fechier selectioner</Typography>
                                 )}
                                 <Typography className="text-sm text-gray-500 mt-1">
-                                    Max {maxFiles} Fichiers
+                                    Max {pieces} Fechiers
                                 </Typography>
                             </Grid>
                         </Grid>
@@ -231,12 +244,17 @@ const Maladies: React.FC = () => {
                         )}
                         {sentStatus.success && (
                             <Alert className="mt-4" severity="success">
-                                Le formulaire a été envoyé avec succès
+                                le form est envouyer avec succes
+                            </Alert>
+                        )}
+                        {sentStatus.description > 200 && (
+                            <Alert className="mt-4" severity="info">
+                                max charachters est 200
                             </Alert>
                         )}
                         {sentStatus.alert && (
                             <Alert className="mt-4" severity="info">
-                                {sentStatus.alert}
+                                {`max fechier est  ${pieces} pour ce demande`}
                             </Alert>
                         )}
                         <Button
@@ -246,12 +264,18 @@ const Maladies: React.FC = () => {
                             type="submit"
                             className="bg-mainBleu hover:bg-yellow transition-all duration-500 flex gap-x-4"
                         >
-                            Envoyer
+                            Envouyer
                             {sentStatus.inprogress && (
                                 <CircularProgress color="inherit" size={20} />
                             )}
-                            {sentStatus.success && <Verified fontSize="small" />}
-                            {sentStatus.error && <ErrorOutlineRounded fontSize="small" />}
+                            {sentStatus.success && <Verified color="inherit" fontSize={'small'} />}
+                            {sentStatus.error ||
+                            sentStatus.description > 200 ||
+                            sentStatus.alert ? (
+                                <ErrorOutlineRounded color="inherit" fontSize={'small'} />
+                            ) : (
+                                ""
+                            )}
                         </Button>
                     </Box>
                 </Box>
@@ -260,4 +284,4 @@ const Maladies: React.FC = () => {
     );
 };
 
-export default Maladies;
+export default Lang;

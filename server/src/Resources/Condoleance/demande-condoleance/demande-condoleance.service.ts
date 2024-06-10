@@ -3,7 +3,7 @@ import { CreateDemandeCondoleanceDto } from './dto/create-demande-condoleance.dt
 import { UpdateDemandeCondoleanceDto } from './dto/update-demande-condoleance.dto';
 import { PrismaClient } from '@prisma/client';
 import { UuidService } from '../../../Helpers/UUID/uuid.service';
-import { format, getYear } from 'date-fns';
+import { getYear } from 'date-fns';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -22,6 +22,7 @@ export class DemandeCondoleanceService {
   }
 
   async create(createCondoleanceDto: CreateDemandeCondoleanceDto) {
+    const condoleanceUUID = this.uuid.Getuuid();
     const currentyear = getYear(new Date());
     const matchingPersonel = await this.prisma.personel.findUnique({
       where: { id: createCondoleanceDto.personelId },
@@ -64,23 +65,17 @@ export class DemandeCondoleanceService {
     }
     try {
       if (createCondoleanceDto.files && matchingPersonel.matricule) {
-        const dir = `C:\\AOS\\${matchingPersonel.matricule}\\${currentyear}\\Aides_financières\\Demandes-Condoleances`;
+        const dir = `C:\\AOS\\${matchingPersonel.matricule}\\${currentyear}\\Aides_financières\\Demandes-Condoleances\\${condoleanceUUID}`;
         fs.mkdirSync(dir, { recursive: true });
-        const filesFolder = path.join(
-          dir,
-          `${format(new Date(), 'dd-MM-yyyy-HH-mm-ss')}`,
-        );
-        fs.mkdirSync(filesFolder, { recursive: true });
         createCondoleanceDto.files.map((file) => {
-          const filePath = path.join(filesFolder, file.originalname);
+          const filePath = path.join(dir, file.originalname);
           fs.writeFileSync(filePath, file.buffer);
           console.log(`File written at ${filePath}`);
         });
       }
       return this.prisma.demandeCondoleance.create({
-        //@ts-ignore
         data: {
-          id: this.uuid.Getuuid(),
+          id: condoleanceUUID,
           personelId: createCondoleanceDto.personelId,
           sousActiviteId: '6',
           typeCondoleanceId: createCondoleanceDto.selectedDeceased,
@@ -92,13 +87,56 @@ export class DemandeCondoleanceService {
     }
   }
 
-  update(id: string, updateDemandeCondoleanceDto: UpdateDemandeCondoleanceDto) {
-    return this.prisma.demandeCondoleance.update({
-      where: { id },
-      data: updateDemandeCondoleanceDto,
+  async update(
+    id: string,
+    updateDemandeCondoleance: UpdateDemandeCondoleanceDto,
+  ) {
+    const Condoleance = await this.prisma.demandeCondoleance.findUnique({
+      where: {
+        id,
+        personelId: updateDemandeCondoleance.personelId,
+      },
     });
-  }
+    if (!Condoleance) {
+      throw new HttpException(
+        'ya pas une demande avec ce id',
+        HttpStatus.BAD_REQUEST,
+      );
+    } else if (Condoleance) {
+      const matchingPersonel = await this.prisma.personel.findUnique({
+        where: {
+          id: updateDemandeCondoleance.personelId,
+        },
+      });
 
+      try {
+        if (updateDemandeCondoleance.files) {
+          const dir = `C:\\AOS\\${matchingPersonel.matricule}\\${Condoleance.effet.getFullYear()}\\Aides_financières\\Demandes-Condoleances\\${id}`;
+          const ExisstFiles = fs.readdirSync(dir);
+          ExisstFiles.map((filePath) => {
+            fs.unlinkSync(path.join(dir, filePath));
+          });
+          updateDemandeCondoleance.files.map((file) => {
+            const filePath = path.join(dir, file.originalname);
+            fs.writeFileSync(filePath, file.buffer);
+            console.log(`File written at ${filePath}`);
+          });
+        }
+        return this.prisma.demandeCondoleance.update({
+          where: {
+            id,
+          },
+          data: {
+            description: updateDemandeCondoleance.description,
+            typeCondoleanceId: updateDemandeCondoleance.selectedDeceased,
+            Status: null,
+          },
+        });
+      } catch {
+        throw new HttpException(`error`, HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+    }
+  }
   remove(id: string) {
     return this.prisma.demandeCondoleance.delete({ where: { id } });
   }

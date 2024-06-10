@@ -11,21 +11,16 @@ import {
   Typography,
 } from "@mui/material";
 import { ErrorOutlineRounded, Verified } from "@mui/icons-material";
-import Navbar from "../navbar.tsx";
 import axios from "axios";
-import { SingleSousActivitiesWithpieces } from "../../interfaces/types.tsx";
 import { PORT } from "../../../env.ts";
+import { useParams } from "react-router-dom";
+import Header from "../header.tsx";
+import SideBar from "../sidebar.tsx";
 
-interface FormState {
-  date: string;
-  files: File[];
-  personelId: string;
-}
-
-const Retrait: React.FC = () => {
-  const userDataString = localStorage.getItem("user");
-  const JSONDATA = userDataString ? JSON.parse(userDataString) : null;
-  const user = JSONDATA;
+const UpdateZoo: React.FC = () => {
+  const { demandeId } = useParams();
+  const userDataString = JSON.parse(localStorage.getItem("user"));
+  const user = userDataString;
   const [sentStatus, setSentStatus] = useState<{
     success: boolean;
     inprogress: boolean;
@@ -37,15 +32,23 @@ const Retrait: React.FC = () => {
     error: "",
     alert: "",
   });
-  const [pieces, setPieces] = useState<number>(1);
-  const [formState, setFormState] = useState<FormState>({
+
+  const [formState, setFormState] = useState<{
+    description: string;
+    date: string;
+    adulte: number;
+    enfant: number;
+    personelId: string;
+  }>({
+    description: "",
     date: "",
-    files: [],
+    adulte: 0,
+    enfant: 0,
     personelId: user.id,
   });
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setSentStatus({
@@ -60,24 +63,8 @@ const Retrait: React.FC = () => {
     }));
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || []);
-    if (files.length > pieces) {
-      setSentStatus({
-        success: false,
-        inprogress: false,
-        error: "",
-        alert: `Max files allowed is ${pieces}`,
-      });
-      return;
-    }
-    setFormState((prevState) => ({
-      ...prevState,
-      files,
-    }));
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
+    console.log(formState);
     e.preventDefault();
     try {
       setSentStatus({
@@ -86,16 +73,16 @@ const Retrait: React.FC = () => {
         error: "",
         alert: "",
       });
-      const response = await axios.post(
-        `http://localhost:${PORT}/retrait`,
+      const response = await axios.patch(
+        `http://localhost:${PORT}/demande-zoo/${demandeId}`,
         formState,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
           },
-        },
+        }
       );
-      if (response.status === 201) {
+      if (response.status === 200) {
         setTimeout(() => {
           setSentStatus({
             success: true,
@@ -118,6 +105,7 @@ const Retrait: React.FC = () => {
           alert: "",
         });
       } else {
+        console.log(error);
         setSentStatus({
           success: false,
           error: "An error occurred",
@@ -127,26 +115,34 @@ const Retrait: React.FC = () => {
       }
     }
   };
-
   useEffect(() => {
-    const fetchSousActivitiePieces = async () => {
+    const fetchtargetdemande = async () => {
       try {
-        const res = await axios.get(`http://localhost:${PORT}/sous-activite/4`);
-        const data: SingleSousActivitiesWithpieces = res.data;
-        setPieces(data.pieces.length);
+        const res = await axios.get(
+          `http://localhost:${PORT}/demande-zoo/${demandeId}`
+        );
+        const data = await res.data;
+        setFormState((prevState) => ({
+          ...prevState,
+          date: data.date,
+          description :data.description,
+          adulte : data.adulte,
+          enfant : data.enfant
+        }));
       } catch (error) {
         console.log(error);
       }
     };
-    fetchSousActivitiePieces();
+    fetchtargetdemande();
   }, []);
-  useEffect(() => {
-    console.log(sentStatus);
-  }, [sentStatus]);
   return (
     <div className="bg-landing h-screen">
-      {<Navbar />}
-      <Container maxWidth="sm" className={"w-full flex items-center justify-center h-[80vh]"}>
+      <Header />
+      <SideBar />
+      <Container
+        maxWidth="sm"
+        className={"w-full flex items-center justify-center h-screen"}
+      >
         <CssBaseline />
         <Box
           sx={{
@@ -155,7 +151,7 @@ const Retrait: React.FC = () => {
             flexDirection: "column",
             alignItems: "center",
           }}
-          className={'w-full'}
+          className={"w-full"}
         >
           <Typography
             variant="h5"
@@ -164,7 +160,7 @@ const Retrait: React.FC = () => {
             }}
             className="mr-auto rounded font-main flex gap-2 items-center text-white capitalize w-full p-4"
           >
-            Demande de Retrait
+            Modification de Demande de Zoo
           </Typography>
           <Box
             component="form"
@@ -177,45 +173,54 @@ const Retrait: React.FC = () => {
                 <TextField
                   required
                   fullWidth
-                  name="date"
-                  label="Date"
-                  type="date"
-                  placeholder="JJ/MM/AAAA"
-                  value={formState.date}
+                  name="description"
+                  label="Description"
+                  type="text"
+                  multiline
+                  rows={4}
+                  value={formState.description}
                   onChange={handleChange}
-                  inputProps={{ pattern: "\\d{1,2}/\\d{1,2}/\\d{4}" }}
+                  helperText={`Max caractères ${formState.description.length} / 100`}
+                  inputProps={{ maxLength: 100 }}
                 />
               </Grid>
               <Grid item xs={12}>
-                <input
-                  type="file"
-                  id="files"
-                  name="files"
-                  onChange={handleFileChange}
-                  multiple
-                  style={{ display: "none" }}
+                <TextField
+                  required
+                  fullWidth
+                  name="date"
+                  label="Date"
+                  type="date"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  value={formState.date}
+                  onChange={handleChange}
                 />
-                <label htmlFor="files">
-                  <Button
-                    variant="contained"
-                    component="span"
-                    className="bg-mainBleu"
-                    sx={{
-                      color: "white",
-                      mb: 2,
-                    }}
-                  >
-                    Importer les Fichiers
-                  </Button>
-                </label>
-                {formState.files.length > 0 ? (
-                  <Typography>{formState.files.length} files chosen</Typography>
-                ) : (
-                  <Typography>No fichier selectioné</Typography>
-                )}
-                <Typography className="text-sm text-gray-500 mt-1">
-                  Max {pieces} Fichiers
-                </Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  required
+                  fullWidth
+                  name="adulte"
+                  label="Nombre d'adultes"
+                  type="number"
+                  value={formState.adulte}
+                  onChange={handleChange}
+                  inputProps={{ min: 0 }}
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  required
+                  fullWidth
+                  name="enfant"
+                  label="Nombre d'enfants"
+                  type="number"
+                  value={formState.enfant}
+                  onChange={handleChange}
+                  inputProps={{ min: 0 }}
+                />
               </Grid>
             </Grid>
             {sentStatus.error && (
@@ -244,8 +249,8 @@ const Retrait: React.FC = () => {
               {sentStatus.inprogress && (
                 <CircularProgress color="inherit" size={20} />
               )}
-              {sentStatus.success && <Verified fontSize={"small"} />}
-              {sentStatus.error && <ErrorOutlineRounded fontSize={"small"} />}
+              {sentStatus.success && <Verified fontSize="small" />}
+              {sentStatus.error && <ErrorOutlineRounded fontSize="small" />}
             </Button>
           </Box>
         </Box>
@@ -254,4 +259,4 @@ const Retrait: React.FC = () => {
   );
 };
 
-export default Retrait;
+export default UpdateZoo;

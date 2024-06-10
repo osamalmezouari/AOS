@@ -7,12 +7,12 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { DemadesDataType } from "../../interfaces/types";
+import { PORT } from "../../../env";
 const SousActivitieDatatable = () => {
   const { id } = useParams();
   const userDataString = localStorage.getItem("user");
   const JSONDATA = userDataString ? JSON.parse(userDataString) : null;
   const user = JSONDATA;
-  const [toogleObserv, SetToogleObserv] = useState({})
   const [DataTable, setDatatable] = useState<{
     data: DemadesDataType | [];
     loading: boolean;
@@ -35,10 +35,10 @@ const SousActivitieDatatable = () => {
         );
         const data = await res.data;
         const approuved = data.filter(
-          (item: string) => item === "Approuvées"
+          (item: string) => item === "Approuvée"
         ).length;
         const refused = data.filter(
-          (item: string) => item === "Refusées"
+          (item: string) => item === "Refusée"
         ).length;
         const Docrequired = data.filter(
           (item: string) => item === "Documents requis"
@@ -58,11 +58,12 @@ const SousActivitieDatatable = () => {
     };
     getStatDashboardProfile();
   }, [user.id]);
+
   useEffect(() => {
     const personeldemandesDetails = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:3400/personel/SingleSousActivitiesdemandesWithDetails/${user.id}/${id}`
+          `http://localhost:${PORT}/personel/SingleSousActivitiesdemandesWithDetails/${user.id}/${id}`
         );
         const data = await res.data;
         setDatatable({
@@ -78,7 +79,7 @@ const SousActivitieDatatable = () => {
       }
     };
     personeldemandesDetails();
-  }, [user.id]);
+  }, [user.id,id]);
 
   return (
     <Box>
@@ -160,7 +161,7 @@ const SousActivitieDatatable = () => {
               </Box>
             </Box>
             <Grid item xl={12}>
-              <DemandesManageTable data={DataTable.data} />
+              <DemandesManageTable data={DataTable.data}/>
             </Grid>
           </Grid>
         </Container>

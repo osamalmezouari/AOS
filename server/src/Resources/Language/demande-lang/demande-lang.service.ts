@@ -3,7 +3,7 @@ import { CreateDemandeLangDto } from './dto/create-demande-lang.dto';
 import { UpdateDemandeLangDto } from './dto/update-demande-lang.dto';
 import { PrismaClient } from '@prisma/client';
 import { UuidService } from '../../../Helpers/UUID/uuid.service';
-import { format, getYear } from 'date-fns';
+import { getYear } from 'date-fns';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 
@@ -21,7 +21,7 @@ export class DemandeLangService {
     return this.prismaClient.demandeLang.findUnique({ where: { id } });
   }
   async create(createDemandeLangDto: CreateDemandeLangDto) {
-    console.log(createDemandeLangDto);
+    const LangUUID = this.uuid.Getuuid();
     const currentyear = getYear(new Date());
     const matchingPersonel = await this.prismaClient.personel.findUnique({
       where: { id: createDemandeLangDto.personelId },
@@ -64,15 +64,10 @@ export class DemandeLangService {
     }
     try {
       if (createDemandeLangDto.files) {
-        const dir = `C:\\AOS\\${matchingPersonel.matricule}\\${currentyear}\\Aides_financières\\Demandes-lang`;
+        const dir = `C:\\AOS\\${matchingPersonel.matricule}\\${currentyear}\\Aides_financières\\Demandes-lang\\${LangUUID}`;
         fs.mkdirSync(dir, { recursive: true });
-        const filesFolder = path.join(
-          dir,
-          `${format(new Date(), 'dd-MM-yyyy-HH-mm-ss')}`,
-        );
-        fs.mkdirSync(filesFolder, { recursive: true });
         createDemandeLangDto.files.map((file) => {
-          const filePath = path.join(filesFolder, file.originalname);
+          const filePath = path.join(dir, file.originalname);
           fs.writeFileSync(filePath, file.buffer);
           console.log(`File written at ${filePath}`);
         });
@@ -82,7 +77,7 @@ export class DemandeLangService {
           id: this.uuid.Getuuid(),
           personelId: createDemandeLangDto.personelId,
           description: createDemandeLangDto.description,
-          sousActiviteId: '14',
+          sousActiviteId: '15',
         },
       });
     } catch (error) {
@@ -90,11 +85,51 @@ export class DemandeLangService {
     }
   }
 
-  update(id: string, updateDemandeLangDto: UpdateDemandeLangDto) {
-    return this.prismaClient.demandeLang.update({
-      where: { id },
-      data: updateDemandeLangDto,
+  async update(id: string, updateDemandeLang: UpdateDemandeLangDto) {
+    const Lang = await this.prismaClient.demandeLang.findUnique({
+      where: {
+        id,
+        personelId: updateDemandeLang.personelId,
+      },
     });
+    if (!Lang) {
+      throw new HttpException(
+        'ya pas une demande avec ce id',
+        HttpStatus.BAD_REQUEST,
+      );
+    } else if (Lang) {
+      const matchingPersonel = await this.prismaClient.personel.findUnique({
+        where: {
+          id: updateDemandeLang.personelId,
+        },
+      });
+
+      try {
+        if (updateDemandeLang.files) {
+          const dir = `C:\\AOS\\${matchingPersonel.matricule}\\${Lang.effet.getFullYear()}\\Aides_financières\\Demandes-lang\\${id}`;
+          const ExisstFiles = fs.readdirSync(dir);
+          ExisstFiles.map((filePath) => {
+            fs.unlinkSync(path.join(dir, filePath));
+          });
+          updateDemandeLang.files.map((file) => {
+            const filePath = path.join(dir, file.originalname);
+            fs.writeFileSync(filePath, file.buffer);
+            console.log(`File written at ${filePath}`);
+          });
+        }
+        return this.prismaClient.demandeLang.update({
+          where: {
+            id,
+          },
+          data: {
+            description: updateDemandeLang.description,
+            Status: null,
+          },
+        });
+      } catch {
+        throw new HttpException(`error`, HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+    }
   }
 
   remove(id: string) {

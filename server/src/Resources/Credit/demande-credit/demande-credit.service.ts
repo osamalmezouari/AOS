@@ -23,6 +23,7 @@ export class DemandeCreditService {
 
   async create(createDemandeCreditDto: CreateDemandeCreditDto) {
     const currentyear = getYear(new Date());
+    const CreditUUID = this.uuid.Getuuid();
     const matchingPersonel = await this.prisma.personel.findUnique({
       where: { id: createDemandeCreditDto.personelId },
     });
@@ -64,15 +65,10 @@ export class DemandeCreditService {
     }
     try {
       if (createDemandeCreditDto.files && matchingPersonel.matricule) {
-        const dir = `C:\\AOS\\${matchingPersonel.matricule}\\${currentyear}\\Aides_financières\\Demandes-credit`;
+        const dir = `C:\\AOS\\${matchingPersonel.matricule}\\${currentyear}\\Aides_financières\\Demandes-credit\\${CreditUUID}`;
         fs.mkdirSync(dir, { recursive: true });
-        const filesFolder = path.join(
-          dir,
-          `${format(new Date(), 'dd-MM-yyyy-HH-mm-ss')}`,
-        );
-        fs.mkdirSync(filesFolder, { recursive: true });
         createDemandeCreditDto.files.map((file) => {
-          const filePath = path.join(filesFolder, file.originalname);
+          const filePath = path.join(dir, file.originalname);
           fs.writeFileSync(filePath, file.buffer);
           console.log(`File written at ${filePath}`);
         });
@@ -82,7 +78,7 @@ export class DemandeCreditService {
           id: this.uuid.Getuuid(),
           personelId: createDemandeCreditDto.personelId,
           sousActiviteId: '3',
-          mantantCredit: 10,
+          mantantCredit: createDemandeCreditDto.mantantCredit,
           description: createDemandeCreditDto.description,
         },
       });
@@ -90,11 +86,51 @@ export class DemandeCreditService {
       throw new HttpException('Error', HttpStatus.FAILED_DEPENDENCY);
     }
   }
-  update(id: string, updateDemandeCreditDto: UpdateDemandeCreditDto) {
-    return this.prisma.demandeCredit.update({
-      where: { id },
-      data: updateDemandeCreditDto,
+  async update(id: string, updateDemandeCredit: UpdateDemandeCreditDto) {
+    const Credit = await this.prisma.demandeCredit.findUnique({
+      where: {
+        id,
+        personelId: updateDemandeCredit.personelId,
+      },
     });
+    if (!Credit) {
+      throw new HttpException(
+        'ya pas une demande avec ce id ou tu es pas l acces pour modifier cd demande',
+        HttpStatus.BAD_REQUEST,
+      );
+    } else if (Credit) {
+      const matchingPersonel = await this.prisma.personel.findUnique({
+        where: {
+          id: updateDemandeCredit.personelId,
+        },
+      });
+
+      try {
+        if (updateDemandeCredit.files) {
+          const dir = `C:\\AOS\\${matchingPersonel.matricule}\\${Credit.effet.getFullYear()}\\Aides_financières\\Demandes-credit\\${id}`;
+          const ExisstFiles = fs.readdirSync(dir);
+          ExisstFiles.map((filePath) => {
+            fs.unlinkSync(path.join(dir, filePath));
+          });
+          updateDemandeCredit.files.map((file) => {
+            const filePath = path.join(dir, file.originalname);
+            fs.writeFileSync(filePath, file.buffer);
+            console.log(`File updated at ${filePath}`);
+          });
+        }
+        return this.prisma.demandeCredit.update({
+          where: {
+            id,
+          },
+          data: {
+            description: updateDemandeCredit.description,
+            mantantCredit: updateDemandeCredit.mantantCredit,
+          },
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    }
   }
 
   remove(id: string) {

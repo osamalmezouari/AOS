@@ -36,13 +36,15 @@ export class DemandeCreditController {
     createDemandeCreditDto.files = files;
     return this.demandeCreditService.create(createDemandeCreditDto);
   }
-
+  @UseInterceptors(AnyFilesInterceptor())
   @Patch(':id')
   update(
     @Param('id') id: string,
-    @Body() updateDemandeCreditDto: UpdateDemandeCreditDto,
+    @Body() updateDemandeCredit: UpdateDemandeCreditDto,
+    @UploadedFiles() files: Array<Express.Multer.File>,
   ) {
-    return this.demandeCreditService.update(id, updateDemandeCreditDto);
+    updateDemandeCredit.files = files;
+    return this.demandeCreditService.update(id, updateDemandeCredit);
   }
 
   @Delete(':id')

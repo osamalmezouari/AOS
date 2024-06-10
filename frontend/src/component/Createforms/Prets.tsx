@@ -15,9 +15,10 @@ import axios from "axios";
 import { PORT } from "../../../env.ts";
 import Navbar from "../navbar.tsx";
 
-const Pelerinage: React.FC = () => {
-    const userDataString = JSON.parse(localStorage.getItem("user"));
-    const user = userDataString;
+const Prets: React.FC = () => {
+    const userDataString = localStorage.getItem("user");
+    const user = userDataString ? JSON.parse(userDataString) : null;
+
     const [sentStatus, setSentStatus] = useState<{
         success: boolean;
         inprogress: boolean;
@@ -32,25 +33,25 @@ const Pelerinage: React.FC = () => {
 
     const [maxFiles, setMaxFiles] = useState<number>(0);
     const [formState, setFormState] = useState<{
-        year: number;
+        mantantCredit: number;
+        description: string;
         files: File[];
         personelId: string;
     }>({
-        year: 0,
+        mantantCredit: 0,
+        description: "",
         files: [],
-        personelId: user.id,
+        personelId: user?.id || "",
     });
 
     useEffect(() => {
         const fetchMaxFiles = async () => {
             try {
-                const res = await axios.get(
-                    `http://localhost:${PORT}/sous-activite/2`,
-                );
+                const res = await axios.get(`http://localhost:${PORT}/sous-activite/3`);
                 const maxPieces = res.data.pieces.length;
                 setMaxFiles(maxPieces);
             } catch (error) {
-                console.log(error);
+                console.error(error);
             }
         };
         fetchMaxFiles();
@@ -68,7 +69,7 @@ const Pelerinage: React.FC = () => {
         });
         setFormState((prevState) => ({
             ...prevState,
-            [name]: name === "year" ? Number(value) : value,
+            [name]: value,
         }));
     };
 
@@ -82,6 +83,7 @@ const Pelerinage: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        console.log(formState)
         try {
             setSentStatus({
                 inprogress: true,
@@ -89,8 +91,17 @@ const Pelerinage: React.FC = () => {
                 error: "",
                 alert: "",
             });
+            const formData = new FormData();
+            formData.append("mantantCredit", formState.mantantCredit.toString());
+            formData.append("description", formState.description);
+            formData.append("personelId", formState.personelId);
+            formState.files.forEach((file) => {
+                formData.append("files", file);
+            });
+
             const response = await axios.post(
-                `http://localhost:${PORT}/demande-pelerinage`, formState,
+                `http://localhost:${PORT}/demande-credit`,
+                formData,
                 {
                     headers: {
                         "Content-Type": "multipart/form-data",
@@ -120,7 +131,7 @@ const Pelerinage: React.FC = () => {
                     alert: "",
                 });
             } else {
-                console.log(error)
+                console.error(error);
                 setSentStatus({
                     success: false,
                     error: "An error occurred",
@@ -152,7 +163,7 @@ const Pelerinage: React.FC = () => {
                         }}
                         className="mr-auto rounded font-main flex gap-2 items-center text-white capitalize w-full p-4"
                     >
-                        Demande de Pèlerinage ou Umrah
+                        Demande de Prêts
                     </Typography>
                     <Box
                         component="form"
@@ -165,12 +176,29 @@ const Pelerinage: React.FC = () => {
                                 <TextField
                                     required
                                     fullWidth
-                                    name="year"
-                                    label="Année"
+                                    name="mantantCredit"
+                                    label="Montant du Crédit DH"
                                     type="number"
-                                    value={formState.year}
+                                    value={formState.mantantCredit}
                                     onChange={handleChange}
+                                    inputProps={{ min: 0 }}
                                 />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    name="description"
+                                    label="Description"
+                                    multiline
+                                    rows={4}
+                                    value={formState.description}
+                                    onChange={handleChange}
+                                    inputProps={{ maxLength: 300 }}
+                                />
+                                <Typography variant="body2" color="textSecondary" className={'capitalize pt-2'} component="p">
+                                    max charachters {formState.description.length} / 300
+                                </Typography>
                             </Grid>
                             <Grid item xs={12}>
                                 <input
@@ -195,9 +223,9 @@ const Pelerinage: React.FC = () => {
                                     </Button>
                                 </label>
                                 {formState.files.length > 0 ? (
-                                    <Typography>{formState.files.length} files chosen</Typography>
+                                    <Typography>{formState.files.length} fichiers choisis</Typography>
                                 ) : (
-                                    <Typography>No fichier selectioné</Typography>
+                                    <Typography>Aucun fichier sélectionné</Typography>
                                 )}
                                 <Typography className="text-sm text-gray-500 mt-1">
                                     Max {maxFiles} Fichiers
@@ -240,4 +268,4 @@ const Pelerinage: React.FC = () => {
     );
 };
 
-export default Pelerinage;
+export default Prets;

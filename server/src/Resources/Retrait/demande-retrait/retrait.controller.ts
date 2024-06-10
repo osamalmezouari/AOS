@@ -29,7 +29,7 @@ export class RetraitController {
   }
   @Post('')
   @UseInterceptors(AnyFilesInterceptor())
-  create(
+  reate(
     @Body() createRetraitDto: CreateRetraitDto,
     @UploadedFiles() files: Array<Express.Multer.File>,
   ) {
@@ -37,7 +37,13 @@ export class RetraitController {
     return this.retraitService.create(createRetraitDto);
   }
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRetraitDto: UpdateRetraitDto) {
+  @UseInterceptors(AnyFilesInterceptor())
+  update(
+    @Param('id') id: string,
+    @Body() updateRetraitDto: UpdateRetraitDto,
+    @UploadedFiles() files: Array<Express.Multer.File>,
+  ) {
+    updateRetraitDto.files = files;
     return this.retraitService.update(id, updateRetraitDto);
   }
 

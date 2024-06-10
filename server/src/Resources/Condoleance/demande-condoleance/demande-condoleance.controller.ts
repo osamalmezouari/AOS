@@ -40,11 +40,14 @@ export class DemandeCondoleanceController {
     return this.demandeCondoleanceService.create(createDemandeCondoleanceDto);
   }
 
+  @UseInterceptors(AnyFilesInterceptor())
   @Patch(':id')
   update(
     @Param('id') id: string,
     @Body() updateDemandeCondoleanceDto: UpdateDemandeCondoleanceDto,
+    @UploadedFiles() files: Array<Express.Multer.File>,
   ) {
+    updateDemandeCondoleanceDto.files = files;
     return this.demandeCondoleanceService.update(
       id,
       updateDemandeCondoleanceDto,

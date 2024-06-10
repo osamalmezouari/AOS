@@ -3,7 +3,7 @@ import { CreateDemandeMaladyDto } from './dto/create-demande-malady.dto';
 import { UpdateDemandeMaladyDto } from './dto/update-demande-malady.dto';
 import { PrismaClient } from '@prisma/client';
 import { UuidService } from '../../../Helpers/UUID/uuid.service';
-import { format, getYear } from 'date-fns';
+import {  getYear } from 'date-fns';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -21,6 +21,7 @@ export class DemandeMaladiesService {
     return this.prisma.demamdeMaladies.findUnique({ where: { id } });
   }
   async create(createDemandeMaladyDto: CreateDemandeMaladyDto) {
+    const MaladiesUUID = this.uuid.Getuuid();
     const currentyear = getYear(new Date());
     console.log(createDemandeMaladyDto);
     const matchingPersonel = await this.prisma.personel.findUnique({
@@ -69,15 +70,11 @@ export class DemandeMaladiesService {
     }
     try {
       if (createDemandeMaladyDto.files && matchingPersonel.matricule) {
-        const dir = `C:\\AOS\\${matchingPersonel.matricule}\\${currentyear}\\Aides_financières\\Demandes-Maladies`;
+        const dir = `C:\\AOS\\${matchingPersonel.matricule}\\${currentyear}\\Aides_financières\\Demandes-Maladies\\${MaladiesUUID}`;
         fs.mkdirSync(dir, { recursive: true });
-        const filesFolder = path.join(
-          dir,
-          `${format(new Date(), 'dd-MM-yyyy-HH-mm-ss')}`,
-        );
-        fs.mkdirSync(filesFolder, { recursive: true });
+        fs.mkdirSync(dir, { recursive: true });
         createDemandeMaladyDto.files.map((file) => {
-          const filePath = path.join(filesFolder, file.originalname);
+          const filePath = path.join(dir, file.originalname);
           fs.writeFileSync(filePath, file.buffer);
           console.log(`File written at ${filePath}`);
         });
@@ -95,11 +92,51 @@ export class DemandeMaladiesService {
     }
   }
 
-  update(id: string, updateDemandeMaladyDto: UpdateDemandeMaladyDto) {
-    return this.prisma.demamdeMaladies.update({
-      where: { id },
-      data: updateDemandeMaladyDto,
+  async update(id: string, updateDemandeMaladie: UpdateDemandeMaladyDto) {
+    const Maladies = await this.prisma.demamdeMaladies.findUnique({
+      where: {
+        id,
+        personelId: updateDemandeMaladie.personelId,
+      },
     });
+    if (!Maladies) {
+      throw new HttpException(
+        'ya pas une demande avec ce id',
+        HttpStatus.BAD_REQUEST,
+      );
+    } else if (Maladies) {
+      const matchingPersonel = await this.prisma.personel.findUnique({
+        where: {
+          id: updateDemandeMaladie.personelId,
+        },
+      });
+
+      try {
+        if (updateDemandeMaladie.files) {
+          const dir = `C:\\AOS\\${matchingPersonel.matricule}\\${Maladies.effet.getFullYear()}\\Aides_financières\\Demandes-Maladies\\${id}`;
+          const ExisstFiles = fs.readdirSync(dir);
+          ExisstFiles.map((filePath) => {
+            fs.unlinkSync(path.join(dir, filePath));
+          });
+          updateDemandeMaladie.files.map((file) => {
+            const filePath = path.join(dir, file.originalname);
+            fs.writeFileSync(filePath, file.buffer);
+            console.log(`File written at ${filePath}`);
+          });
+        }
+        return this.prisma.demamdeMaladies.update({
+          where: {
+            id,
+          },
+          data: {
+            Decription: updateDemandeMaladie.description,
+            Status: null,
+          },
+        });
+      } catch {
+        throw new HttpException(`error`, HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+    }
   }
 
   remove(id: string) {

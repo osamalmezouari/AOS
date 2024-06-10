@@ -15,10 +15,9 @@ import axios from "axios";
 import { PORT } from "../../../env.ts";
 import Navbar from "../navbar.tsx";
 
-const Prets: React.FC = () => {
-    const userDataString = localStorage.getItem("user");
-    const user = userDataString ? JSON.parse(userDataString) : null;
-
+const Pelerinage: React.FC = () => {
+    const userDataString = JSON.parse(localStorage.getItem("user"));
+    const user = userDataString;
     const [sentStatus, setSentStatus] = useState<{
         success: boolean;
         inprogress: boolean;
@@ -33,25 +32,25 @@ const Prets: React.FC = () => {
 
     const [maxFiles, setMaxFiles] = useState<number>(0);
     const [formState, setFormState] = useState<{
-        montantCredit: number;
-        description: string;
+        year: number;
         files: File[];
         personelId: string;
     }>({
-        montantCredit: 0,
-        description: "",
+        year: new Date().getFullYear(),
         files: [],
-        personelId: user?.id || "",
+        personelId: user.id,
     });
 
     useEffect(() => {
         const fetchMaxFiles = async () => {
             try {
-                const res = await axios.get(`http://localhost:${PORT}/sous-activite/3`);
+                const res = await axios.get(
+                    `http://localhost:${PORT}/sous-activite/2`,
+                );
                 const maxPieces = res.data.pieces.length;
                 setMaxFiles(maxPieces);
             } catch (error) {
-                console.error(error);
+                console.log(error);
             }
         };
         fetchMaxFiles();
@@ -69,7 +68,7 @@ const Prets: React.FC = () => {
         });
         setFormState((prevState) => ({
             ...prevState,
-            [name]: value,
+            [name]: name === "year" ? Number(value) : value,
         }));
     };
 
@@ -90,17 +89,8 @@ const Prets: React.FC = () => {
                 error: "",
                 alert: "",
             });
-            const formData = new FormData();
-            formData.append("montantCredit", formState.montantCredit.toString());
-            formData.append("description", formState.description);
-            formData.append("personelId", formState.personelId);
-            formState.files.forEach((file) => {
-                formData.append("files", file);
-            });
-
             const response = await axios.post(
-                `http://localhost:${PORT}/demande-credit`,
-                formData,
+                `http://localhost:${PORT}/demande-pelerinage`, formState,
                 {
                     headers: {
                         "Content-Type": "multipart/form-data",
@@ -130,7 +120,7 @@ const Prets: React.FC = () => {
                     alert: "",
                 });
             } else {
-                console.error(error);
+                console.log(error)
                 setSentStatus({
                     success: false,
                     error: "An error occurred",
@@ -162,7 +152,7 @@ const Prets: React.FC = () => {
                         }}
                         className="mr-auto rounded font-main flex gap-2 items-center text-white capitalize w-full p-4"
                     >
-                        Demande de Prêts
+                        Demande de Pèlerinage ou Umrah
                     </Typography>
                     <Box
                         component="form"
@@ -175,29 +165,12 @@ const Prets: React.FC = () => {
                                 <TextField
                                     required
                                     fullWidth
-                                    name="montantCredit"
-                                    label="Montant du Crédit DH"
+                                    name="year"
+                                    label="Année"
                                     type="number"
-                                    value={formState.montantCredit}
+                                    value={formState.year}
                                     onChange={handleChange}
-                                    inputProps={{ min: 0 }}
                                 />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    name="description"
-                                    label="Description"
-                                    multiline
-                                    rows={4}
-                                    value={formState.description}
-                                    onChange={handleChange}
-                                    inputProps={{ maxLength: 300 }}
-                                />
-                                <Typography variant="body2" color="textSecondary" className={'capitalize pt-2'} component="p">
-                                    max charachters {formState.description.length} / 300
-                                </Typography>
                             </Grid>
                             <Grid item xs={12}>
                                 <input
@@ -222,9 +195,9 @@ const Prets: React.FC = () => {
                                     </Button>
                                 </label>
                                 {formState.files.length > 0 ? (
-                                    <Typography>{formState.files.length} fichiers choisis</Typography>
+                                    <Typography>{formState.files.length} files chosen</Typography>
                                 ) : (
-                                    <Typography>Aucun fichier sélectionné</Typography>
+                                    <Typography>No fichier selectioné</Typography>
                                 )}
                                 <Typography className="text-sm text-gray-500 mt-1">
                                     Max {maxFiles} Fichiers
@@ -267,4 +240,4 @@ const Prets: React.FC = () => {
     );
 };
 
-export default Prets;
+export default Pelerinage;

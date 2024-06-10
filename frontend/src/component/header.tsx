@@ -4,7 +4,7 @@ import { Avatar, Box , Typography } from "@mui/material";
 const Header = () => {
   return (
     <>
-      <Box className="pl-32 pr-16 w-full  fixed flex gap-2 h-24 top-0 items-center justify-between border-2">
+      <Box className="pl-32 bg-white pr-16 w-full  fixed flex gap-2 h-24 top-0 items-center justify-between border-2">
         <MenuOutlined />
         <Box className={"flex gap-x-4 font-main items-center"}>
           <Box className={'flex item-center justify-center gap-2'}>

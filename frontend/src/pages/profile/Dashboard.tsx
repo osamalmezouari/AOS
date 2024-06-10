@@ -6,6 +6,7 @@ import Header from "../../component/header";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import TableInfo from "./ProfileDashboardTable";
+import { PORT } from "../../../env";
 
 const Profile = () => {
   const userDataString = localStorage.getItem("user");
@@ -26,14 +27,14 @@ const Profile = () => {
     const getStatDashboardProfile = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:3400/sous-activite/Profile/State/${user.id}`
+          `http://localhost:${PORT}/sous-activite/Profile/State/${user.id}`
         );
         const data = await res.data;
         const approuved = data.filter(
-          (item: string) => item === "Approuvées"
+          (item: string) => item === "Approuvée"
         ).length;
         const refused = data.filter(
-          (item: string) => item === "Refusées"
+          (item: string) => item === "Refusée"
         ).length;
         const Docrequired = data.filter(
           (item: string) => item === "Documents requis"
@@ -58,7 +59,7 @@ const Profile = () => {
     const personeldemandesDetails = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:3400/personel/DemandesWithDetails/${user.id}`
+          `http://localhost:${PORT}/personel/DemandesWithDetails/${user.id}`
         );
         const data = await res.data;
         setDatatable({

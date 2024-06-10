@@ -3,7 +3,7 @@ import { CreateNaissanceDto } from './Dto/createnaissance.dto';
 import { UpdatenaissanceDto } from './Dto/updatenaissance.dto';
 import { PrismaClient } from '@prisma/client';
 import { UuidService } from '../../Helpers/UUID/uuid.service';
-import { format, getYear } from 'date-fns';
+import { getYear } from 'date-fns';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -24,6 +24,7 @@ export class NaissanceService {
   }
 
   async create(createNaissanceDto: CreateNaissanceDto) {
+    const NaissanceUUID = this.uuid.Getuuid();
     const currentyear = getYear(new Date());
     const matchingPersonel = await this.prisma.personel.findUnique({
       where: { id: createNaissanceDto.personelId },
@@ -66,21 +67,15 @@ export class NaissanceService {
     }
     try {
       if (createNaissanceDto.files && matchingPersonel.matricule) {
-        const dir = `C:\\AOS\\${matchingPersonel.matricule}\\${currentyear}\\Aides_financières\\Demandes-naissances`;
+        const dir = `C:\\AOS\\${matchingPersonel.matricule}\\${currentyear}\\Aides_financières\\Demandes-naissances\\${NaissanceUUID}`;
         fs.mkdirSync(dir, { recursive: true });
-        const filesFolder = path.join(
-          dir,
-          `${format(new Date(), 'dd-MM-yyyy-HH-mm-ss')}`,
-        );
-        fs.mkdirSync(filesFolder, { recursive: true });
         createNaissanceDto.files.map((file) => {
-          const filePath = path.join(filesFolder, file.originalname);
+          const filePath = path.join(dir, file.originalname);
           fs.writeFileSync(filePath, file.buffer);
           console.log(`File written at ${filePath}`);
         });
       }
       return this.prisma.naissance.create({
-        //@ts-ignore
         data: {
           id: this.uuid.Getuuid(),
           personelId: createNaissanceDto.personelId,
@@ -94,8 +89,52 @@ export class NaissanceService {
     }
   }
 
-  update(id: string, updatenaissanceDto: UpdatenaissanceDto) {
-    return updatenaissanceDto;
+  async update(id: string, updatenaissance: UpdatenaissanceDto) {
+    const Naissance = await this.prisma.naissance.findUnique({
+      where: {
+        id,
+        personelId: updatenaissance.personelId,
+      },
+    });
+    if (!Naissance) {
+      throw new HttpException(
+        'ya pas une demande avec ce id',
+        HttpStatus.BAD_REQUEST,
+      );
+    } else if (Naissance) {
+      const matchingPersonel = await this.prisma.personel.findUnique({
+        where: {
+          id: updatenaissance.personelId,
+        },
+      });
+
+      try {
+        if (updatenaissance.files) {
+          const dir = `C:\\AOS\\${matchingPersonel.matricule}\\${Naissance.effet.getFullYear()}\\Aides_financières\\Demandes-naissances\\${id}`;
+          const ExisstFiles = fs.readdirSync(dir);
+          ExisstFiles.map((filePath) => {
+            fs.unlinkSync(path.join(dir, filePath));
+          });
+          updatenaissance.files.map((file) => {
+            const filePath = path.join(dir, file.originalname);
+            fs.writeFileSync(filePath, file.buffer);
+            console.log(`File written at ${filePath}`);
+          });
+        }
+        return this.prisma.naissance.update({
+          where: {
+            id,
+          },
+          data: {
+            Date: updatenaissance.date,
+            nombre: updatenaissance.numberOfChildren,
+            Status: null,
+          },
+        });
+      } catch {
+        throw new HttpException(`error`, HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+    }
   }
 
   remove(id: string) {

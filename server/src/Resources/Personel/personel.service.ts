@@ -45,6 +45,7 @@ export class PersonelService {
         include: {
           SousActivite: {
             select: {
+              id: true,
               nomAr: true,
               nomFr: true,
             },
@@ -65,6 +66,7 @@ export class PersonelService {
         include: {
           SousActivite: {
             select: {
+              id: true,
               nomAr: true,
               nomFr: true,
             },
@@ -85,6 +87,7 @@ export class PersonelService {
         include: {
           SousActivite: {
             select: {
+              id: true,
               nomAr: true,
               nomFr: true,
             },
@@ -105,6 +108,7 @@ export class PersonelService {
         include: {
           SousActivite: {
             select: {
+              id: true,
               nomAr: true,
               nomFr: true,
             },
@@ -125,6 +129,7 @@ export class PersonelService {
         include: {
           SousActivite: {
             select: {
+              id: true,
               nomAr: true,
               nomFr: true,
             },
@@ -145,6 +150,7 @@ export class PersonelService {
         include: {
           SousActivite: {
             select: {
+              id: true,
               nomAr: true,
               nomFr: true,
             },
@@ -165,6 +171,7 @@ export class PersonelService {
         include: {
           SousActivite: {
             select: {
+              id: true,
               nomAr: true,
               nomFr: true,
             },
@@ -185,6 +192,7 @@ export class PersonelService {
         include: {
           SousActivite: {
             select: {
+              id: true,
               nomAr: true,
               nomFr: true,
             },
@@ -205,6 +213,7 @@ export class PersonelService {
         include: {
           SousActivite: {
             select: {
+              id: true,
               nomAr: true,
               nomFr: true,
             },
@@ -225,6 +234,7 @@ export class PersonelService {
         include: {
           SousActivite: {
             select: {
+              id: true,
               nomAr: true,
               nomFr: true,
             },
@@ -245,6 +255,28 @@ export class PersonelService {
         include: {
           SousActivite: {
             select: {
+              id: true,
+              nomAr: true,
+              nomFr: true,
+            },
+          },
+        },
+      });
+      return data;
+    }
+    if (sousActiviteId === '15') {
+      const data = this.prismaClient.demandeLang.findMany({
+        where: {
+          personelId: id,
+          effet: {
+            gte: startDate,
+            lt: endDate,
+          },
+        },
+        include: {
+          SousActivite: {
+            select: {
+              id: true,
               nomAr: true,
               nomFr: true,
             },

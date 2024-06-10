@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { mariage, PrismaClient } from '@prisma/client';
 import { UpdatemariageDto } from './dto/updatemariage.dto';
 import { CreatemariageDto } from './dto/createmariage.dto';
-import { format, getYear } from 'date-fns';
+import { getYear } from 'date-fns';
 import * as fs from 'fs';
 import * as path from 'path';
 import { UuidService } from '../../Helpers/UUID/uuid.service';
@@ -25,7 +25,7 @@ export class MariageService {
   async create(createmariage: CreatemariageDto) {
     console.log(createmariage);
     const currentyear = getYear(new Date());
-    const MariageUUID = this.uuid.Getuuid()
+    const MariageUUID = this.uuid.Getuuid();
     const matchingPersonel = await this.prisma.personel.findUnique({
       where: { id: createmariage.personelId },
     });
@@ -77,7 +77,6 @@ export class MariageService {
         });
       }
       return this.prisma.mariage.create({
-        //@ts-ignore
         data: {
           id: this.uuid.Getuuid(),
           personelId: createmariage.personelId,
@@ -91,10 +90,50 @@ export class MariageService {
   }
 
   async update(id: string, updatemarigeDto: UpdatemariageDto) {
-    return this.prisma.mariage.update({
-      where: { id },
-      data: updatemarigeDto,
+    const Marriage = await this.prisma.mariage.findUnique({
+      where: {
+        id,
+        personelId: updatemarigeDto.personelId,
+      },
     });
+    if (!Marriage) {
+      throw new HttpException(
+        'ya pas une demande avec ce id',
+        HttpStatus.BAD_REQUEST,
+      );
+    } else if (Marriage) {
+      const matchingPersonel = await this.prisma.personel.findUnique({
+        where: {
+          id: updatemarigeDto.personelId,
+        },
+      });
+
+      try {
+        if (updatemarigeDto.files) {
+          const dir = `C:\\AOS\\${matchingPersonel.matricule}\\${Marriage.effet.getFullYear()}\\Aides_financières\\Demandes-Mariages\\${id}`;
+          const ExisstFiles = fs.readdirSync(dir);
+          ExisstFiles.map((filePath) => {
+            fs.unlinkSync(path.join(dir, filePath));
+          });
+          updatemarigeDto.files.map((file) => {
+            const filePath = path.join(dir, file.originalname);
+            fs.writeFileSync(filePath, file.buffer);
+            console.log(`File written at ${filePath}`);
+          });
+        }
+        return this.prisma.mariage.update({
+          where: {
+            id,
+          },
+          data: {
+            description: updatemarigeDto.description,
+            Status: null,
+          },
+        });
+      } catch {
+        throw new HttpException(`error`, HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+    }
   }
 
   async remove(id: string) {

@@ -100,11 +100,52 @@ export class RetraitService {
       );
     }
   }
-  update(id: string, updateRetraitDto: UpdateRetraitDto) {
-    return this.prismaClient.retrait.update({
-      where: { id },
-      data: updateRetraitDto,
+
+  async update(id: string, updateRetrait: UpdateRetraitDto) {
+    const Retrait = await this.prismaClient.retrait.findUnique({
+      where: {
+        id,
+        personelId: updateRetrait.personelId,
+      },
     });
+    if (!Retrait) {
+      throw new HttpException(
+        'ya pas une demande avec ce id',
+        HttpStatus.BAD_REQUEST,
+      );
+    } else if (Retrait) {
+      const matchingPersonel = await this.prismaClient.personel.findUnique({
+        where: {
+          id: updateRetrait.personelId,
+        },
+      });
+
+      try {
+        if (updateRetrait.files) {
+          const dir = `C:\\AOS\\${matchingPersonel.matricule}\\${Retrait.effet.getFullYear()}\\Aides_financières\\Demande-Retrait`;
+          const ExisstFiles = fs.readdirSync(dir);
+          ExisstFiles.map((filePath) => {
+            fs.unlinkSync(path.join(dir, filePath));
+          });
+          updateRetrait.files.map((file) => {
+            const filePath = path.join(dir, file.originalname);
+            fs.writeFileSync(filePath, file.buffer);
+            console.log(`File written at ${filePath}`);
+          });
+        }
+        return this.prismaClient.retrait.update({
+          where: {
+            id,
+          },
+          data: {
+            date: updateRetrait.date,
+            Status: null,
+          },
+        });
+      } catch {
+        throw new HttpException(`error`, HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+    }
   }
 
   remove(id: string) {

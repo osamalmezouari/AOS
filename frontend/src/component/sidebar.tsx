@@ -13,7 +13,7 @@ const SideBar = () => {
   const navigate = useNavigate();
   return (
     <>
-      <Box className="w-24 h-screen absolute bg-gray-100 text-white flex flex-col items-center py-6 gap-6 justify-between">
+      <Box className="w-24 h-screen z-20 absolute bg-gray-100 text-white flex flex-col items-center py-6 gap-6 justify-between">
         <Box>
           <Avatar className="w-12 h-12" src="https://github.com/osamalmezouari/AOS/raw/master/frontend/public/assets/images/logo.jpg" />
         </Box>

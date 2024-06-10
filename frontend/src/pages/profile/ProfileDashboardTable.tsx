@@ -23,11 +23,11 @@ const DashboardTale = ({ data }) => {
     }
   };
   return (
-    <div className=" overflow-x-auto shadow-md sm:rounded-lg  ">
-      <table className="w-full text-sm text-left rtl:text-right text-gray-500">
-        <thead className="text-xs text-gray-700 uppercase bg-gray-50 h-16">
+    <div className=" shadow-md sm:rounded-lg  ">
+      <table className="text-sm text-left rtl:text-right text-gray-500 block h-[220px] overflow-y-scroll">
+        <thead className="text-xs text-gray-700 uppercase bg-gray-50 h-16 sticky top-0">
           <tr>
-            <th scope="col" className="px-6 py-3">
+            <th scope="col" className="px-6 py-3 ">
               Code
             </th>
             <th scope="col" className="px-6 py-3">
@@ -41,13 +41,13 @@ const DashboardTale = ({ data }) => {
             </th>
           </tr>
         </thead>
-        <tbody className="max-h-[200px]">
+        <tbody>
           {data.map((demande) => {
             return (
               <tr className="bg-white border-b hover:bg-gray-50">
                 <th
                   scope="row"
-                  className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap flex items-center gap-2"
+                  className=" px-6 py-4 font-medium text-gray-900 whitespace-nowrap flex items-center gap-2"
                 >
                   #{demande.id.slice(0, 5)}...{" "}
                   {!toogleCopy[demande.id] ? (
@@ -71,7 +71,7 @@ const DashboardTale = ({ data }) => {
                   )}
                 </th>
                 {demande.Status === null ? (
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-4 w-1/4">
                     <div className="flex items-center gap-2 font-secend">
                       <div className="w-2 h-2 rounded-full bg-gray-400"></div>
                       <p>Pas encore Vue</p>
@@ -90,9 +90,9 @@ const DashboardTale = ({ data }) => {
                 ) : (
                   ""
                 )}
-                {demande.Status === "Refusées" ? (
+                {demande.Status === "Refusée" ? (
                   
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-4 w-1/4">
                     <div className="flex items-center gap-2 font-secend">
                       <div className="w-2 h-2 rounded-full bg-red-400"></div>
                       <p>Refusée</p>
@@ -102,7 +102,7 @@ const DashboardTale = ({ data }) => {
                   ""
                 )}
                 {demande.Status === "En traitement" ? (
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-4 w-1/4">
                   <div className="flex items-center gap-2 font-secend">
                     <div className="w-2 h-2 rounded-full bg-blue-400"></div>
                     <p>En traitement</p>
@@ -111,18 +111,18 @@ const DashboardTale = ({ data }) => {
                 ) : (
                   ""
                 )}
-                {demande.Status === "Approuvées" ? (
-                  <td className="px-6 py-4">
+                {demande.Status === "Approuvée" ? (
+                  <td className="px-6 py-4 w-1/4">
                   <div className="flex items-center gap-2 font-secend">
-                    <div className="w-2 h-2 rounded-full bg-yellow"></div>
+                    <div className="w-2 h-2 rounded-full bg-green-400"></div>
                     <p>Approuvée</p>
                   </div>
                 </td>
                 ) : (
                   ""
                 )}
-                <td className="px-6 py-4">{demande.effet.slice(0, 10)}</td>
-                <td className="px-6 py-4">{demande.SousActivite.nomFr}</td>
+                <td className="px-6 py-4 w-1/4">{demande.effet.slice(0, 10)}</td>
+                <td className="px-6 py-4 w-1/4">{demande.SousActivite.nomFr}</td>
               </tr>
             );
           })}

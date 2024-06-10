@@ -40,10 +40,13 @@ export class DemandeMaladiesController {
   }
 
   @Patch(':id')
+  @UseInterceptors(AnyFilesInterceptor())
   update(
     @Param('id') id: string,
     @Body() updateDemandeMaladyDto: UpdateDemandeMaladyDto,
+    @UploadedFiles() files: Array<Express.Multer.File>,
   ) {
+    updateDemandeMaladyDto.files = files;
     return this.demandeMaladiesService.update(id, updateDemandeMaladyDto);
   }
 

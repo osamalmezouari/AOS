@@ -36,11 +36,15 @@ export class DemandeLangController {
     createDemandeLangDto.files = files;
     return this.demandeLangService.create(createDemandeLangDto);
   }
+
   @Patch(':id')
+  @UseInterceptors(AnyFilesInterceptor())
   update(
     @Param('id') id: string,
     @Body() updateDemandeLangDto: UpdateDemandeLangDto,
+    @UploadedFiles() files: Array<Express.Multer.File>,
   ) {
+    updateDemandeLangDto.files = files
     return this.demandeLangService.update(id, updateDemandeLangDto);
   }
 

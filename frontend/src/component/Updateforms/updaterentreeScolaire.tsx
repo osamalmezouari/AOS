@@ -13,9 +13,12 @@ import {
 import { ErrorOutlineRounded, Verified } from "@mui/icons-material";
 import axios from "axios";
 import { PORT } from "../../../env.ts";
-import Navbar from "../navbar.tsx";
+import { useParams } from "react-router-dom";
+import Header from "../header.tsx";
+import SideBar from "../sidebar.tsx";
 
-const Naissance: React.FC = () => {
+const UpdateRentreeScolaire: React.FC = () => {
+  const { demandeId } = useParams();
   const userDataString = JSON.parse(localStorage.getItem("user"));
   const user = userDataString;
   const [sentStatus, setSentStatus] = useState<{
@@ -35,19 +38,19 @@ const Naissance: React.FC = () => {
     date: string;
     numberOfChildren: number;
     files: File[];
-    personelId:string
+    personelId: string;
   }>({
     date: "",
     numberOfChildren: 0,
     files: [],
-    personelId :user.id
+    personelId: user.id,
   });
 
   useEffect(() => {
     const fetchMaxFiles = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:${PORT}/sous-activite/13`,
+          `http://localhost:${PORT}/sous-activite/14`
         );
         const maxPieces = res.data.pieces.length;
         const maxFiles = maxPieces * formState.numberOfChildren;
@@ -60,7 +63,7 @@ const Naissance: React.FC = () => {
   }, [formState.numberOfChildren]);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setSentStatus({
@@ -77,16 +80,35 @@ const Naissance: React.FC = () => {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
+    if (files.length > maxFiles) {
+      setSentStatus({
+        success: false,
+        inprogress: false,
+        error: "",
+        alert: `max fechier pour disponbile pour ce demande ${maxFiles}`,
+      });
+      return;
+    }
     setFormState((prevState) => ({
       ...prevState,
       files,
     }));
   };
-  useEffect(()=>{
-    console.log(formState)
-  },[formState])
+  useEffect(() => {
+    console.log(formState);
+  }, [formState]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (formState.files.length < maxFiles) {
+      setSentStatus({
+        success: false,
+        inprogress: false,
+        error: "",
+        alert: `Min files allowed is ${maxFiles}`,
+      });
+      return;
+    }
     try {
       setSentStatus({
         inprogress: true,
@@ -94,15 +116,16 @@ const Naissance: React.FC = () => {
         error: "",
         alert: "",
       });
-      const response = await axios.post(
-        `http://localhost:${PORT}/naissance`, formState,
+      const response = await axios.patch(
+        `http://localhost:${PORT}/rentree-scolaire/${demandeId}`,
+        formState,
         {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-        },
+        }
       );
-      if (response.status === 201) {
+      if (response.status === 200) {
         setTimeout(() => {
           setSentStatus({
             success: true,
@@ -125,7 +148,7 @@ const Naissance: React.FC = () => {
           alert: "",
         });
       } else {
-        console.log(error)
+        console.log(error);
         setSentStatus({
           success: false,
           error: "An error occurred",
@@ -135,11 +158,32 @@ const Naissance: React.FC = () => {
       }
     }
   };
-
+  useEffect(() => {
+    const fetchtargetdemande = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:${PORT}/rentree-scolaire/${demandeId}`
+        );
+        const data = await res.data;
+        setFormState((prevState) => ({
+          ...prevState,
+          date: data.Date,
+          numberOfChildren: data.nombre,
+        }));
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchtargetdemande();
+  }, []);
   return (
     <div className="bg-landing h-screen">
-      <Navbar />
-      <Container maxWidth="sm" className={"w-full flex items-center justify-center h-[80vh]"}>
+      <Header />
+      <SideBar />
+      <Container
+        maxWidth="sm"
+        className={"w-full flex items-center justify-center h-screen"}
+      >
         <CssBaseline />
         <Box
           sx={{
@@ -148,7 +192,7 @@ const Naissance: React.FC = () => {
             flexDirection: "column",
             alignItems: "center",
           }}
-          className={'w-full'}
+          className={"w-full"}
         >
           <Typography
             variant="h5"
@@ -157,7 +201,7 @@ const Naissance: React.FC = () => {
             }}
             className="mr-auto rounded font-main flex gap-2 items-center text-white capitalize w-full p-4"
           >
-            Demande de Naissance
+            Modification de Demande de Rentree Scolaire
           </Typography>
           <Box
             component="form"
@@ -171,9 +215,9 @@ const Naissance: React.FC = () => {
                   required
                   fullWidth
                   name="date"
-                  label="Date Naissance"
-                  type="date"
-                  placeholder="DD/MM/YYYY"
+                  label="Année scolaire"
+                  type="text"
+                  placeholder="YYYY/YYYY"
                   value={formState.date}
                   onChange={handleChange}
                 />
@@ -258,4 +302,4 @@ const Naissance: React.FC = () => {
   );
 };
 
-export default Naissance;
+export default UpdateRentreeScolaire;

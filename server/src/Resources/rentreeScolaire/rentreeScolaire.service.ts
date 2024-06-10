@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import { UuidService } from '../../Helpers/UUID/uuid.service';
-import { format, getYear } from 'date-fns';
+import { getYear } from 'date-fns';
 import * as fs from 'fs';
 import * as path from 'path';
 import { CreaterentreeScolaireDto } from './dto/createrentreeScolaire.dto';
@@ -24,6 +24,7 @@ export class RentreeScolaireService {
   }
 
   async create(createrentreeScolaireDto: CreaterentreeScolaireDto) {
+    const RentreeScolaireUUID = this.uuid.Getuuid();
     const currentyear = getYear(new Date());
     const matchingPersonel = await this.prisma.personel.findUnique({
       where: { id: createrentreeScolaireDto.personelId },
@@ -71,15 +72,10 @@ export class RentreeScolaireService {
     }
     try {
       if (createrentreeScolaireDto && matchingPersonel.matricule) {
-        const dir = `C:\\AOS\\${matchingPersonel.matricule}\\${currentyear}\\Aides_financières\\Demandes-rentree-scolaire`;
+        const dir = `C:\\AOS\\${matchingPersonel.matricule}\\${currentyear}\\Aides_financières\\Demandes-rentree-scolaire\\${RentreeScolaireUUID}`;
         fs.mkdirSync(dir, { recursive: true });
-        const filesFolder = path.join(
-          dir,
-          `${format(new Date(), 'dd-MM-yyyy-HH-mm-ss')}`,
-        );
-        fs.mkdirSync(filesFolder, { recursive: true });
         createrentreeScolaireDto.files.map((file) => {
-          const filePath = path.join(filesFolder, file.originalname);
+          const filePath = path.join(dir, file.originalname);
           fs.writeFileSync(filePath, file.buffer);
           console.log(`File written at ${filePath}`);
         });
@@ -98,10 +94,53 @@ export class RentreeScolaireService {
     }
   }
 
-  update(id: string, updatenaissanceDto: UpdaterentreeScolaireDto) {
-    return updatenaissanceDto;
-  }
+  async update(id: string, updaterentreeScolaire: UpdaterentreeScolaireDto) {
+    const rentreeScolaire = await this.prisma.rentreeScolaire.findUnique({
+      where: {
+        id,
+        personelId: updaterentreeScolaire.personelId,
+      },
+    });
+    if (!rentreeScolaire) {
+      throw new HttpException(
+        'ya pas une demande avec ce id',
+        HttpStatus.BAD_REQUEST,
+      );
+    } else if (rentreeScolaire) {
+      const matchingPersonel = await this.prisma.personel.findUnique({
+        where: {
+          id: updaterentreeScolaire.personelId,
+        },
+      });
 
+      try {
+        if (updaterentreeScolaire.files) {
+          const dir = `C:\\AOS\\${matchingPersonel.matricule}\\${rentreeScolaire.effet.getFullYear()}\\Aides_financières\\Demandes-rentree-scolaire\\${id}`;
+          const ExisstFiles = fs.readdirSync(dir);
+          ExisstFiles.map((filePath) => {
+            fs.unlinkSync(path.join(dir, filePath));
+          });
+          updaterentreeScolaire.files.map((file) => {
+            const filePath = path.join(dir, file.originalname);
+            fs.writeFileSync(filePath, file.buffer);
+            console.log(`File written at ${filePath}`);
+          });
+        }
+        return this.prisma.rentreeScolaire.update({
+          where: {
+            id,
+          },
+          data: {
+            Date: updaterentreeScolaire.date,
+            nombre: updaterentreeScolaire.numberOfChildren,
+            Status: null,
+          },
+        });
+      } catch {
+        throw new HttpException(`error`, HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+    }
+  }
   remove(id: string) {
     return this.prisma.naissance.delete({ where: { id } });
   }

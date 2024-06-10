@@ -120,10 +120,8 @@ const Navbar = () => {
           Nav === "large" ? "" : "hidden"
         }`}
       >
-        <Container maxWidth={"md"}>
-          <Box
-            className={'flex items-center gap-2 justify-between w-full'}
-          >
+        <Container maxWidth={"lg"}>
+          <Box className={"flex items-center gap-2 justify-between w-full"}>
             <Box
               className={"flex items-center gap-2 justify-between capitalize"}
             >
@@ -155,7 +153,7 @@ const Navbar = () => {
                               onClick={() => {
                                 navigate(
                                   `/AOS/SousActivitie/${singleSousActivitie.id}`,
-                                  { replace: true },
+                                  { replace: true }
                                 );
                                 handleClose();
                               }}
@@ -164,7 +162,7 @@ const Navbar = () => {
                               {singleSousActivitie.nomFr}
                             </MenuItem>
                           );
-                        },
+                        }
                       )
                     : ""}
                 </Menu>
@@ -197,7 +195,7 @@ const Navbar = () => {
                               onClick={() => {
                                 navigate(
                                   `/AOS/SousActivitie/${singleSousActivitie.id}`,
-                                  { replace: true },
+                                  { replace: true }
                                 );
                                 handleClose();
                               }}
@@ -206,7 +204,7 @@ const Navbar = () => {
                               {singleSousActivitie.nomFr}
                             </MenuItem>
                           );
-                        },
+                        }
                       )
                     : ""}
                 </Menu>
@@ -239,7 +237,7 @@ const Navbar = () => {
                               onClick={() => {
                                 navigate(
                                   `/AOS/SousActivitie/${singleSousActivitie.id}`,
-                                  { replace: true },
+                                  { replace: true }
                                 );
                                 handleClose();
                               }}
@@ -248,7 +246,7 @@ const Navbar = () => {
                               {singleSousActivitie.nomFr}
                             </MenuItem>
                           );
-                        },
+                        }
                       )
                     : ""}
                 </Menu>
@@ -281,7 +279,7 @@ const Navbar = () => {
                               onClick={() => {
                                 navigate(
                                   `/AOS/SousActivitie/${singleSousActivitie.id}`,
-                                  { replace: true },
+                                  { replace: true }
                                 );
                                 handleClose();
                               }}
@@ -290,7 +288,7 @@ const Navbar = () => {
                               {singleSousActivitie.nomFr}
                             </MenuItem>
                           );
-                        },
+                        }
                       )
                     : ""}
                 </Menu>
@@ -317,11 +315,18 @@ const Navbar = () => {
                   se conecter
                 </Button>
               </Box>
-            ): (
-              <Box className={'flex gap-2'}>
-                <Logout fontSize="large" className="bg-mainBleu text-white p-1 rounded hover:bg-yellow duration-500 transition cursor-pointer"/>  
-                <AccountCircle fontSize="large" className="bg-mainBleu text-white p-1 rounded hover:bg-yellow duration-500 transition cursor-pointer"/>  
-              </Box>
+            ) : (
+              <Button
+                onClick={() =>
+                  navigate(`/AOS/Profile/dashboard`, { replace: "true" })
+                }
+                startIcon={<AccountCircle />}
+                className={
+                  "capitalize w-max font-main text-white bg-mainBleu hover:bg-yellow hover:text-white font-bold transition-all duration-700 "
+                }
+              >
+                Espace Personel
+              </Button>
             )}
           </Box>
         </Container>

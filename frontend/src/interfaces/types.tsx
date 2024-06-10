@@ -62,6 +62,7 @@ export interface DemadesDataType {
   id: string;
   effet: string;
   SousActivite: {
+    id: string
     nomAr: string;
     nomFr: string;
   };

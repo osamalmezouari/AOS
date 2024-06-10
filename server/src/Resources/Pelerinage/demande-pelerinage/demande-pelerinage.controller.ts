@@ -39,13 +39,15 @@ export class DemandePelerinageController {
   findOne(@Param('id') id: string) {
     return this.demandePelerinageService.findOne(id);
   }
-
   @Patch(':id')
+  @UseInterceptors(AnyFilesInterceptor())
   update(
     @Param('id') id: string,
-    @Body() updateDemandePelerinageDto: UpdateDemandePelerinageDto,
+    @Body() updatePelerinageDto: UpdateDemandePelerinageDto,
+    @UploadedFiles() files: Array<Express.Multer.File>,
   ) {
-    return this.demandePelerinageService.update(id, updateDemandePelerinageDto);
+    updatePelerinageDto.files = files;
+    return this.demandePelerinageService.update(id, updatePelerinageDto);
   }
 
   @Delete(':id')
