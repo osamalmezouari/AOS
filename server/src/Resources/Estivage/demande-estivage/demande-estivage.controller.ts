@@ -37,14 +37,18 @@ export class DemandeEstivageController {
     @UploadedFiles() files: Array<Express.Multer.File>,
   ) {
     console.log(files);
-    createDemandeEstivageDto.files = files; // Assign files to the DTO property
+    createDemandeEstivageDto.files = files;
     return this.demandeEstivageService.create(createDemandeEstivageDto);
   }
+
+  @UseInterceptors(AnyFilesInterceptor())
   @Patch(':id')
   update(
     @Param('id') id: string,
     @Body() updateDemandeEstivageDto: UpdateDemandeEstivageDto,
+    @UploadedFiles() files: Array<Express.Multer.File>,
   ) {
+    updateDemandeEstivageDto.files = files;
     return this.demandeEstivageService.update(id, updateDemandeEstivageDto);
   }
 

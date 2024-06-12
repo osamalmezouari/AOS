@@ -27,6 +27,7 @@ export class DemandeEstivageService {
     });
   }
   async create(createDemandeEstivageDto: CreateDemandeEstivageDto) {
+    const EstivageUUID = this.uuid.Getuuid();
     const currentyear = getYear(new Date());
     const matchingPersonel = await this.prismaClient.personel.findUnique({
       where: { id: createDemandeEstivageDto.personelId },
@@ -73,22 +74,26 @@ export class DemandeEstivageService {
         createDemandeEstivageDto.files.length > 0 &&
         matchingPersonel.matricule
       ) {
-        const dir = `C:\\AOS\\${matchingPersonel.matricule}\\${currentyear}\\Aides_financières\\Demandes-Esstivage`;
+        const dir = `C:\\AOS\\${matchingPersonel.matricule}\\${currentyear}\\Aides_financières\\Demandes-Esstivage\\${EstivageUUID}`;
         fs.mkdirSync(dir, { recursive: true });
-        const filesFolder = path.join(dir, `${this.uuid.Getuuid()}`);
-        fs.mkdirSync(filesFolder, { recursive: true });
         createDemandeEstivageDto.files.map((file) => {
-          const filePath = path.join(filesFolder, file.originalname);
+          const filePath = path.join(dir, file.originalname);
           fs.writeFileSync(filePath, file.buffer);
           console.log(`File written at ${filePath}`);
         });
       }
 
       return this.prismaClient.demandeEstivage.create({
-        //@ts-ignore
         data: {
           id: this.uuid.Getuuid(),
-          ...createDemandeEstivageDto,
+          date_entre: createDemandeEstivageDto.date_entre,
+          date_sortie: createDemandeEstivageDto.date_sortie,
+          sousActiviteId: '10',
+          montant: createDemandeEstivageDto.montant,
+          type: createDemandeEstivageDto.type,
+          centreId: createDemandeEstivageDto.centreId,
+          personelId: createDemandeEstivageDto.personelId,
+          description: createDemandeEstivageDto.description,
         },
       });
     } catch (error) {
@@ -96,12 +101,57 @@ export class DemandeEstivageService {
     }
   }
 
-  update(id: string, updateDemandeEstivageDto: UpdateDemandeEstivageDto) {
-    return this.prismaClient.demandeEstivage.update({
-      where: { id },
-      //@ts-ignore
-      data: updateDemandeEstivageDto,
+  async update(id: string, updateDemandeEstivage: UpdateDemandeEstivageDto) {
+    console.log('updateDemandeEstivage : ', updateDemandeEstivage);
+    const Estivage = await this.prismaClient.demandeEstivage.findUnique({
+      where: {
+        id,
+        personelId: updateDemandeEstivage.personelId,
+      },
     });
+    if (!Estivage) {
+      throw new HttpException(
+        'ya pas une demande avec ce id',
+        HttpStatus.BAD_REQUEST,
+      );
+    } else if (Estivage) {
+      const matchingPersonel = await this.prismaClient.personel.findUnique({
+        where: {
+          id: updateDemandeEstivage.personelId,
+        },
+      });
+
+      try {
+        if (updateDemandeEstivage.files) {
+          const dir = `C:\\AOS\\${matchingPersonel.matricule}\\${Estivage.effet.getFullYear()}\\Aides_financières\\Demandes-Essstivage\\${id}`;
+          const ExisstFiles = fs.readdirSync(dir);
+          ExisstFiles.map((filePath) => {
+            fs.unlinkSync(path.join(dir, filePath));
+          });
+          updateDemandeEstivage.files.map((file) => {
+            const filePath = path.join(dir, file.originalname);
+            fs.writeFileSync(filePath, file.buffer);
+            console.log(`File written at ${filePath}`);
+          });
+        }
+        return this.prismaClient.demandeEstivage.update({
+          where: {
+            id,
+          },
+          data: {
+            description: updateDemandeEstivage.description,
+            Status: null,
+            type: updateDemandeEstivage.type,
+            centreId: updateDemandeEstivage.centreId,
+            date_entre: updateDemandeEstivage.date_entre,
+            date_sortie: updateDemandeEstivage.date_sortie,
+            montant: updateDemandeEstivage.montant,
+          },
+        });
+      } catch (error) {
+        throw new HttpException(`${error}`, HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+    }
   }
 
   remove(id: string) {

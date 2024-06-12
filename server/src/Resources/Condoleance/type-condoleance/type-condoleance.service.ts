@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateTypeCondoleanceDto } from './dto/create-type-condoleance.dto';
 import { UpdateTypeCondoleanceDto } from './dto/update-type-condoleance.dto';
 import { PrismaClient } from '@prisma/client';

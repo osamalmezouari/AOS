@@ -30,6 +30,7 @@ import UpdateNaissance from "./component/Updateforms/updatenaissance.tsx";
 import UpdateRentreeScolaire from "./component/Updateforms/updaterentreeScolaire.tsx";
 import UpdateLang from "./component/Updateforms/updatelang.tsx";
 import UpdateZoo from "./component/Updateforms/updateZoo.tsx";
+import UpdateEstivage from "./component/Updateforms/updateEsstivage.tsx";
 
 function App() {
   return (
@@ -59,8 +60,14 @@ function App() {
             element={<Naissance />}
             path={"AOS/SousActivitie/DemandeNaissance"}
           />
-          <Route element={<UpdateNaissance/>} path="AOS/SousActivitie/updateNaissance/:demandeId"/>
-          <Route element={<UpdateRentreeScolaire />} path="AOS/SousActivitie/updaterentree-scolaire/:demandeId"/>
+          <Route
+            element={<UpdateNaissance />}
+            path="AOS/SousActivitie/updateNaissance/:demandeId"
+          />
+          <Route
+            element={<UpdateRentreeScolaire />}
+            path="AOS/SousActivitie/updaterentree-scolaire/:demandeId"
+          />
           <Route element={<Pelerinage />} path="AOS/SousActivitie/Pelerinage" />
           <Route
             element={<UpdatePelerinage />}
@@ -72,10 +79,23 @@ function App() {
             path={"AOS/SousActivitie/Condoleance"}
           />
           <Route element={<Maladies />} path={"AOS/SousActivitie/Maladies"} />
-          <Route element={<UpdateCondoleance/>} path={'/AOS/SousActivitie/updateCondoleance/:demandeId'} />
-          <Route element={<UpdateLang />} path={'/AOS/SousActivitie/updatelang/:demandeId'} />
-          <Route element={<UpdateZoo />} path="/AOS/SousActivitie/updateZoo/:demandeId"/>
-          <Route  
+          <Route
+            element={<UpdateCondoleance />}
+            path={"/AOS/SousActivitie/updateCondoleance/:demandeId"}
+          />
+          <Route
+            element={<UpdateLang />}
+            path={"/AOS/SousActivitie/updatelang/:demandeId"}
+          />
+          <Route
+            element={<UpdateZoo />}
+            path="/AOS/SousActivitie/updateZoo/:demandeId"
+          />
+          <Route
+            element={<UpdateEstivage />}
+            path={"/AOS/SousActivitie/updateEsstivage/:demandeId"}
+          />
+          <Route
             element={<RentreeScolaire />}
             path={"/AOS/SousActivitie/rentree-scolaire"}
           />

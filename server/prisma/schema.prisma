@@ -125,7 +125,9 @@ model DemandeEstivage {
   Status         String?
   effet          DateTime     @default(now())
   appartementId  String?
-  type String
+  description    String
+  montant Int
+  type           String
   /// Relation to centres
   centre         Centre       @relation(fields: [centreId], references: [id])
   centreId       String        @default("0")
