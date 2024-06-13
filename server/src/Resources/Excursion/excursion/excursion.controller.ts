@@ -30,10 +30,10 @@ export class ExcursionController {
     return this.excursionService.excursionDispo();
   }
 
-  //@Get(':id')
-  //findOne(@Param('id') id: string) {
-    //return this.excursionService.findOne(+id);
-  //}
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.excursionService.findOne(id);
+  }
 
   //@Patch(':id')
   //update(

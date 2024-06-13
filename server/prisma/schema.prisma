@@ -297,7 +297,6 @@ model mariage {
 
 model demandeExcursion {
   id               String       @id
-  Date             String
   Status           String?
   effet            DateTime     @default(now())
   observation      String?      @db.Text

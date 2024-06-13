@@ -40,13 +40,16 @@ export class DemandeExcursionController {
     return this.demandeExcursionService.findOne(id);
   }
 
-  //@Patch(':id')
-  //update(
-  //@Param('id') id: string,
-  // @Body() updateDemandeExcursionDto: UpdateDemandeExcursionDto,
-  //) {
-  //return this.demandeExcursionService.update(id, updateDemandeExcursionDto);
-  //}
+  @Patch(':id')
+  @UseInterceptors(AnyFilesInterceptor())
+  update(
+    @Param('id') id: string,
+    @Body() updateDemandeExcursionDto: UpdateDemandeExcursionDto,
+    @UploadedFiles() files: Array<Express.Multer.File>,
+  ) {
+    updateDemandeExcursionDto.files = files;
+    return this.demandeExcursionService.update(id, updateDemandeExcursionDto);
+  }
 
   @Delete(':id')
   remove(@Param('id') id: string) {

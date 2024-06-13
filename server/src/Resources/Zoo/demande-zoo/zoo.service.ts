@@ -84,7 +84,10 @@ export class ZooService {
   update(id: string, updateZooDto: UpdateZooDto) {
     return this.prismaClient.zoo.update({
       where: { id },
-      data: updateZooDto,
+      data: {
+        ...updateZooDto,
+        Status: null,
+      },
     });
   }
 

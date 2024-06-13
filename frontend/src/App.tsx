@@ -31,6 +31,7 @@ import UpdateRentreeScolaire from "./component/Updateforms/updaterentreeScolaire
 import UpdateLang from "./component/Updateforms/updatelang.tsx";
 import UpdateZoo from "./component/Updateforms/updateZoo.tsx";
 import UpdateEstivage from "./component/Updateforms/updateEsstivage.tsx";
+import UpdateExcursion from "./component/Updateforms/updateExcursion.tsx";
 
 function App() {
   return (
@@ -108,6 +109,7 @@ function App() {
             element={<UpdateMaladie />}
             path={"AOS/SousActivitie/updateMaladies/:demandeId"}
           />
+          <Route element={<UpdateExcursion />} path="AOS/SousActivitie/updateExcursion/:demandeId"/>
           <Route element={<Lang />} path={"/AOS/SousActivitie/Lang"} />
           <Route element={<Zoo />} path={"/AOS/SousActivitie/Zoo"} />
           <Route

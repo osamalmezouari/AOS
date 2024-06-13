@@ -16,8 +16,10 @@ export class ExcursionService {
     return `This action returns all excursion`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} excursion`;
+  findOne(id: string) {
+    return this.prisma.excursion.findUnique({
+      where: { id },
+    });
   }
   async excursionDispo(): Promise<any[]> {
     try {
@@ -31,7 +33,7 @@ export class ExcursionService {
       });
 
       // Convert BigInt values to strings
-      const serializedExcursions = excursions.map(excursion => ({
+      const serializedExcursions = excursions.map((excursion) => ({
         ...excursion,
         Date: excursion.Date.toString(),
       }));
@@ -43,7 +45,7 @@ export class ExcursionService {
       throw new Error('Failed to fetch excursions');
     }
   }
-  
+
   //create(createExcursionDto: CreateExcursionDto) {
   //return 'This action adds a new excursion';
   //}

@@ -28,6 +28,7 @@ export class DemandeExcursionService {
 
   async create(createDemandeExcursionDto: CreateDemandeExcursionDto) {
     const currentyear = getYear(new Date());
+    const ExcursionUUID = this.uuid.Getuuid();
     const ExcursionNom = await this.prisma.excursion.findUnique({
       where: {
         id: createDemandeExcursionDto.ExcursionId,
@@ -39,19 +40,19 @@ export class DemandeExcursionService {
     const matchingPersonel = await this.prisma.personel.findUnique({
       where: { id: createDemandeExcursionDto.personelId },
     });
-    const Checkontraiter = await this.prisma.naissance.findFirst({
+    const Checkontraiter = await this.prisma.demandeExcursion.findFirst({
       where: {
         personelId: createDemandeExcursionDto.personelId,
         Status: 'En traitement',
       },
     });
-    const Checkpasencorevue = await this.prisma.naissance.findFirst({
+    const Checkpasencorevue = await this.prisma.demandeExcursion.findFirst({
       where: {
         personelId: createDemandeExcursionDto.personelId,
         Status: null,
       },
     });
-    const CheckDocnecess = await this.prisma.naissance.findFirst({
+    const CheckDocnecess = await this.prisma.demandeExcursion.findFirst({
       where: {
         personelId: createDemandeExcursionDto.personelId,
         Status: 'Documents requis',
@@ -103,7 +104,7 @@ export class DemandeExcursionService {
 
     try {
       if (createDemandeExcursionDto.files && matchingPersonel.matricule) {
-        const dir = `C:\\AOS\\${matchingPersonel.matricule}\\${currentyear}\\Aides_financières\\Demandes-Excurssion\\${ExcursionNom.nom}\\${this.uuid.Getuuid()}`;
+        const dir = `C:\\AOS\\${matchingPersonel.matricule}\\${currentyear}\\Aides_financières\\Demandes-Excurssion\\${ExcursionNom.nom}\\${ExcursionUUID}`;
         fs.mkdirSync(dir, { recursive: true });
         createDemandeExcursionDto.files.map((file) => {
           const filePath = path.join(dir, file.originalname);
@@ -115,24 +116,63 @@ export class DemandeExcursionService {
         data: {
           id: this.uuid.Getuuid(),
           personelId: createDemandeExcursionDto.personelId,
-          Date: createDemandeExcursionDto.Date,
           ExcursionId: createDemandeExcursionDto.ExcursionId,
           sousActiviteId: createDemandeExcursionDto.sousActiviteId,
         },
       });
     } catch (error) {
-      throw new HttpException('Error', HttpStatus.FAILED_DEPENDENCY);
+      throw new HttpException(`${error}`, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
-  //  update(id: string, updateDemandeExcursionDto: UpdateDemandeExcursionDto) {
-  //    return this.prisma.demandeExcursion.update({
-  //      where: {
-  //    id,
-  //      },
-  //     data: { updateDemandeExcursionDto },
-  // });
-  //}
+  async update(id: string, updateDemandeExcursion: UpdateDemandeExcursionDto) {
+    const Excursion = await this.prisma.demandeExcursion.findUnique({
+      where: {
+        id,
+        personelId: updateDemandeExcursion.personelId,
+      },
+    });
+    const ExcursionNom = await this.prisma.excursion.findUnique({
+      where :{id : updateDemandeExcursion.ExcursionId}
+    })
+    if (!Excursion) {
+      throw new HttpException(
+        'ya pas une demande avec ce id',
+        HttpStatus.BAD_REQUEST,
+      );
+    } else if (Excursion) {
+      const matchingPersonel = await this.prisma.personel.findUnique({
+        where: {
+          id: updateDemandeExcursion.personelId,
+        },
+      });
+
+      try {
+        if (updateDemandeExcursion.files) {
+          const dir = `C:\\AOS\\${matchingPersonel.matricule}\\${Excursion.effet.getFullYear()}\\Aides_financières\\Demandes-Excurssion\\${ExcursionNom.nom}\\${id}`;
+          const ExisstFiles = fs.readdirSync(dir);
+          ExisstFiles.map((filePath) => {
+            fs.unlinkSync(path.join(dir, filePath));
+          });
+          updateDemandeExcursion.files.map((file) => {
+            const filePath = path.join(dir, file.originalname);
+            fs.writeFileSync(filePath, file.buffer);
+            console.log(`File written at ${filePath}`);
+          });
+        }
+        return this.prisma.demandeExcursion.update({
+          where: {
+            id,
+          },
+          data: {
+            ExcursionId: updateDemandeExcursion.ExcursionId,
+          },
+        });
+      } catch (error) {
+        throw new HttpException(`${error}`, HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+    }
+  }
 
   remove(id: string) {
     return this.prisma.demandeExcursion.delete({
