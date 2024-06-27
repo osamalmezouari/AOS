@@ -32,6 +32,21 @@ import UpdateLang from "./component/Updateforms/updatelang.tsx";
 import UpdateZoo from "./component/Updateforms/updateZoo.tsx";
 import UpdateEstivage from "./component/Updateforms/updateEsstivage.tsx";
 import UpdateExcursion from "./component/Updateforms/updateExcursion.tsx";
+import AdminDashboard from "./pages/admin/admindashboard.tsx";
+import AdminDemandeTable from "./pages/admin/DemandetableAdmin.tsx";
+import MariageView from "./pages/admin/View/mariageView.tsx";
+import EstivageView from "./pages/admin/View/EstivageView.tsx";
+import CondoleanceView from "./pages/admin/View/condoleanceView.tsx";
+import PelerinageView from "./pages/admin/View/pelerinageView.tsx";
+import PretsView from "./pages/admin/View/pretView.tsx";
+import RetraitView from "./pages/admin/View/retraitView.tsx";
+import MaladieView from "./pages/admin/View/MaladieView.tsx";
+import ZooView from "./pages/admin/View/zooView.tsx";
+import RentreScolaireView from "./pages/admin/View/rentreScolaireView.tsx";
+import NaissanceView from "./pages/admin/View/naissanceView.tsx";
+import SoutienLangView from "./pages/admin/View/soutienlangView.tsx";
+import ExcursionView from "./pages/admin/View/ExcurssionView.tsx";
+import FormOne from "./pages/admin/update/FormOne.tsx";
 
 function App() {
   return (
@@ -109,7 +124,10 @@ function App() {
             element={<UpdateMaladie />}
             path={"AOS/SousActivitie/updateMaladies/:demandeId"}
           />
-          <Route element={<UpdateExcursion />} path="AOS/SousActivitie/updateExcursion/:demandeId"/>
+          <Route
+            element={<UpdateExcursion />}
+            path="AOS/SousActivitie/updateExcursion/:demandeId"
+          />
           <Route element={<Lang />} path={"/AOS/SousActivitie/Lang"} />
           <Route element={<Zoo />} path={"/AOS/SousActivitie/Zoo"} />
           <Route
@@ -137,6 +155,77 @@ function App() {
           <Route
             element={<UpdateRetrait />}
             path="AOS/SousActivitie/updateRetrait/:demandeId"
+          />
+          <Route element={<AdminDashboard />} path={"/AOS/Admin/Dashbaord"} />
+          <Route element={<h1>Not found</h1>} path={"*"} />
+          <Route
+            path={"/AOS/Admin/Dashboard/demande/:id"}
+            element={<AdminDemandeTable />}
+          />
+          <Route
+            path={"/AOS/Admin/Dashboard/demande/1/view/:demandeId"}
+            element={<MariageView />}
+          />
+
+          <Route
+            path="/AOS/Admin/Dashboard/demande/2/view/:demandeId"
+            element={<PelerinageView />}
+          />
+          <Route
+            path="/AOS/Admin/Dashboard/demande/3/view/:demandeId"
+            element={<PretsView />}
+          />
+          <Route
+            path="/AOS/Admin/Dashboard/demande/4/view/:demandeId"
+            element={<RetraitView />}
+          />
+          <Route
+            path="/AOS/Admin/Dashboard/demande/5/view/:demandeId"
+            element={<MaladieView />}
+          />
+          <Route
+            path="/AOS/Admin/Dashboard/demande/6/view/:demandeId"
+            element={<CondoleanceView />}
+          />
+          <Route
+            path="/AOS/Admin/Dashboard/demande/10/view/:demandeId"
+            element={<EstivageView />}
+          />
+          <Route
+            path="/AOS/Admin/Dashboard/demande/11/view/:demandeId"
+            element={<ZooView />}
+          />
+          <Route
+            path="/AOS/Admin/Dashboard/demande/13/view/:demandeId"
+            element={<NaissanceView />}
+          />
+          <Route
+            path="/AOS/Admin/Dashboard/demande/14/view/:demandeId"
+            element={<RentreScolaireView />}
+          />
+          <Route
+            path="/AOS/Admin/Dashboard/demande/15/view/:demandeId"
+            element={<SoutienLangView />}
+          />
+          <Route
+            path="/AOS/Admin/Dashboard/demande/12/view/:demandeId"
+            element={<ExcursionView />}
+          />
+          <Route
+            path="/AOS/Admin/Dashboard/demande/:sousActivitieId/FormOne/:demandeId/:personelId/:sousActivitieId"
+            element={<FormOne />}
+          />
+          <Route
+            path="/AOS/Admin/Dashboard/demande/:sousActivitieId/FormTwo/:demandeId/:personelId/:sousActivitieId"
+            element={<FormOne />}
+          />
+          <Route
+            path="/AOS/Admin/Dashboard/demande/:sousActivitieId/FormThree/:demandeId/:personelId/:sousActivitieId"
+            element={<FormOne />}
+          />
+          <Route
+            path="/AOS/Admin/Dashboard/demande/:sousActivitieId/FormFour /:demandeId/:personelId/:sousActivitieId"
+            element={<FormOne />}
           />
         </Routes>
       </BrowserRouter>

@@ -18,7 +18,12 @@ export class DemandeCondoleanceService {
   }
 
   findOne(id: string) {
-    return this.prisma.demandeCondoleance.findUnique({ where: { id } });
+    return this.prisma.demandeCondoleance.findUnique({
+      where: { id },
+      include: {
+        typeCondoleance: true,
+      },
+    });
   }
 
   async create(createCondoleanceDto: CreateDemandeCondoleanceDto) {

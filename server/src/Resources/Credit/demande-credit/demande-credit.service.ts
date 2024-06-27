@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateDemandeCreditDto } from './dto/create-demande-credit.dto';
 import { UpdateDemandeCreditDto } from './dto/update-demande-credit.dto';
 import { UuidService } from '../../../Helpers/UUID/uuid.service';
-import { format, getYear } from 'date-fns';
+import { getYear } from 'date-fns';
 import * as fs from 'fs';
 import * as path from 'path';
 import { PrismaClient } from '@prisma/client';
@@ -78,7 +78,7 @@ export class DemandeCreditService {
           id: this.uuid.Getuuid(),
           personelId: createDemandeCreditDto.personelId,
           sousActiviteId: '3',
-          mantantCredit: createDemandeCreditDto.mantantCredit,
+          montant: createDemandeCreditDto.mantantCredit,
           description: createDemandeCreditDto.description,
         },
       });
@@ -124,7 +124,7 @@ export class DemandeCreditService {
           },
           data: {
             description: updateDemandeCredit.description,
-            mantantCredit: updateDemandeCredit.mantantCredit,
+            montant: updateDemandeCredit.mantantCredit,
           },
         });
       } catch (error) {

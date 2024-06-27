@@ -3,7 +3,7 @@ import { CreateDemandeMaladyDto } from './dto/create-demande-malady.dto';
 import { UpdateDemandeMaladyDto } from './dto/update-demande-malady.dto';
 import { PrismaClient } from '@prisma/client';
 import { UuidService } from '../../../Helpers/UUID/uuid.service';
-import {  getYear } from 'date-fns';
+import { getYear } from 'date-fns';
 import * as fs from 'fs';
 import * as path from 'path';
 

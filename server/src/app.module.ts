@@ -3,7 +3,6 @@ import { ActiviteModule } from './Resources/Panel/activite/activite.module';
 import { PiecesModule } from './Resources/Panel/pieces/pieces.module';
 import { CentresModule } from './Resources/Estivage/centres/centres.module';
 import { DemandeEstivageModule } from './Resources/Estivage/demande-estivage/demande-estivage.module';
-import { DotationModule } from './Resources/Panel/dotation/dotation.module';
 import { VillesModule } from './Resources/Panel/villes/villes.module';
 import { PersonelModule } from './Resources/Personel/personel.module';
 import { AffectationModule } from './Resources/Panel/affectation/affectation.module';
@@ -33,7 +32,6 @@ import { RentreeScolaireModule } from './Resources/rentreeScolaire/rentreeScolai
     PiecesModule,
     PersonelModule,
     VillesModule,
-    DotationModule,
     DemandeEstivageModule,
     CentresModule,
     AffectationModule,

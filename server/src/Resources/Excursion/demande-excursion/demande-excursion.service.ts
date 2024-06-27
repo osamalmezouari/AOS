@@ -23,6 +23,15 @@ export class DemandeExcursionService {
       where: {
         id: id,
       },
+      include: {
+        Excursion: {
+          select: {
+            nom: true,
+            endVile: true,
+            startVile: true,
+          },
+        },
+      },
     });
   }
 
@@ -133,8 +142,8 @@ export class DemandeExcursionService {
       },
     });
     const ExcursionNom = await this.prisma.excursion.findUnique({
-      where :{id : updateDemandeExcursion.ExcursionId}
-    })
+      where: { id: updateDemandeExcursion.ExcursionId },
+    });
     if (!Excursion) {
       throw new HttpException(
         'ya pas une demande avec ce id',

@@ -286,6 +286,179 @@ export class PersonelService {
       return data;
     }
   }
+  async AdminSingleSousActivitiesdemandesWithDetails(sousActiviteId: string) {
+    const currentYear = new Date().getFullYear();
+    const startDate = new Date(`${currentYear}-01-01T00:00:00.000Z`);
+    const endDate = new Date(`${currentYear + 1}-01-01T00:00:00.000Z`);
+    if (sousActiviteId === '1') {
+      const data = this.prismaClient.mariage.findMany({
+        include: {
+          SousActivite: {
+            select: {
+              id: true,
+              nomAr: true,
+              nomFr: true,
+            },
+          },
+        },
+      });
+      return data;
+    }
+    if (sousActiviteId === '2') {
+      const data = this.prismaClient.demandePelerinage.findMany({
+        include: {
+          SousActivite: {
+            select: {
+              id: true,
+              nomAr: true,
+              nomFr: true,
+            },
+          },
+        },
+      });
+      return data;
+    }
+    if (sousActiviteId === '3') {
+      const data = this.prismaClient.demandeCredit.findMany({
+        include: {
+          SousActivite: {
+            select: {
+              id: true,
+              nomAr: true,
+              nomFr: true,
+            },
+          },
+        },
+      });
+      return data;
+    }
+    if (sousActiviteId === '4') {
+      const data = this.prismaClient.retrait.findMany({
+        include: {
+          SousActivite: {
+            select: {
+              id: true,
+              nomAr: true,
+              nomFr: true,
+            },
+          },
+        },
+      });
+      return data;
+    }
+    if (sousActiviteId === '5') {
+      const data = this.prismaClient.demamdeMaladies.findMany({
+        include: {
+          SousActivite: {
+            select: {
+              id: true,
+              nomAr: true,
+              nomFr: true,
+            },
+          },
+        },
+      });
+      return data;
+    }
+    if (sousActiviteId === '6') {
+      const data = this.prismaClient.demandeCondoleance.findMany({
+        include: {
+          SousActivite: {
+            select: {
+              id: true,
+              nomAr: true,
+              nomFr: true,
+            },
+          },
+        },
+      });
+      return data;
+    }
+    if (sousActiviteId === '10') {
+      const data = this.prismaClient.demandeEstivage.findMany({
+        include: {
+          SousActivite: {
+            select: {
+              id: true,
+              nomAr: true,
+              nomFr: true,
+            },
+          },
+        },
+      });
+      return data;
+    }
+    if (sousActiviteId === '11') {
+      const data = this.prismaClient.zoo.findMany({
+        include: {
+          SousActivite: {
+            select: {
+              id: true,
+              nomAr: true,
+              nomFr: true,
+            },
+          },
+        },
+      });
+      return data;
+    }
+    if (sousActiviteId === '12') {
+      const data = this.prismaClient.demandeExcursion.findMany({
+        include: {
+          SousActivite: {
+            select: {
+              id: true,
+              nomAr: true,
+              nomFr: true,
+            },
+          },
+        },
+      });
+      return data;
+    }
+    if (sousActiviteId === '13') {
+      const data = this.prismaClient.naissance.findMany({
+        include: {
+          SousActivite: {
+            select: {
+              id: true,
+              nomAr: true,
+              nomFr: true,
+            },
+          },
+        },
+      });
+      return data;
+    }
+    if (sousActiviteId === '14') {
+      const data = this.prismaClient.rentreeScolaire.findMany({
+        include: {
+          SousActivite: {
+            select: {
+              id: true,
+              nomAr: true,
+              nomFr: true,
+            },
+          },
+        },
+      });
+      return data;
+    }
+    if (sousActiviteId === '15') {
+      const data = this.prismaClient.demandeLang.findMany({
+        include: {
+          SousActivite: {
+            select: {
+              id: true,
+              nomAr: true,
+              nomFr: true,
+            },
+          },
+        },
+      });
+      return data;
+    }
+  }
   async PersonelDemandesWithDetails(id: string) {
     const alldemandes = await this.prismaClient.personel.findUnique({
       where: { id },
@@ -463,7 +636,304 @@ export class PersonelService {
       ...alldemandes.demandeLang,
     ];
   }
+  async AllDemandesWithDetails() {
+    const mariage = await this.prismaClient.mariage.findMany({
+      include: {
+        SousActivite: {
+          select: {
+            id: true,
+            nomAr: true,
+            nomFr: true,
+          },
+        },
+      },
+    });
+    const condoleance = await this.prismaClient.demandeCondoleance.findMany({
+      include: {
+        SousActivite: {
+          select: {
+            id: true,
+            nomAr: true,
+            nomFr: true,
+          },
+        },
+      },
+    });
+    const Maladies = await this.prismaClient.demamdeMaladies.findMany({
+      include: {
+        SousActivite: {
+          select: {
+            id: true,
+            nomAr: true,
+            nomFr: true,
+          },
+        },
+      },
+    });
+    const Credit = await this.prismaClient.demandeCredit.findMany({
+      include: {
+        SousActivite: {
+          select: {
+            id: true,
+            nomAr: true,
+            nomFr: true,
+          },
+        },
+      },
+    });
+    const Estivage = await this.prismaClient.demandeEstivage.findMany({
+      include: {
+        SousActivite: {
+          select: {
+            id: true,
+            nomAr: true,
+            nomFr: true,
+          },
+        },
+      },
+    });
+    const Excursion = await this.prismaClient.demandeExcursion.findMany({
+      include: {
+        SousActivite: {
+          select: {
+            id: true,
+            nomAr: true,
+            nomFr: true,
+          },
+        },
+      },
+    });
+    const Pelerinage = await this.prismaClient.demandePelerinage.findMany({
+      include: {
+        SousActivite: {
+          select: {
+            id: true,
+            nomAr: true,
+            nomFr: true,
+          },
+        },
+      },
+    });
+    const Lang = await this.prismaClient.demandeLang.findMany({
+      include: {
+        SousActivite: {
+          select: {
+            id: true,
+            nomAr: true,
+            nomFr: true,
+          },
+        },
+      },
+    });
+    const zoo = await this.prismaClient.zoo.findMany({
+      include: {
+        SousActivite: {
+          select: {
+            id: true,
+            nomAr: true,
+            nomFr: true,
+          },
+        },
+      },
+    });
+    const retrait = await this.prismaClient.retrait.findMany({
+      include: {
+        SousActivite: {
+          select: {
+            id: true,
+            nomAr: true,
+            nomFr: true,
+          },
+        },
+      },
+    });
+    const rentreeScolaire = await this.prismaClient.rentreeScolaire.findMany({
+      include: {
+        SousActivite: {
+          select: {
+            id: true,
+            nomAr: true,
+            nomFr: true,
+          },
+        },
+      },
+    });
+    const naissance = await this.prismaClient.naissance.findMany({
+      include: {
+        SousActivite: {
+          select: {
+            id: true,
+            nomAr: true,
+            nomFr: true,
+          },
+        },
+      },
+    });
 
+    return [
+      ...mariage,
+      ...condoleance,
+      ...Maladies,
+      ...Credit,
+      ...Estivage,
+      ...Excursion,
+      ...Pelerinage,
+      ...Lang,
+      ...zoo,
+      ...retrait,
+      ...rentreeScolaire,
+      ...naissance,
+    ];
+  }
+  async TargetDemandeWithDetails() {
+    const mariage = await this.prismaClient.mariage.findMany({
+      include: {
+        SousActivite: {
+          select: {
+            id: true,
+            nomAr: true,
+            nomFr: true,
+          },
+        },
+      },
+    });
+    const condoleance = await this.prismaClient.demandeCondoleance.findMany({
+      include: {
+        SousActivite: {
+          select: {
+            id: true,
+            nomAr: true,
+            nomFr: true,
+          },
+        },
+      },
+    });
+    const Maladies = await this.prismaClient.demamdeMaladies.findMany({
+      include: {
+        SousActivite: {
+          select: {
+            id: true,
+            nomAr: true,
+            nomFr: true,
+          },
+        },
+      },
+    });
+    const Credit = await this.prismaClient.demandeCredit.findMany({
+      include: {
+        SousActivite: {
+          select: {
+            id: true,
+            nomAr: true,
+            nomFr: true,
+          },
+        },
+      },
+    });
+    const Estivage = await this.prismaClient.demandeEstivage.findMany({
+      include: {
+        SousActivite: {
+          select: {
+            id: true,
+            nomAr: true,
+            nomFr: true,
+          },
+        },
+      },
+    });
+    const Excursion = await this.prismaClient.demandeExcursion.findMany({
+      include: {
+        SousActivite: {
+          select: {
+            id: true,
+            nomAr: true,
+            nomFr: true,
+          },
+        },
+      },
+    });
+    const Pelerinage = await this.prismaClient.demandePelerinage.findMany({
+      include: {
+        SousActivite: {
+          select: {
+            id: true,
+            nomAr: true,
+            nomFr: true,
+          },
+        },
+      },
+    });
+    const Lang = await this.prismaClient.demandeLang.findMany({
+      include: {
+        SousActivite: {
+          select: {
+            id: true,
+            nomAr: true,
+            nomFr: true,
+          },
+        },
+      },
+    });
+    const zoo = await this.prismaClient.zoo.findMany({
+      include: {
+        SousActivite: {
+          select: {
+            id: true,
+            nomAr: true,
+            nomFr: true,
+          },
+        },
+      },
+    });
+    const retrait = await this.prismaClient.retrait.findMany({
+      include: {
+        SousActivite: {
+          select: {
+            id: true,
+            nomAr: true,
+            nomFr: true,
+          },
+        },
+      },
+    });
+    const rentreeScolaire = await this.prismaClient.rentreeScolaire.findMany({
+      include: {
+        SousActivite: {
+          select: {
+            id: true,
+            nomAr: true,
+            nomFr: true,
+          },
+        },
+      },
+    });
+    const naissance = await this.prismaClient.naissance.findMany({
+      include: {
+        SousActivite: {
+          select: {
+            id: true,
+            nomAr: true,
+            nomFr: true,
+          },
+        },
+      },
+    });
+
+    return [
+      ...mariage,
+      ...condoleance,
+      ...Maladies,
+      ...Credit,
+      ...Estivage,
+      ...Excursion,
+      ...Pelerinage,
+      ...Lang,
+      ...zoo,
+      ...retrait,
+      ...rentreeScolaire,
+      ...naissance,
+    ];
+  }
   findOne(id: string): Promise<Personel> {
     return this.prismaClient.personel.findUnique({ where: { id: id } });
   }

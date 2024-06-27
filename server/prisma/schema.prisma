@@ -71,9 +71,7 @@ model SousActivite {
   /// Relation activite
   activite          Activitie                @relation(fields: [activiteId], references: [id])
   activiteId        String
-  ///Relation dotation
   pieces            SousActivitiesOnPieces[]
-  dotation          Dotation[]
   demandeEsstivage  DemandeEstivage[]
   demandeCredit     demandeCredit[]
   demandePelerinage demandePelerinage[]
@@ -106,16 +104,6 @@ model Pieces {
   nomFr          String                   @db.Text
   ///Relation to sousActivites
   SousActivities SousActivitiesOnPieces[]
-}
-
-model Dotation {
-  id              String       @id
-  dotation        Float
-  descriptionAr   String       @db.Text
-  descriptionFr   String       @db.Text
-  /// Relation to sousActivites
-  SousActivities  SousActivite @relation(fields: [SousActivitieId], references: [id])
-  SousActivitieId String
 }
 
 model DemandeEstivage {
@@ -163,7 +151,7 @@ model Appartement {
 
 model demandeCredit {
   id            String   @id
-  mantantCredit Int
+  montant Int
   description   String   @db.Text
   Status        String?
   effet         DateTime @default(now())
@@ -196,7 +184,7 @@ model demandePelerinage {
 model retrait {
   id              String   @id
   date            String
-  mantantRetraite Int?
+  montant Int?
   Status          String?
   effet           DateTime @default(now())
   observation     String?  @db.Text
@@ -212,7 +200,7 @@ model retrait {
 
 model demamdeMaladies {
   id             String       @id
-  mantantMaladie Int?
+  montant Int?
   Decription     String       @db.Text
   Status         String?
   effet          DateTime     @default(now())
@@ -241,7 +229,7 @@ model demandeLang {
 
 model demandeCondoleance {
   id                 String          @id
-  mantantCondoleance Int?
+  montant Int?
   description        String          @db.Text
   Status             String?
   effet              DateTime        @default(now())
@@ -291,8 +279,8 @@ model mariage {
   sousActiviteId String
   Personel       Personel     @relation(fields: [personelId], references: [id])
   personelId     String
-  Mantant        String?
-  Observation    String?      @db.Text
+  montant        Int?
+  observation    String?      @db.Text
 }
 
 model demandeExcursion {
@@ -328,6 +316,7 @@ model Excursion {
   Description      String             @db.Text
   imgUrl           String             @db.Text
   Date             BigInt
+  montant Int?
   nombre           Int
   startVile        Vile               @relation("excursionsFromVile", fields: [vileStartId], references: [id])
   vileStartId      String
@@ -340,8 +329,7 @@ model Excursion {
 model naissance {
   id      String @id
   Date    String
-  mantant Int?
-
+  montant Int?
   nombre         Int
   Status         String?
   effet          DateTime     @default(now())
@@ -357,7 +345,7 @@ model naissance {
 model rentreeScolaire {
   id             String       @id
   Date           String
-  mantant        Int?
+  montant        Int?
   nombre         Int
   Status         String?
   effet          DateTime     @default(now())

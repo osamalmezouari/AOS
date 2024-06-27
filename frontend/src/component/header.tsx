@@ -5,7 +5,7 @@ const Header = () => {
   return (
     <>
       <Box className="pl-32 bg-white pr-16 w-full  fixed flex gap-2 h-24 top-0 items-center justify-between border-2">
-        <MenuOutlined />
+        <Avatar/>
         <Box className={"flex gap-x-4 font-main items-center"}>
           <Box className={'flex item-center justify-center gap-2'}>
             <Box className="bg-mainBleu rounded-full text-center px-1 py-1 hover:bg-yellow font-bold duration-500 transition-all cursor-pointer text-white w-8 h-8">

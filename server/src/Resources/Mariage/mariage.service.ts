@@ -18,8 +18,9 @@ export class MariageService {
     return this.prisma.mariage.findMany();
   }
 
-  async findOne(id: string): Promise<mariage> {
-    return this.prisma.mariage.findUnique({ where: { id } });
+  async findOne(id: string) {
+    const One = await this.prisma.mariage.findUnique({ where: { id } });
+    return One;
   }
 
   async create(createmariage: CreatemariageDto) {

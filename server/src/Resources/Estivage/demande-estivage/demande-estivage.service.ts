@@ -16,15 +16,42 @@ export class DemandeEstivageService {
     return this.prismaClient.demandeEstivage.findMany();
   }
 
-  findOne(id: string) {
-    return this.prismaClient.demandeEstivage.findUnique({
+  async findOne(id: string) {
+    const appartementIdandCenter =
+      await this.prismaClient.demandeEstivage.findUnique({
+        where: { id },
+        select: {
+          appartementId: true,
+          centreId: true,
+        },
+      });
+    const numero = await this.prismaClient.appartement.findUnique({
+      where: {
+        id: appartementIdandCenter.appartementId,
+        centreId: appartementIdandCenter.centreId,
+      },
+      select: {
+        numero: true,
+      },
+    });
+    const demande = await this.prismaClient.demandeEstivage.findUnique({
       where: { id },
       include: {
         personel: true,
         SousActivite: true,
-        centre: true,
+        centre: {
+          select: {
+            centreAr: true,
+            centreFr: true,
+            Vile: true,
+          },
+        },
       },
     });
+    return {
+      ...demande,
+      numeroAppartement: numero,
+    };
   }
   async create(createDemandeEstivageDto: CreateDemandeEstivageDto) {
     const EstivageUUID = this.uuid.Getuuid();

@@ -4,13 +4,14 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
-  Put,
 } from '@nestjs/common';
 import { SousActiviteService } from './sous-activite.service';
 import { SousActivite } from '@prisma/client';
 import { UpdateSousActiviteDto } from './dto/UpdateSousActivite.dto';
 import { CreateSousActiviteDto } from './dto/CreateSousActivite.dto';
+import { AdminUpdateDto } from './dto/AdminUpdate.dto';
 
 @Controller('sous-activite')
 export class SousActiviteController {
@@ -29,6 +30,11 @@ export class SousActiviteController {
     return this.sousActiviteService.PersonelDashboardState(id);
   }
 
+  @Get('Admin/State')
+  async AdminDashboardState() {
+    return this.sousActiviteService.AdminDashboardState();
+  }
+
   @Get('singlesousActivitie/:id/:sousActivitieId')
   async PersonelStateforSingleSousActivitie(
     @Param('id') id: string,
@@ -39,17 +45,42 @@ export class SousActiviteController {
       sousActivitieId,
     );
   }
+  @Get('AdminfetchSignledemande/:demandeId/:sousActivitieId')
+  async AdminfetchSignledemande(
+    @Param('sousActivitieId') SousActivitieId: string,
+    @Param('demandeId') demandeId: string,
+  ) {
+    return this.sousActiviteService.AdminfetchSignledemande(
+      SousActivitieId,
+      demandeId,
+    );
+  }
 
   @Post()
   async create(@Body() createSousActiviteDto: CreateSousActiviteDto) {
     return this.sousActiviteService.create(createSousActiviteDto);
   }
-  @Put(':id')
+  @Patch(':id')
   async update(
     @Param('id') id: string,
     @Body() updateSousActiviteDto: UpdateSousActiviteDto,
   ): Promise<SousActivite> {
     return this.sousActiviteService.update(id, updateSousActiviteDto);
+  }
+
+  @Patch('AdminUpdate/:personelId/:demandeId/:sousActivitieId')
+  async AdminUpdate(
+    @Param('personelId') personelId: string,
+    @Param('demandeId') demandeId: string,
+    @Param('sousActivitieId') sousActivitieId: string,
+    @Body() adminUpdateDto?: AdminUpdateDto,
+  ) {
+    return this.sousActiviteService.AdminUpdate(
+      personelId,
+      demandeId,
+      sousActivitieId,
+      adminUpdateDto,
+    );
   }
   @Delete(':id')
   delete(@Param('id') id: string) {

@@ -15,6 +15,10 @@ import { CreatepersonelDto } from './dto/Createpersonel.dto';
 @Controller('personel')
 export class PersonelController {
   constructor(private readonly personelService: PersonelService) {}
+  @Get('AllDemandesWithDetails')
+  async AllDemandesWithDetails() {
+    return this.personelService.AllDemandesWithDetails();
+  }
   @Get()
   async findAll() {
     return this.personelService.findAll();
@@ -28,6 +32,7 @@ export class PersonelController {
   async PersonelDemandesWithDetails(@Param('id') id: string) {
     return this.personelService.PersonelDemandesWithDetails(id);
   }
+
   @Get('SingleSousActivitiesdemandesWithDetails/:id/:sousActivitieId')
   async SingleSousActivitiesdemandesWithDetails(
     @Param('id') id: string,
@@ -35,6 +40,14 @@ export class PersonelController {
   ) {
     return this.personelService.SingleSousActivitiesdemandesWithDetails(
       id,
+      sousActivitieId,
+    );
+  }
+  @Get('AdminSingleSousActivitiesdemandesWithDetails/:sousActivitieId')
+  async AdminSingleSousActivitiesdemandesWithDetails(
+    @Param('sousActivitieId') sousActivitieId: string,
+  ) {
+    return this.personelService.AdminSingleSousActivitiesdemandesWithDetails(
       sousActivitieId,
     );
   }

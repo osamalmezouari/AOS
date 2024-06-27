@@ -44,7 +44,7 @@ export class DemandeLangController {
     @Body() updateDemandeLangDto: UpdateDemandeLangDto,
     @UploadedFiles() files: Array<Express.Multer.File>,
   ) {
-    updateDemandeLangDto.files = files
+    updateDemandeLangDto.files = files;
     return this.demandeLangService.update(id, updateDemandeLangDto);
   }
 

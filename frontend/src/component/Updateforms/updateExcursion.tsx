@@ -41,13 +41,11 @@ const UpdateExcursion: React.FC = () => {
   const [maxFiles, setMaxFiles] = useState<number>(0);
   const [ExcursionDispo, setExcursionDispo] = useState<ExcursionType[]>([]);
   const [formState, setFormState] = useState<{
-    description: string;
     ExcursionId: string;
     files: File[];
     personelId: string;
     sousActiviteId: string;
   }>({
-    description: "",
     ExcursionId: "",
     files: [],
     personelId: user.id,

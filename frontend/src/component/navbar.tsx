@@ -10,8 +10,6 @@ import {
   ExpandLess,
   ExpandMore,
   Login,
-  Logout,
-  Settings,
 } from "@mui/icons-material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -20,7 +18,6 @@ import {
   SingleSousActivities,
 } from "../interfaces/types.tsx";
 import { PORT } from "../../env.ts";
-import { PiArrowsInFill } from "react-icons/pi";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -318,7 +315,7 @@ const Navbar = () => {
             ) : (
               <Button
                 onClick={() =>
-                  navigate(`/AOS/Profile/dashboard`, { replace: "true" })
+                  navigate(`/AOS/Profile/dashboard`, { replace: true })
                 }
                 startIcon={<AccountCircle />}
                 className={
