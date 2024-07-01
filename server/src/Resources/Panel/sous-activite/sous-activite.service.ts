@@ -659,16 +659,19 @@ export class SousActiviteService {
         },
         data: adminUpdateDto,
       });
-    } //else if (sousActiviteId === '10') {
-    //return this.prismaClient.demandeEstivage.update({
-    //where: {
-    //id: demandeId,
-    //personelId: personelId,
-    //},
-    //data: adminUpdateDto,
-    //});
-    //}
-    else if (sousActiviteId === '11') {
+    } else if (sousActiviteId === '10') {
+      return this.prismaClient.demandeEstivage.update({
+        where: {
+          id: demandeId,
+          personelId: personelId,
+        },
+        data: {
+          montantAloue: adminUpdateDto.montantAloue || 0,
+          appartementId: adminUpdateDto.appartementId,
+          Status: adminUpdateDto.Status,
+        },
+      });
+    } else if (sousActiviteId === '11') {
       return this.prismaClient.zoo.update({
         where: {
           id: demandeId,

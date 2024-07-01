@@ -61,9 +61,9 @@ const Estivage: React.FC = () => {
     const fetchCentres = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:${PORT}/centres/${formState.datedebut}`
+          `http://localhost:${PORT}/centres/CentresWithEmptyAppartements/${formState.datedebut}`
         );
-        const centresFiltred = await res.data.filter((center) => {
+        const centresFiltred = res.data.filter((center) => {
           return center.id !== "0";
         });
         setCentres(centresFiltred);
@@ -74,7 +74,7 @@ const Estivage: React.FC = () => {
     };
 
     fetchCentres();
-  }, [formState.datefin]);
+  }, [formState.datedebut]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -267,27 +267,25 @@ const Estivage: React.FC = () => {
                       ? ""
                       : centres.map((centre) => (
                           <MenuItem key={centre.id} value={centre.id}>
-                            {centre.centreFr}
+                            {centre?.centreFr}
                           </MenuItem>
                         ))}
                   </TextField>
-                </Grid> 
-              )
-            : (
-              <Grid item xs={6}>
-                <TextField
-                  required
-                  fullWidth
-                  type="number"
-                  name="montant"
-                  label="montant"
-                  multiline
-                  value={formState.montant}
-                  onChange={handleChange}
-                />
-              </Grid>
-            )
-            }
+                </Grid>
+              ) : (
+                <Grid item xs={6}>
+                  <TextField
+                    required
+                    fullWidth
+                    type="number"
+                    name="montant"
+                    label="montant"
+                    multiline
+                    value={formState.montant}
+                    onChange={handleChange}
+                  />
+                </Grid>
+              )}
               <Grid item xs={12}>
                 <TextField
                   required

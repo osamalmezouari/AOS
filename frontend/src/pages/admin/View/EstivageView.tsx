@@ -48,10 +48,6 @@ const EstivageView = () => {
           ></Grid>
           <Grid item xl={6} className="flex items-center bg-landing bg-center">
             <Box className={"w-full h-full"}>
-            
-              <Typography className="w-full font-main px-2 mt-4">
-                Observation : {data && data.Observation}
-              </Typography>
               <Typography className="w-full font-main px-2 mt-4">
                 description : {data && data.description}
               </Typography>
@@ -62,12 +58,12 @@ const EstivageView = () => {
                 Effet : {data && data.effet}
               </Typography>
               <Typography className="w-full font-main px-2 mt-4">
-                Centre : {data && data.centre?.centreAr} | 
-                ville : {data && data?.centre?.Vile?.vileAr}
+                Centre : {data && data.centre?.centreAr} | ville :{" "}
+                {data && data?.centre?.Vile?.vileAr}
               </Typography>
               <Typography className="w-full font-main px-2 mt-4">
-                date sortie : {data && data.date_sortie} | 
-                date entree : {data && data.date_entre}
+                date sortie : {data && data.date_sortie} | date entree :{" "}
+                {data && data.date_entre}
               </Typography>
               <Typography className="w-full font-main px-2 mt-4">
                 Type : {data && data.type}
@@ -99,13 +95,9 @@ const EstivageView = () => {
                       ? "text-blue-400"
                       : ""
                   }
-                  ${
-                    data && data.Status === null
-                      ? "text-gray-400"
-                      : ""
-                  } `}
+                  ${data && data.Status === null ? "text-gray-400" : ""} `}
                 >
-                  {data && data.Status || 'pas encore vue'}
+                  {(data && data.Status) || "pas encore vue"}
                 </Typography>
               </Typography>
               <Avatar

@@ -114,7 +114,8 @@ model DemandeEstivage {
   effet          DateTime     @default(now())
   appartementId  String?
   description    String
-  montant Int
+  montant Int?
+  montantAloue Int?
   type           String
   /// Relation to centres
   centre         Centre       @relation(fields: [centreId], references: [id])

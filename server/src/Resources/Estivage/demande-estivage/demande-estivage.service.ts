@@ -124,7 +124,7 @@ export class DemandeEstivageService {
         },
       });
     } catch (error) {
-      throw new HttpException('Error', HttpStatus.FAILED_DEPENDENCY);
+      throw new HttpException(error, HttpStatus.FAILED_DEPENDENCY);
     }
   }
 

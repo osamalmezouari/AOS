@@ -93,13 +93,12 @@ const Naissance: React.FC = () => {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    if (files.length > pieces) {
+    if (formState.files.length > maxFiles) {
       setSentStatus({
         success: false,
         inprogress: false,
         error: "",
         alert: "max fechier pour disponbile pour ce demande est 3",
-        description: 0,
       });
       return;
     }

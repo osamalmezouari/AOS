@@ -47,6 +47,8 @@ import NaissanceView from "./pages/admin/View/naissanceView.tsx";
 import SoutienLangView from "./pages/admin/View/soutienlangView.tsx";
 import ExcursionView from "./pages/admin/View/ExcurssionView.tsx";
 import FormOne from "./pages/admin/update/FormOne.tsx";
+import FormTwo from "./pages/admin/update/FormTwo.tsx";
+import FormThree from "./pages/admin/update/FormThree.tsx";
 
 function App() {
   return (
@@ -217,15 +219,11 @@ function App() {
           />
           <Route
             path="/AOS/Admin/Dashboard/demande/:sousActivitieId/FormTwo/:demandeId/:personelId/:sousActivitieId"
-            element={<FormOne />}
+            element={<FormTwo />}
           />
           <Route
-            path="/AOS/Admin/Dashboard/demande/:sousActivitieId/FormThree/:demandeId/:personelId/:sousActivitieId"
-            element={<FormOne />}
-          />
-          <Route
-            path="/AOS/Admin/Dashboard/demande/:sousActivitieId/FormFour /:demandeId/:personelId/:sousActivitieId"
-            element={<FormOne />}
+            path="/AOS/Admin/Dashboard/demande/:sousActivitieId/FormFour/:demandeId/:personelId/:sousActivitieId"
+            element={<FormThree />}
           />
         </Routes>
       </BrowserRouter>

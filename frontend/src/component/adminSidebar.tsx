@@ -1,6 +1,8 @@
 import {
   ExpandLess,
   ExpandMore,
+  KeyboardDoubleArrowLeft,
+  KeyboardDoubleArrowRight,
   Logout,
   PanoramaFishEye,
   SpaceDashboard,
@@ -63,11 +65,11 @@ const AdminSideBar = () => {
           className={`cursor-pointer absolute top-[50%] left-[95%] `}
           onClick={() => setToogleClose(!ToogleClose)}
         >
-          <PanoramaFishEye className="text-white bg-blue-500 rounded-tr-lg rounded-br-lg w-6 h-6" />
+          {ToogleClose ? <KeyboardDoubleArrowRight className="text-white bg-blue-500 rounded-tr-lg rounded-br-lg w-6 h-6" /> : <KeyboardDoubleArrowLeft className="text-white bg-blue-500 rounded-tr-lg rounded-br-lg w-6 h-6" />}
         </Box>
         <Box>
           <Avatar
-            className="w-12 h-12"
+            className="w-16 h-16"
             src="https://github.com/osamalmezouari/AOS/raw/master/frontend/public/assets/images/logo.jpg"
           />
         </Box>

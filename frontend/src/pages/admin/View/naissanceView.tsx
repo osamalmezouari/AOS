@@ -53,7 +53,7 @@ const NaissanceView = () => {
                 Observation : {data && data.observation}
               </Typography>
               <Typography className="w-full font-main px-2 mt-4">
-                Montant : {data && data.mantant}
+                Montant : {data && data.montant}
               </Typography>
               <Typography className="w-full font-main px-2 mt-4">
                 Effet : {data && data.effet}

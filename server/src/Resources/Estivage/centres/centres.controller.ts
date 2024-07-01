@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  BadRequestException,
 } from '@nestjs/common';
 import { CentresService } from './centres.service';
 import { CreateCentreDto } from './dto/create-centre.dto';
@@ -23,6 +24,18 @@ export class CentresController {
     return this.centresService.findCentresWithEmptyAppartements({
       dateStart,
     });
+  }
+  @Get('apartments/available/:demandeId')
+  async getAvailableApartments(@Param('demandeId') demandeId: string) {
+    try {
+      const apartments =
+        await this.centresService.getAvailableApartmentsForDemande(demandeId);
+      return apartments;
+    } catch (error) {
+      throw new BadRequestException(
+        `Error fetching available apartments: ${error.message}`,
+      );
+    }
   }
   @Get(':id')
   findOne(@Param('id') id: string) {
