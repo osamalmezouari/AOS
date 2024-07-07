@@ -191,6 +191,13 @@ const AdminSideBar = () => {
             >
               Perssones
             </Typography>
+            <Typography
+              className={
+                "text-[12px] bg-gray-200 my-2 rounded text-black w-[160px] hover:underline hover:ml-2 transition-all duration-300 py-2 pl-2 text-black-500"
+              }
+            >
+              Annoneces 
+            </Typography>
           </Box>
         </Box>
         <Button>
