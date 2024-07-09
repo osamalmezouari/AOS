@@ -15,7 +15,15 @@ export class InscriptionService {
   ) {}
 
   async findAll() {
-    return this.prisma.inscreption.findMany();
+    return this.prisma.inscreption.findMany({
+      include: {
+        Personel: {
+          select: {
+            matricule: true,
+          },
+        },
+      },
+    });
   }
 
   async findOne(id: string) {
@@ -95,7 +103,14 @@ export class InscriptionService {
     }
   }
 
-  async update(id: string, updateInscriptionDto: UpdateInscriptionDto) {}
+  async update(id: string, updateInscriptionDto: UpdateInscriptionDto) {
+    return this.prisma.inscreption.update({
+      where: { id },
+      data: {
+        status: true,
+      },
+    });
+  }
 
   async remove(id: string) {
     return this.prisma.inscreption.delete({ where: { id } });

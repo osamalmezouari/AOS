@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { ExcursionService } from './excursion.service';
 import { CreateExcursionDto } from './dto/create-excursion.dto';
 import { UpdateExcursionDto } from './dto/update-excursion.dto';
@@ -15,15 +7,15 @@ import { UpdateExcursionDto } from './dto/update-excursion.dto';
 export class ExcursionController {
   constructor(private readonly excursionService: ExcursionService) {}
 
-  //@Post()
-  //create(@Body() createExcursionDto: CreateExcursionDto) {
-  // return this.excursionService.create(createExcursionDto);
-  //}
+  @Post()
+  create(@Body() createExcursionDto: CreateExcursionDto) {
+    return this.excursionService.create(createExcursionDto);
+  }
 
-  //@Get()
-  //findAll() {
-  //return this.excursionService.findAll();
-  //}
+  @Get()
+  findAll() {
+    return this.excursionService.findAll();
+  }
 
   @Get('excursionDispo')
   excursionDispo() {

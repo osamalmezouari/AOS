@@ -1,5 +1,8 @@
+import { Transform } from 'class-transformer';
+
 export class CreatepersonelDto {
   id: string;
+  @Transform(({ value }) => parseInt(value, 10))
   matricule: number;
   nom_fr: string;
   nom_ar: string;
@@ -8,6 +11,7 @@ export class CreatepersonelDto {
   password: string;
   naissance: string;
   email: string;
+  @Transform(({ value }) => parseInt(value, 10))
   echelle: number;
   AffectationId: string;
 }

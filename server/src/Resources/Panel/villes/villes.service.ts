@@ -18,7 +18,7 @@ export class VillesService {
   }
   create(createVilleDto: CreateVilleDto) {
     const vileWithId = {
-      id: this.uuid,
+      id: this.uuid.Getuuid(),
       ...createVilleDto,
     };
     return this.prismaClient.vile.create({

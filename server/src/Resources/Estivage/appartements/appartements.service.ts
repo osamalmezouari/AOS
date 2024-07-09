@@ -3,6 +3,7 @@ import { CreateAppartementDto } from './dto/create-appartement.dto';
 import { UpdateAppartementDto } from './dto/update-appartement.dto';
 import { PrismaClient } from '@prisma/client';
 import { UuidService } from '../../../Helpers/UUID/uuid.service';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class AppartementsService {
@@ -12,7 +13,11 @@ export class AppartementsService {
   ) {}
 
   findAll() {
-    return this.prismaClient.appartement.findMany();
+    return this.prismaClient.appartement.findMany({
+      include: {
+        centre: true,
+      },
+    });
   }
 
   findOne(id: string) {
@@ -21,7 +26,7 @@ export class AppartementsService {
 
   create(createAppartementDto: CreateAppartementDto) {
     const appartementWithId = {
-      id: this.uuid,
+      id: uuidv4(),
       ...createAppartementDto,
     };
     return this.prismaClient.appartement.create({

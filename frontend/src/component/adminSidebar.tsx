@@ -1,12 +1,18 @@
 import {
+  AccountCircleRounded,
+  AccountTree,
   ExpandLess,
   ExpandMore,
+  FolderCopy,
+  HomeWork,
   KeyboardDoubleArrowLeft,
   KeyboardDoubleArrowRight,
   Logout,
-  PanoramaFishEye,
   SpaceDashboard,
-  TrackChanges,
+  Stadium,
+  Tour,
+  VolunteerActivism,
+  WorkOutlineRounded,
 } from "@mui/icons-material";
 import { Avatar, Box, Button, Typography } from "@mui/material";
 import axios from "axios";
@@ -57,7 +63,7 @@ const AdminSideBar = () => {
   return (
     <>
       <Box
-        className={`w-max p-2 min-h-screen max-h-max z-20 absolute bg-gray-100 text-white flex flex-col items-center duration-500 transation-all py-6 gap-6 justify-between ${
+        className={`w-max p-2 min-h-screen max-h-max z-20 fixed bg-gray-100 text-white flex flex-col items-center duration-500 transation-all py-6 gap-6 justify-between ${
           ToogleClose ? "-left-[208px]" : "left-0"
         }`}
       >
@@ -65,13 +71,11 @@ const AdminSideBar = () => {
           className={`cursor-pointer absolute top-[50%] left-[95%] `}
           onClick={() => setToogleClose(!ToogleClose)}
         >
-          {ToogleClose ? <KeyboardDoubleArrowRight className="text-white bg-blue-500 rounded-tr-lg rounded-br-lg w-6 h-6" /> : <KeyboardDoubleArrowLeft className="text-white bg-blue-500 rounded-tr-lg rounded-br-lg w-6 h-6" />}
-        </Box>
-        <Box>
-          <Avatar
-            className="w-16 h-16"
-            src="https://github.com/osamalmezouari/AOS/raw/master/frontend/public/assets/images/logo.jpg"
-          />
+          {ToogleClose ? (
+            <KeyboardDoubleArrowRight className="text-white bg-blue-500 rounded-tr-lg rounded-br-lg w-6 h-6" />
+          ) : (
+            <KeyboardDoubleArrowLeft className="text-white bg-blue-500 rounded-tr-lg rounded-br-lg w-6 h-6" />
+          )}
         </Box>
         <Box className={"self-start text-gray-600"}>
           <Box
@@ -91,7 +95,7 @@ const AdminSideBar = () => {
               "bg-mainBleu justify-between mt-2 flex gap-4 items-center px-4 py-2 rounded hover:bg-yellow duration-500 text-white transition cursor-pointer"
             }
           >
-            <TrackChanges fontSize="small" />
+            <FolderCopy fontSize="small" />
             <Typography> Demandes </Typography>
             {toogle.demandes ? (
               <ExpandLess fontSize="small" />
@@ -122,81 +126,104 @@ const AdminSideBar = () => {
               );
             })}
           </Box>
-          <Box
-            className={
-              "bg-mainBleu justify-between mt-2 flex gap-4 items-center px-4 py-2 rounded hover:bg-yellow duration-500 text-white transition cursor-pointer"
-            }
-            component={"div"}
-            onClick={() => HandleClose("panel")}
-          >
-            <TrackChanges fontSize="small" />
-            <Typography> Panel </Typography>
-            {toogle.panel ? (
-              <ExpandLess fontSize="small" />
-            ) : (
-              <ExpandMore fontSize="small" />
-            )}
-          </Box>
-          <Box
-            className={`pl-5 block max-w-[100px] mt-2 cursor-pointer font-main ${
-              !toogle.panel && "hidden"
-            }`}
-          >
-            <Typography
+          <Box className={`block mt-2 cursor-pointer font-main `}>
+            <Box
+              component={"div"}
+              onClick={() =>
+                navigate("/AOS/Admin/Dashboard/demande/inscriptions", {
+                  replace: true,
+                })
+              }
               className={
-                "text-[12px] bg-gray-200 my-2 rounded text-black w-[160px] hover:underline hover:ml-2 transition-all duration-300 py-2 pl-2 text-black-500"
+                "text-[12px] flex gap-4 bg-blue-500 my-2 rounded text-white  hover:underline hover:ml-2 transition-all duration-300 py-2 pl-2 text-black-500"
               }
             >
-              Inscreptions
-            </Typography>
-            <Typography
+              <AccountCircleRounded fontSize="small" />
+              <Typography> Inscreptions </Typography>
+            </Box>
+            <Box
+              component={"div"}
+              onClick={() =>
+                navigate("/AOS/Admin/Dashboard/demande/sousActivities", {
+                  replace: true,
+                })
+              }
               className={
-                "text-[12px] bg-gray-200 my-2 rounded text-black w-[160px] hover:underline hover:ml-2 transition-all duration-300 py-2 pl-2 text-black-500"
+                "text-[12px] flex gap-4 bg-blue-500 my-2 rounded text-white  hover:underline hover:ml-2 transition-all duration-300 py-2 pl-2 text-black-500"
               }
             >
-              Sous Activities
-            </Typography>
-            <Typography
+              <VolunteerActivism fontSize="small" />
+              <Typography> Sous Activities </Typography>
+            </Box>
+            <Box
+              component={"div"}
+              onClick={() =>
+                navigate("/AOS/Admin/Dashboard/demande/CentresEstivage", {
+                  replace: true,
+                })
+              }
               className={
-                "text-[12px] bg-gray-200 my-2 rounded text-black w-[160px] hover:underline hover:ml-2 transition-all duration-300 py-2 pl-2 text-black-500"
+                "text-[12px] flex gap-4 bg-blue-500 my-2 rounded text-white  hover:underline hover:ml-2 transition-all duration-300 py-2 pl-2 text-black-500"
               }
             >
-              Centres Esstivage
-            </Typography>
-            <Typography
+              <Stadium fontSize="small" />
+              <Typography> Esstivage Centres </Typography>
+            </Box>
+            <Box
+              component={"div"}
+              onClick={() =>
+                navigate("/AOS/Admin/Dashboard/demande/Excursion", {
+                  replace: true,
+                })
+              }
               className={
-                "text-[12px] bg-gray-200 my-2 rounded text-black w-[160px] hover:underline hover:ml-2 transition-all duration-300 py-2 pl-2 text-black-500"
+                "text-[12px] flex gap-4 bg-blue-500 my-2 rounded text-white  hover:underline hover:ml-2 transition-all duration-300 py-2 pl-2 text-black-500"
               }
             >
-              Excurssion
-            </Typography>
-            <Typography
+              <Tour fontSize="small" />
+              <Typography> Excursion </Typography>
+            </Box>
+            <Box
+              component={"div"}
+              onClick={() =>
+                navigate("/AOS/Admin/Dashboard/demande/Appartements", {
+                  replace: true,
+                })
+              }
               className={
-                "text-[12px] bg-gray-200 my-2 rounded text-black w-[160px] hover:underline hover:ml-2 transition-all duration-300 py-2 pl-2 text-black-500"
+                "text-[12px] flex gap-4 bg-blue-500 my-2 rounded text-white  hover:underline hover:ml-2 transition-all duration-300 py-2 pl-2 text-black-500"
               }
             >
-              les Pieces
-            </Typography>
-            <Typography
+              <HomeWork fontSize="small" />
+              <Typography> Appartements </Typography>
+            </Box>
+            <Box
+              component={"div"}
+              onClick={() =>
+                navigate("/AOS/Admin/Dashboard/demande/Structures", {
+                  replace: true,
+                })
+              }
               className={
-                "text-[12px] bg-gray-200 my-2 rounded text-black w-[160px] hover:underline hover:ml-2 transition-all duration-300 py-2 pl-2 text-black-500"
+                "text-[12px] flex gap-4 bg-blue-500 my-2 rounded text-white  hover:underline hover:ml-2 transition-all duration-300 py-2 pl-2 text-black-500"
               }
             >
-              Structures
-            </Typography>
+              <AccountTree fontSize="small" />
+              <Typography> Structures </Typography>
+            </Box>
             <Typography
+              component={"div"}
+              onClick={() =>
+                navigate("/AOS/Admin/Dashboard/demande/Persones", {
+                  replace: true,
+                })
+              }
               className={
-                "text-[12px] bg-gray-200 my-2 rounded text-black w-[160px] hover:underline hover:ml-2 transition-all duration-300 py-2 pl-2 text-black-500"
+                "text-[12px] flex gap-4 bg-blue-500 my-2 rounded text-white  hover:underline hover:ml-2 transition-all duration-300 py-2 pl-2 text-black-500"
               }
             >
-              Perssones
-            </Typography>
-            <Typography
-              className={
-                "text-[12px] bg-gray-200 my-2 rounded text-black w-[160px] hover:underline hover:ml-2 transition-all duration-300 py-2 pl-2 text-black-500"
-              }
-            >
-              Annoneces 
+              <WorkOutlineRounded fontSize="small" />
+              <Typography> Persones </Typography>
             </Typography>
           </Box>
         </Box>

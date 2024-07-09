@@ -3,16 +3,18 @@ import axios from "axios";
 import {PORT} from "../../../../env.ts";
 import Header from "../../../component/header.tsx";
 import AdminSideBar from "../../../component/adminSidebar.tsx";
-import {Box, Container} from "@mui/material";
+import {Box, Button, Container} from "@mui/material";
 import {Edit} from "@mui/icons-material";
+import {useNavigate} from "react-router-dom";
 
-const SousActivtiesTable = () => {
+const AppartementsTable = () => {
     const [DataTable, setDatatable] = useState([]);
+    const navigate = useNavigate();
     useEffect(() => {
-        const inscreptionData = async () => {
+        const centres = async () => {
             try {
                 const res = await axios.get(
-                    `http://localhost:${PORT}/sous-activite`
+                    `http://localhost:${PORT}/appartements`
                 );
                 const data = await res.data;
                 setDatatable(data);
@@ -20,7 +22,7 @@ const SousActivtiesTable = () => {
                 console.log(error);
             }
         };
-        inscreptionData();
+        centres();
     }, []);
     useEffect(() => {
         console.log(DataTable);
@@ -28,27 +30,18 @@ const SousActivtiesTable = () => {
     return <>
         <Header />
         <AdminSideBar />
-        <div className=" overflow-x-auto shadow-md sm:rounded-lg pt-[150px]  ">
+        <div className={" overflow-x-auto shadow-md sm:rounded-lg pt-[150px]"}>
             <Container maxWidth={"lg"}>
+                <Button className={'bg-blue-500  text-white'} onClick={()=>navigate("/AOS/Admin/Dashboard/demande/Appartements/Ajoute" , {replace : true})}> Ajoute un Appartement</Button>
                 <table className="w-full text-sm text-left rtl:text-right text-gray-500">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 h-16">
                     <tr>
                         <th scope="col" className="px-6 py-3">
-                            nom ar
+                            numero
                         </th>
                         <th scope="col" className="px-6 py-3">
-                            nom fr
+                            centre
                         </th>
-                        <th scope="col" className="px-6 py-3">
-                            description Ar
-                        </th>
-
-                        <th scope="col" className="px-6 py-3">
-                            description Fr
-                        </th>
-                        {/*<th scope="col" className="px-6 py-3">*/}
-                        {/*     Actions*/}
-                        {/*</th>*/}
                     </tr>
                     </thead>
                     <tbody>
@@ -60,36 +53,31 @@ const SousActivtiesTable = () => {
                                         scope="row"
                                         className="px-6 py-4 w-max font-medium text-gray-900 whitespace-nowrap flex items-center gap-2"
                                     >
-                                        {demande.nomAr}
+                                        {demande.numero}
                                     </th>
                                     <td className="px-6 py-4">
-                                        {demande.nomFr}
+                                        {demande.centre.centreAr}
                                     </td>
-                                    <td className="px-6 py-4">
-                                        {demande.descriptionAr}
-                                    </td>
-                                    <td className="px-6 py-4">
-                                        {demande.descriptionFr}
-                                    </td>
-                                    <td>
-                                        <Box
-                                            className="flex gap-1 items-center justify-start"
-                                            component={"div"}
-                                        >
-                                            {/*<Edit*/}
-                                            {/*    // onClick={() =>}*/}
-                                            {/*    fontSize="large"*/}
-                                            {/*    className="hover:bg-blue-400 w-12 p-2 rounded hover:text-white cursor-pointer duration-500 transition-all"*/}
-                                            {/*/>*/}
-                                        </Box>
-                                    </td>
+                                    {/*<td>*/}
+                                    {/*    <Box*/}
+                                    {/*        className="flex gap-1 items-center justify-start"*/}
+                                    {/*        component={"div"}*/}
+                                    {/*    >*/}
+                                    {/*        <Edit*/}
+                                    {/*            // onClick={() =>}*/}
+                                    {/*            fontSize="large"*/}
+                                    {/*            className="hover:bg-blue-400 w-12 p-2 rounded hover:text-white cursor-pointer duration-500 transition-all"*/}
+                                    {/*        />*/}
+                                    {/*    </Box>*/}
+                                    {/*</td>*/}
                                 </tr>
                             );
                         })}
                     </tbody>
                 </table>
+
             </Container>
         </div>
     </>
 }
-export default SousActivtiesTable
+export default AppartementsTable

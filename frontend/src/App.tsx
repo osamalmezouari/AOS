@@ -49,6 +49,18 @@ import ExcursionView from "./pages/admin/View/ExcurssionView.tsx";
 import FormOne from "./pages/admin/update/FormOne.tsx";
 import FormTwo from "./pages/admin/update/FormTwo.tsx";
 import FormThree from "./pages/admin/update/FormThree.tsx";
+import InscreptionTable from "./pages/panel/inscreption/table.tsx";
+import SousActivtiesTable from "./pages/panel/sousActivities/table.tsx";
+import CentreTable from "./pages/panel/centresEsstivage/table.tsx";
+import AddCentre from "./pages/panel/centresEsstivage/create.tsx";
+import AppartementsTable from "./pages/panel/appartemnts/table.tsx";
+import AddAppartement from "./pages/panel/appartemnts/create.tsx";
+import StructureTable from "./pages/panel/structures/table.tsx";
+import AddAffectation from "./pages/panel/structures/create.tsx";
+import PersonesTable from "./pages/panel/perssones/table.tsx";
+import AddPersonel from "./pages/panel/perssones/create.tsx";
+import ExcursionTable from "./pages/panel/excursion/table.tsx";
+import AddExcursion from "./pages/panel/excursion/create.tsx";
 
 function App() {
   return (
@@ -225,7 +237,56 @@ function App() {
             path="/AOS/Admin/Dashboard/demande/:sousActivitieId/FormFour/:demandeId/:personelId/:sousActivitieId"
             element={<FormThree />}
           />
+          <Route
+              path="/AOS/Admin/Dashboard/demande/inscriptions"
+              element={<InscreptionTable />}
+          />
+          <Route
+              path="/AOS/Admin/Dashboard/demande/sousActivities"
+              element={<SousActivtiesTable />}
+          />
+          <Route
+              path="/AOS/Admin/Dashboard/demande/CentresEstivage"
+              element={<CentreTable />}
+          />
+          <Route
+              path="/AOS/Admin/Dashboard/demande/CentresEstivage/Ajoute"
+              element={<AddCentre />}
+          />
+          <Route
+              path="/AOS/Admin/Dashboard/demande/Appartements"
+              element={<AppartementsTable/>}
+          />
+          <Route
+              path="/AOS/Admin/Dashboard/demande/Appartements/Ajoute"
+              element={<AddAppartement/>}
+          />
+          <Route
+              path="/AOS/Admin/Dashboard/demande/Structures"
+              element={<StructureTable />}
+          />
+          <Route
+              path="/AOS/Admin/Dashboard/demande/Structures/Ajoute"
+              element={<AddAffectation />}
+          />
+          <Route
+              path="/AOS/Admin/Dashboard/demande/Persones"
+              element={<PersonesTable />}
+          />
+          <Route
+              path="/AOS/Admin/Dashboard/demande/Persones/Ajoute"
+              element={<AddPersonel />}
+          />
+          <Route
+              path="/AOS/Admin/Dashboard/demande/Excursion"
+              element={<ExcursionTable />}
+          />
+          <Route
+              path="/AOS/Admin/Dashboard/demande/Excursion/Ajoute"
+              element={<AddExcursion />}
+          />
         </Routes>
+
       </BrowserRouter>
     </>
   );

@@ -3,8 +3,7 @@ import { CreateExcursionDto } from './dto/create-excursion.dto';
 import { UpdateExcursionDto } from './dto/update-excursion.dto';
 import { PrismaClient } from '@prisma/client';
 import { UuidService } from 'src/Helpers/UUID/uuid.service';
-import { getDate } from 'date-fns';
-
+import { v4 as uuid } from 'uuid';
 @Injectable()
 export class ExcursionService {
   constructor(
@@ -13,7 +12,12 @@ export class ExcursionService {
   ) {}
 
   findAll() {
-    return `This action returns all excursion`;
+    return this.prisma.excursion.findMany({
+      include: {
+        endVile: true,
+        startVile: true,
+      },
+    });
   }
 
   findOne(id: string) {
@@ -40,20 +44,20 @@ export class ExcursionService {
 
       return serializedExcursions;
     } catch (error) {
-      // Handle errors appropriately
       console.error(error);
       throw new Error('Failed to fetch excursions');
     }
   }
 
-  //create(createExcursionDto: CreateExcursionDto) {
-  //return 'This action adds a new excursion';
-  //}
-  //update(id: number, UpdateExcursionDto: UpdateExcursionDto) {
-  //return `This action updates a #${id} excursion`;
-  //}
-
-  //remove(id: number) {
-  //return `This action removes a #${id} excursion`;
-  //}
+  create(createExcursionDto: CreateExcursionDto) {
+    return this.prisma.excursion.create({
+      data: {
+        id: uuid(),
+        ...createExcursionDto,
+      },
+    });
+  }
+  update(id: number, UpdateExcursionDto: UpdateExcursionDto) {
+    return `This action updates a #${id} excursion`;
+  }
 }

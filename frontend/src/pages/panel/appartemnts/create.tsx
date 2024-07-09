@@ -16,15 +16,13 @@ import { PORT } from "../../../../env.ts";
 import Header from "../../../component/header.tsx";
 import AdminSideBar from "../../../component/adminSidebar.tsx";
 
-const AddCentre: React.FC = () => {
+const AddAppartement: React.FC = () => {
     const [formState, setFormState] = useState({
-        centreAr: "",
-        centreFr: "",
-        imgUrl: "",
-        vileId: "",
+        numero: 0,
+        centreId: "",
     });
 
-    const [vileList, setVileList] = useState([]);
+    const [centreList, setCentreList] = useState([]);
     const [sentStatus, setSentStatus] = useState({
         success: false,
         inprogress: false,
@@ -32,16 +30,16 @@ const AddCentre: React.FC = () => {
     });
 
     useEffect(() => {
-        const fetchViles = async () => {
+        const fetchCentres = async () => {
             try {
-                const res = await axios.get(`http://localhost:${PORT}/viles`);
-                setVileList(res.data);
+                const res = await axios.get(`http://localhost:${PORT}/centres`);
+                setCentreList(res.data);
             } catch (error) {
                 console.log(error);
             }
         };
 
-        fetchViles();
+        fetchCentres();
     }, []);
 
     const handleChange = (
@@ -69,7 +67,7 @@ const AddCentre: React.FC = () => {
             });
 
             const response = await axios.post(
-                `http://localhost:${PORT}/centres`,
+                `http://localhost:${PORT}/appartements`,
                 formState
             );
 
@@ -92,7 +90,7 @@ const AddCentre: React.FC = () => {
     return (
         <div className="bg-landing h-screen">
             <Header />
-            <AdminSideBar/>
+            <AdminSideBar />
             <Container maxWidth="sm" className="flex items-center justify-center pt-32">
                 <CssBaseline />
                 <Box
@@ -112,7 +110,7 @@ const AddCentre: React.FC = () => {
                         }}
                         className="mr-auto rounded font-main flex gap-2 items-center text-white capitalize w-full p-4"
                     >
-                        Ajoute un centre
+                        Ajouter un Appartement
                     </Typography>
                     <Box
                         component="form"
@@ -125,29 +123,10 @@ const AddCentre: React.FC = () => {
                                 <TextField
                                     required
                                     fullWidth
-                                    name="centreAr"
-                                    label="Centre nom Arabe"
-                                    value={formState.centreAr}
-                                    onChange={handleChange}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    name="centreFr"
-                                    label="Centre nom Francais"
-                                    value={formState.centreFr}
-                                    onChange={handleChange}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    required
-                                    fullWidth
-                                    name="imgUrl"
-                                    label="Image URL"
-                                    value={formState.imgUrl}
+                                    name="numero"
+                                    label="Numéro"
+                                    type="number"
+                                    value={formState.numero}
                                     onChange={handleChange}
                                 />
                             </Grid>
@@ -156,14 +135,14 @@ const AddCentre: React.FC = () => {
                                     select
                                     required
                                     fullWidth
-                                    name="vileId"
-                                    label="Vile"
-                                    value={formState.vileId}
+                                    name="centreId"
+                                    label="Centre"
+                                    value={formState.centreId}
                                     onChange={handleChange}
                                 >
-                                    {vileList.map((vile) => (
-                                        <MenuItem key={vile.id} value={vile.id}>
-                                            {vile.vileAr}
+                                    {centreList.map((centre) => (
+                                        <MenuItem key={centre.id} value={centre.id}>
+                                            {centre.centreFr}
                                         </MenuItem>
                                     ))}
                                 </TextField>
@@ -176,7 +155,7 @@ const AddCentre: React.FC = () => {
                         )}
                         {sentStatus.success && (
                             <Alert className="mt-4" severity="success">
-                                Centre ajoute avec succes
+                                Appartement ajouté avec succès
                             </Alert>
                         )}
                         <Button
@@ -186,7 +165,7 @@ const AddCentre: React.FC = () => {
                             type="submit"
                             className="bg-mainBleu hover:bg-yellow transition-all duration-500 flex gap-x-4"
                         >
-                            ajoute centre
+                            Ajouter Appartement
                             {sentStatus.inprogress && (
                                 <CircularProgress color="inherit" size={20} />
                             )}
@@ -198,4 +177,4 @@ const AddCentre: React.FC = () => {
     );
 };
 
-export default AddCentre;
+export default AddAppartement;

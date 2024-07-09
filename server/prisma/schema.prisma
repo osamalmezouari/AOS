@@ -313,10 +313,10 @@ model Vile {
 
 model Excursion {
   id               String             @id
-  nom        String
+  nom              String
   Description      String             @db.Text
   imgUrl           String             @db.Text
-  Date             BigInt
+  Date             BigInt         
   montant Int?
   nombre           Int
   startVile        Vile               @relation("excursionsFromVile", fields: [vileStartId], references: [id])

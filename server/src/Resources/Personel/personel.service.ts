@@ -3,6 +3,7 @@ import { Personel, PrismaClient } from '@prisma/client';
 import { CreatepersonelDto } from './dto/Createpersonel.dto';
 import { UpdatepersonelDto } from './dto/Updatepersonel.dto';
 import { UuidService } from '../../Helpers/UUID/uuid.service';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class PersonelService {
@@ -11,8 +12,7 @@ export class PersonelService {
     private readonly uuid: UuidService,
   ) {}
   findAll(): Promise<Personel[]> {
-    return this.prismaClient.personel
-      .findMany
+    return this.prismaClient.personel.findMany(
       //     {
       //   include: {
       //     demandeLang: true,
@@ -24,7 +24,12 @@ export class PersonelService {
       //     demandeEstivage: true,
       //   },
       // }
-      ();
+      {
+        include: {
+          Affectation: true,
+        },
+      },
+    );
   }
   async SingleSousActivitiesdemandesWithDetails(
     id: string,
@@ -939,7 +944,7 @@ export class PersonelService {
   }
   create(createpersonelDto: CreatepersonelDto) {
     const PersonelwhithId = {
-      id: this.uuid,
+      id: uuidv4(),
       ...createpersonelDto,
     };
     return this.prismaClient.personel.create({ data: PersonelwhithId });

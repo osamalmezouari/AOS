@@ -3,6 +3,7 @@ import { CreateCentreDto } from './dto/create-centre.dto';
 import { UpdateCentreDto } from './dto/update-centre.dto';
 import { PrismaClient } from '@prisma/client';
 import { UuidService } from '../../../Helpers/UUID/uuid.service';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class CentresService {
@@ -11,14 +12,15 @@ export class CentresService {
     private readonly uuid: UuidService,
   ) {}
   private getTimestampFromDateTimeString(dateTimeString) {
-    // Parse the date-time string into a JavaScript Date object
     const dateTime = new Date(dateTimeString);
-
-    // Get the Unix timestamp (milliseconds) from the Date object
     return dateTime.getTime();
   }
   findAll() {
-    return this.prismaClient.centre.findMany();
+    return this.prismaClient.centre.findMany({
+      include: {
+        Vile: true,
+      },
+    });
   }
 
   async findCentresWithEmptyAppartements(Params: { dateStart: string }) {
@@ -51,11 +53,9 @@ export class CentresService {
 
     const appartementIdsInDemandeArray = appartementIdsInDemande
       .map((item) => item.appartementId)
-      .filter((id) => id !== null); // Filter out null values
+      .filter((id) => id !== null);
 
     console.log('appartementIdsInDemandeArray:', appartementIdsInDemandeArray);
-
-    // Fetch apartments not in any demand
     const appartmentsNotInDemande =
       await this.prismaClient.appartement.findMany({
         where: { id: { notIn: appartementIdsInDemandeArray } },
@@ -63,16 +63,12 @@ export class CentresService {
       });
 
     console.log('appartmentsNotInDemande:', appartmentsNotInDemande);
-
-    // Combine both available and not in demand apartments' centers
     const allCentres = [
       ...AppartementsAcceptedAndWillbeDispo.map((item) => item.centre),
       ...appartmentsNotInDemande.map((item) => item.centre),
     ];
 
     console.log('allCentres:', allCentres);
-
-    // Remove duplicates
     const uniqueCentreIds = new Set();
     const uniqueCentres = allCentres.filter((centre) => {
       if (uniqueCentreIds.has(centre.id)) {
@@ -82,9 +78,6 @@ export class CentresService {
         return true;
       }
     });
-
-    console.log('uniqueCentres:', uniqueCentres);
-
     return uniqueCentres;
   }
 
@@ -94,7 +87,7 @@ export class CentresService {
 
   create(createCentreDto: CreateCentreDto) {
     const centreWithId = {
-      id: this.uuid,
+      id: uuidv4(),
       ...createCentreDto,
     };
     return this.prismaClient.centre.create({ data: centreWithId });
