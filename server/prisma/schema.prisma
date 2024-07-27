@@ -8,37 +8,75 @@ generator client {
 }
 
 model Personel {
-  id                String               @id
-  matricule         Int                  @unique
-  createAt          DateTime             @default(now())
-  dateRepense       DateTime?
-  nom_fr            String               @unique
-  nom_ar            String
-  prenom_ar         String
-  prenom_fr         String
-  password          String
-  naissance         String
-  email             String               @unique
-  echelle           Int
-  isAdmin           Boolean?             @default(false)
+  id                     String               @id
+  matricule              Int                  @unique
+  nom_fr                 String               @unique
+  nom_ar                 String
+  prenom_ar              String
+  prenom_fr              String
+  password               String
+  naissance              String
+  email                  String               @unique
+  echelle                Int
+  isAdmin                Boolean?             @default(false)
   /// Relation to Affectation
-  Affectation       Affectation          @relation(fields: [AffectationId], references: [id])
-  AffectationId     String
+  Affectation            Affectation          @relation(fields: [AffectationId], references: [id])
+  AffectationId          String
+  // Relation to sutiation_familiale
+  sutuiation_familiale   sutuiation_familiale @relation(fields: [sutuiation_familialeId], references: [id])
+  sutuiation_familialeId String
+  // Relation to roles
+  roles                  Roles                @relation(fields: [roleId], references: [id])
+  roleId                 String               @default("1")
   /// Relation to demande estivage
-  demandeEstivage   DemandeEstivage[]
-  demandeCredit     demandeCredit[]
-  demandePelerinage demandePelerinage[]
-  retrait           retrait[]
-  demamdeMaladies   demamdeMaladies[]
-  demandeLang       demandeLang[]
-  condoleance       demandeCondoleance[]
-  Zoo               Zoo[]
-  rentreeScolaire   rentreeScolaire[]
-  // demandeExcursion  demandeExcursion[]
-  demandeExcursion  demandeExcursion[]
-  mariage           mariage[]
-  inscreption       inscreption[]
-  Naissance         naissance[]
+  demandeEstivage        DemandeEstivage[]
+  demandeCredit          demandeCredit[]
+  demandePelerinage      demandePelerinage[]
+  retrait                retrait[]
+  demamdeMaladies        demamdeMaladies[]
+  demandeLang            demandeLang[]
+  condoleance            demandeCondoleance[]
+  Zoo                    Zoo[]
+  rentreeScolaire        rentreeScolaire[]
+  demandeExcursion       demandeExcursion[]
+  mariage                mariage[]
+  inscreption            inscreption[]
+  Naissance              naissance[]
+  enfants                enfants[]
+  demandesport           demandeSport[]
+  demandehanicape        demandeHandicape[]
+}
+
+model sutuiation_familiale {
+  id        String     @id
+  sutiation String
+  personel  Personel[]
+}
+
+model enfants {
+  id         String   @id
+  nom_ar     String
+  nom_fr     String
+  naissance  DateTime
+  sexe       String
+  personel   Personel @relation(fields: [personelId], references: [id])
+  personelId String
+}
+
+model Roles {
+  id             String                  @id
+  role           String                  @unique
+  sousactivities Rolesonsousactivities[]
+  personel       Personel[]
+}
+
+model Rolesonsousactivities {
+  role            Roles        @relation(fields: [roleId], references: [id])
+  roleId          String
+  sousActivitie   SousActivite @relation(fields: [sousActivitieId], references: [id])
+  sousActivitieId String
+
+  @@unique([sousActivitieId, roleId])
 }
 
 model Affectation {
@@ -62,29 +100,32 @@ model Activitie {
 }
 
 model SousActivite {
-  id                String                   @id
-  nomAr             String
-  nomFr             String
-  descriptionAr     String                   @db.Text
-  descriptionFr     String                   @db.Text
-  imgUrl            String                   @db.Text
+  id                    String                   @id
+  nomAr                 String
+  nomFr                 String
+  descriptionAr         String                   @db.Text
+  descriptionFr         String                   @db.Text
+  imgUrl                String                   @db.Text
   /// Relation activite
-  activite          Activitie                @relation(fields: [activiteId], references: [id])
-  activiteId        String
-  pieces            SousActivitiesOnPieces[]
-  demandeEsstivage  DemandeEstivage[]
-  demandeCredit     demandeCredit[]
-  demandePelerinage demandePelerinage[]
-  retrait           retrait[]
-  demamdeMaladies   demamdeMaladies[]
-  demandeLang       demandeLang[]
-  condoleance       demandeCondoleance[]
-  Zoo               Zoo[]
-  demandeExcursion  demandeExcursion[]
-  inscreption       inscreption[]
-  mariage           mariage[]
-  naissance         naissance[]
-  rentreeScolaire   rentreeScolaire[]
+  activite              Activitie                @relation(fields: [activiteId], references: [id])
+  activiteId            String
+  pieces                SousActivitiesOnPieces[]
+  demandeEsstivage      DemandeEstivage[]
+  demandeCredit         demandeCredit[]
+  demandePelerinage     demandePelerinage[]
+  retrait               retrait[]
+  demamdeMaladies       demamdeMaladies[]
+  demandeLang           demandeLang[]
+  condoleance           demandeCondoleance[]
+  Zoo                   Zoo[]
+  demandeExcursion      demandeExcursion[]
+  inscreption           inscreption[]
+  mariage               mariage[]
+  naissance             naissance[]
+  rentreeScolaire       rentreeScolaire[]
+  Rolesonsousactivities Rolesonsousactivities[]
+  demandeSport          demandeSport[]
+  demandeHandicape      demandeHandicape[]
 
   @@unique([nomFr, nomAr])
 }
@@ -114,16 +155,47 @@ model DemandeEstivage {
   effet          DateTime     @default(now())
   appartementId  String?
   description    String
-  montant Int?
-  montantAloue Int?
+  montant        Int?
+  montantAloue   Int?
   type           String
   /// Relation to centres
   centre         Centre       @relation(fields: [centreId], references: [id])
-  centreId       String        @default("0")
+  centreId       String       @default("0")
   /// Relation to Personel
   personel       Personel     @relation(fields: [personelId], references: [id])
   personelId     String
   /// Relation to relation
+  SousActivite   SousActivite @relation(fields: [sousActiviteId], references: [id])
+  sousActiviteId String
+}
+
+model demandeSport {
+  id             String       @id
+  montant        Int
+  enfant         String
+  montantAlloue  Int?
+  Status         String?
+  effet          DateTime     @default(now())
+  observation    String?      @db.Text
+  ///relation to Personel
+  Personel       Personel     @relation(fields: [personelId], references: [id])
+  personelId     String
+  ///relation to Personel
+  SousActivite   SousActivite @relation(fields: [sousActiviteId], references: [id])
+  sousActiviteId String
+}
+
+model demandeHandicape {
+  id             String       @id
+  montant        Int?
+  enfant         String
+  Status         String?
+  effet          DateTime     @default(now())
+  observation    String?      @db.Text
+  ///relation to Personel
+  Personel       Personel     @relation(fields: [personelId], references: [id])
+  personelId     String
+  ///relation to Personel
   SousActivite   SousActivite @relation(fields: [sousActiviteId], references: [id])
   sousActiviteId String
 }
@@ -151,12 +223,12 @@ model Appartement {
 }
 
 model demandeCredit {
-  id            String   @id
-  montant Int
-  description   String   @db.Text
-  Status        String?
-  effet         DateTime @default(now())
-  observation   String?  @db.Text
+  id          String   @id
+  montant     Int
+  description String   @db.Text
+  Status      String?
+  effet       DateTime @default(now())
+  observation String?  @db.Text
 
   ///relation to Personel
   Personel   Personel @relation(fields: [personelId], references: [id])
@@ -183,17 +255,16 @@ model demandePelerinage {
 }
 
 model retrait {
-  id              String   @id
-  date            String
-  montant Int?
-  Status          String?
-  effet           DateTime @default(now())
-  observation     String?  @db.Text
+  id          String   @id
+  date        String
+  montant     Int?
+  Status      String?
+  effet       DateTime @default(now())
+  observation String?  @db.Text
 
   ///relation to Personel
-  Personel   Personel @relation(fields: [personelId], references: [id])
-  personelId String
-
+  Personel       Personel     @relation(fields: [personelId], references: [id])
+  personelId     String
   ///relation to Personel
   SousActivite   SousActivite @relation(fields: [sousActiviteId], references: [id])
   sousActiviteId String
@@ -201,7 +272,7 @@ model retrait {
 
 model demamdeMaladies {
   id             String       @id
-  montant Int?
+  montant        Int?
   Decription     String       @db.Text
   Status         String?
   effet          DateTime     @default(now())
@@ -229,21 +300,21 @@ model demandeLang {
 }
 
 model demandeCondoleance {
-  id                 String          @id
-  montant Int?
-  description        String          @db.Text
-  Status             String?
-  effet              DateTime        @default(now())
-  observation        String?         @db.Text
+  id                String          @id
+  montant           Int?
+  description       String          @db.Text
+  Status            String?
+  effet             DateTime        @default(now())
+  observation       String?         @db.Text
   ///relation to condoleance
-  typeCondoleance    typeCondoleance @relation(fields: [typeCondoleanceId], references: [id])
-  typeCondoleanceId  String
+  typeCondoleance   typeCondoleance @relation(fields: [typeCondoleanceId], references: [id])
+  typeCondoleanceId String
   /// relation to Personel
-  Personel           Personel        @relation(fields: [personelId], references: [id])
-  personelId         String
+  Personel          Personel        @relation(fields: [personelId], references: [id])
+  personelId        String
   /// relation to Personel
-  SousActivite       SousActivite    @relation(fields: [sousActiviteId], references: [id])
-  sousActiviteId     String
+  SousActivite      SousActivite    @relation(fields: [sousActiviteId], references: [id])
+  sousActiviteId    String
 }
 
 model typeCondoleance {
@@ -254,18 +325,17 @@ model typeCondoleance {
 }
 
 model Zoo {
-  id          String   @id
-  date        String
-  adulte      Int
-  enfant      Int
-  Status      String?
-  effet       DateTime @default(now())
-  description String
-  observation String?
+  id             String       @id
+  date           String
+  adulte         Int
+  enfant         Int
+  Status         String?
+  effet          DateTime     @default(now())
+  description    String
+  observation    String?
   ///relation to Personel
-  Personel    Personel @relation(fields: [personelId], references: [id])
-  personelId  String
-
+  Personel       Personel     @relation(fields: [personelId], references: [id])
+  personelId     String
   ///relation to Personel
   SousActivite   SousActivite @relation(fields: [sousActiviteId], references: [id])
   sousActiviteId String
@@ -276,7 +346,7 @@ model mariage {
   description    String       @db.Text
   effet          DateTime     @default(now())
   Status         String?
-  SousActivite SousActivite @relation(fields: [sousActiviteId], references: [id])
+  SousActivite   SousActivite @relation(fields: [sousActiviteId], references: [id])
   sousActiviteId String
   Personel       Personel     @relation(fields: [personelId], references: [id])
   personelId     String
@@ -285,18 +355,18 @@ model mariage {
 }
 
 model demandeExcursion {
-  id               String       @id
-  Status           String?
-  effet            DateTime     @default(now())
-  observation      String?      @db.Text
+  id             String       @id
+  Status         String?
+  effet          DateTime     @default(now())
+  observation    String?      @db.Text
   /// relation to Personel
-  Personel         Personel     @relation(fields: [personelId], references: [id])
-  personelId       String
+  Personel       Personel     @relation(fields: [personelId], references: [id])
+  personelId     String
   /// relation to Personel
-  SousActivite     SousActivite @relation(fields: [sousActiviteId], references: [id])
-  sousActiviteId   String
-  Excursion Excursion @relation(fields : [ExcursionId],references:[id])
-  ExcursionId String
+  SousActivite   SousActivite @relation(fields: [sousActiviteId], references: [id])
+  sousActiviteId String
+  Excursion      Excursion    @relation(fields: [ExcursionId], references: [id])
+  ExcursionId    String
 }
 
 model Vile {
@@ -316,21 +386,20 @@ model Excursion {
   nom              String
   Description      String             @db.Text
   imgUrl           String             @db.Text
-  Date             BigInt         
-  montant Int?
+  Date             BigInt
+  montant          Int?
   nombre           Int
   startVile        Vile               @relation("excursionsFromVile", fields: [vileStartId], references: [id])
   vileStartId      String
   endVile          Vile               @relation("excursionsToVile", fields: [vileEndId], references: [id])
   vileEndId        String
   demandeExcursion demandeExcursion[]
-  
 }
 
 model naissance {
-  id      String @id
-  Date    String
-  montant Int?
+  id             String       @id
+  Date           String
+  montant        Int?
   nombre         Int
   Status         String?
   effet          DateTime     @default(now())
@@ -368,6 +437,6 @@ model inscreption {
   Personel        Personel     @relation(fields: [personelId], references: [id])
   personelId      String
   // relation with SousActivitie
-  SousActivite   SousActivite @relation(fields: [SousActivitieId], references: [id])
+  SousActivite    SousActivite @relation(fields: [SousActivitieId], references: [id])
   SousActivitieId String
 }

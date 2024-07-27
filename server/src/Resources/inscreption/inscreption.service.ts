@@ -36,29 +36,51 @@ export class InscriptionService {
       where: { email: personelemail },
     });
     const currentYear = getYear(new Date());
-    const userinscriptionStatus = await this.prisma.inscreption.findFirst({
+    console.log(matchingPersonel);
+    const CheckAdmin = await this.prisma.personel.findUnique({
       where: {
-        personelId: matchingPersonel && matchingPersonel.id,
+        id: matchingPersonel.id,
+      },
+      select: {
+        isAdmin: true,
+      },
+    });
+    if (CheckAdmin.isAdmin) {
+      throw new HttpException(
+        "Vous n'avez pas la possibilité de vous inscrire. Veuillez vous connecter directement",
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    const CheckThisYearInscreption = await this.prisma.inscreption.findMany({
+      where: {
+        personelId: matchingPersonel.id,
         status: true,
         annee: currentYear,
       },
     });
-    const CheckPrevInscreptionFalse = await this.prisma.inscreption.findFirst({
-      where: {
-        personelId: matchingPersonel && matchingPersonel.id,
-        status: false,
-      },
-    });
-    if (CheckPrevInscreptionFalse) {
+    if (CheckThisYearInscreption.length > 0) {
       throw new HttpException(
-        'tu as deja un demande pas encore traiter tu peux modifier ce demande dans votre profile',
+        'Vous êtes déjà inscrit cette année. Veuillez vous connecter',
         HttpStatus.BAD_REQUEST,
       );
     }
+    const CheckEnCours = await this.prisma.inscreption.findFirst({
+      where: {
+        personelId: matchingPersonel.id,
+        status: false,
+        annee: currentYear,
+      },
+    });
+    if (CheckEnCours) {
+      throw new HttpException(
+        'tu as deja un demande pas encore traiter par l administrateur',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
     if (
       matchingPersonel &&
-      createInscriptionDto.password === matchingPersonel.password &&
-      userinscriptionStatus === null
+      createInscriptionDto.password === matchingPersonel.password
     ) {
       const matchingPersonelId = matchingPersonel.id;
       if (createInscriptionDto.file) {
@@ -86,20 +108,6 @@ export class InscriptionService {
       return this.prisma.inscreption.create({
         data: inscreptionData,
       });
-    } else if (
-      matchingPersonel &&
-      createInscriptionDto.password === matchingPersonel.password &&
-      userinscriptionStatus
-    ) {
-      throw new HttpException(
-        'Vous êtes déjà inscrit. Veuillez vous connecter',
-        HttpStatus.UNAUTHORIZED,
-      );
-    } else {
-      throw new HttpException(
-        'Failed to create inscription',
-        HttpStatus.FAILED_DEPENDENCY,
-      );
     }
   }
 

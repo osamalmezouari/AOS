@@ -300,7 +300,7 @@ const Navbar = () => {
                   startIcon={<AppRegistration />}
                   onClick={() => navigate(`/AOS/Inscreption`)}
                 >
-                  Demande d'Inscreption
+                  Demande d'Adhesion
                 </Button>
                 <Button
                   className={
@@ -313,6 +313,22 @@ const Navbar = () => {
                 </Button>
               </Box>
             ) : (
+              ""
+            )}
+            {user?.isAdmin && (
+              <Button
+                onClick={() =>
+                  navigate(`/AOS/Admin/Dashbaord`, { replace: true })
+                }
+                startIcon={<AccountCircle />}
+                className={
+                  "capitalize w-max font-main text-white bg-mainBleu hover:bg-yellow hover:text-white font-bold transition-all duration-700 "
+                }
+              >
+                Espace Admin
+              </Button>
+            )}
+            {user?.isAdmin === false && (
               <Button
                 onClick={() =>
                   navigate(`/AOS/Profile/dashboard`, { replace: true })
@@ -322,7 +338,7 @@ const Navbar = () => {
                   "capitalize w-max font-main text-white bg-mainBleu hover:bg-yellow hover:text-white font-bold transition-all duration-700 "
                 }
               >
-                Espace Personel
+                Espace personel
               </Button>
             )}
           </Box>

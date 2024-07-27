@@ -17,7 +17,7 @@ export default {
       },
       backgroundImage: {
         logo: "url(D:\\Oussama\\PROJECTS\\Mic-Minah\\frontend\\public\\assets\\images\\logo.png)",
-        home: "url(https://images.pexels.com/photos/20184064/pexels-photo-20184064/free-photo-of-man-kneeling-and-pilgrims-walking-at-great-mosque-in-mecca.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load)",
+        home: "url(D:\\Oussama\\PROJECTS\\AOS\\frontend\\public\\assets\\images\\IMG-20240521-WA0010.jpg)",
         landing:
           "url(https://loms-moodle.envytheme.com/theme/loms/pix/banner/banner-bg-3.webp)",
         pngfr: "url(./public/assets/images/2.png)",

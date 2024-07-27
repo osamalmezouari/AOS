@@ -1,3 +1,4 @@
+import { CircleNotifications } from "@mui/icons-material";
 import { Avatar, Box , Typography } from "@mui/material";
 
 const Header = () => {
@@ -10,15 +11,15 @@ const Header = () => {
         <Avatar/>
         <Box className={"flex gap-x-4 font-main items-center"}>
         <Box className={'flex item-center justify-center gap-2'}>
-        {/*<Box className="bg-mainBleu rounded-full text-center px-1 py-1 hover:bg-yellow font-bold duration-500 transition-all cursor-pointer text-white w-8 h-8">Fr</Box>
+        <Box className="bg-mainBleu rounded-full text-center px-1 py-1 hover:bg-yellow font-bold duration-500 transition-all cursor-pointer text-white w-8 h-8">Fr</Box>
         <Box className="bg-mainBleu rounded-full text-center px-1 py-1 hover:bg-yellow duration-500 transition-all cursor-pointer text-white w-8 h-8">
-          <CircleNotifications/>
-        </Box>*/}
+          <CircleNotifications />
+        </Box>
           </Box>
           
           <Box className={"flex gap-x-2 font-main items-center"}>
-            <Avatar src="." alt={'O'} className="w-8 h-8" />
-            <Typography className="font-main text-[12px]">{user?.nomFr}</Typography>
+            <Avatar src="frontend\public\assets\images\1.png"  alt={'O'} className="w-8 h-8 bg-makah" />
+            <Typography className="font-main text-[16px]">{user?.nom_fr} {user.prenom_fr}</Typography>
           </Box>
         </Box>
       </Box>

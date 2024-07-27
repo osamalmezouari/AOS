@@ -10,29 +10,42 @@ export class AuthService {
     });
     if (matchinguser === null) {
       throw new HttpException(
-        'Mot de passe ou email incorrect',
+        'Mot de passe ou email incorrect, ou bien vous n êtes pas encore inscrit',
         HttpStatus.BAD_REQUEST,
       );
     }
-    const Checkinscreption = await this.prisma.inscreption.findFirst({
+    if (matchinguser.isAdmin) {
+      return {
+        ...matchinguser,
+        status: HttpStatus.OK,
+      };
+    }
+    const Checkinscreption = await this.prisma.inscreption.findMany({
       where: {
         personelId: matchinguser.id,
         status: false,
-        annee: {
-          not: currentYear,
-        },
+        annee: currentYear,
       },
     });
-    if (Checkinscreption) {
+    if (Checkinscreption.length > 0) {
       throw new HttpException(
         "Ton inscription n'a pas encore été validée par l'administrateur.",
         HttpStatus.BAD_REQUEST,
       );
     }
 
-    return {
-      ...matchinguser,
-      status: HttpStatus.OK,
-    };
+    const Checkthisyearinscreption = await this.prisma.inscreption.findMany({
+      where: {
+        personelId: matchinguser.id,
+        status: true,
+        annee: currentYear,
+      },
+    });
+    if (Checkthisyearinscreption.length > 0) {
+      return {
+        ...matchinguser,
+        status: HttpStatus.OK,
+      };
+    }
   }
 }

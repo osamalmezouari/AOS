@@ -6,5 +6,6 @@ export class AdminUpdateDto {
   montant?: number;
   Status?: string;
   appartementId?: string;
+  @Transform(({ value }) => parseInt(value, 10))
   montantAloue?: number;
 }

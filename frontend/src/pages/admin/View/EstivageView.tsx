@@ -9,7 +9,7 @@ const EstivageView = () => {
 
   const [data, setdata] = useState({});
   useEffect(() => {
-    const fetchdemandeMariage = async () => {
+    const fetchdemandeEsstivage = async () => {
       try {
         const res = await axios.get(
           `http://localhost:${PORT}/demande-estivage/${demandeId}`
@@ -20,9 +20,10 @@ const EstivageView = () => {
         console.log(err);
       }
     };
-    fetchdemandeMariage();
-  }, []);
+    fetchdemandeEsstivage();
+  }, [demandeId]);
   useEffect(() => {
+    console.log(typeof(demandeId))
     console.log(data);
   }, [data]);
   return (
@@ -62,11 +63,11 @@ const EstivageView = () => {
                 {data && data?.centre?.Vile?.vileAr}
               </Typography>
               <Typography className="w-full font-main px-2 mt-4">
-                date sortie : {data && data.date_sortie} | date entree :{" "}
+                date sortie : {data && data?.date_sortie} | date entree :{" "}
                 {data && data.date_entre}
               </Typography>
               <Typography className="w-full font-main px-2 mt-4">
-                Type : {data && data.type}
+                Type : {data && data?.type}
               </Typography>
               <Typography className="w-full font-main px-2 mt-4">
                 numero d'appartement : {data && data.numeroAppartement?.numero}

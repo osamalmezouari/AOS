@@ -203,7 +203,7 @@ const FormThree: React.FC = () => {
                   />
                 </Grid>
               )}
-              <Grid item xs={12}>
+              {!(formState?.type === "Aide allouée") && <Grid item xs={12}>
                 <FormControl fullWidth required>
                   <InputLabel id="select-appartementId">
                     Numéro de l'Appartement
@@ -223,7 +223,7 @@ const FormThree: React.FC = () => {
                     ))}
                   </Select>
                 </FormControl>
-              </Grid>
+              </Grid>}
               <Grid item xs={12}>
                 <FormControl fullWidth required>
                   <InputLabel id="select-Status">Status</InputLabel>

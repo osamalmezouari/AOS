@@ -25,6 +25,25 @@ export class DemandeEstivageService {
           centreId: true,
         },
       });
+    if (!appartementIdandCenter.appartementId) {
+      const demande = await this.prismaClient.demandeEstivage.findUnique({
+        where: { id },
+        include: {
+          personel: true,
+          SousActivite: true,
+          centre: {
+            select: {
+              centreAr: true,
+              centreFr: true,
+              Vile: true,
+            },
+          },
+        },
+      });
+      return {
+        ...demande,
+      };
+    }
     const numero = await this.prismaClient.appartement.findUnique({
       where: {
         id: appartementIdandCenter.appartementId,

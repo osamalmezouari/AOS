@@ -947,6 +947,7 @@ export class PersonelService {
       id: uuidv4(),
       ...createpersonelDto,
     };
+    //@ts-ignore
     return this.prismaClient.personel.create({ data: PersonelwhithId });
   }
   update(id: string, updatepersonelDto: UpdatepersonelDto): Promise<Personel> {

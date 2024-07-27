@@ -40,7 +40,11 @@ const Login = () => {
         });
         localStorage.setItem("user", JSON.stringify(response.data));
         setTimeout(() => {
-          navigate("/AOS", { replace: true }); // Access response data using response.data
+          if(response.data.isAdmin){
+            navigate("/AOS/Admin/Dashbaord", { replace: true });
+          }else {
+            navigate("/AOS", { replace: true });
+          }
         }, 3000);
       }
     } catch (error) {

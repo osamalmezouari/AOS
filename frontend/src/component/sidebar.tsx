@@ -11,11 +11,18 @@ import { useNavigate } from "react-router-dom";
 
 const SideBar = () => {
   const navigate = useNavigate();
+  const Deconexion = () => {
+    localStorage.clear();
+    navigate("/Aos", { replace: true });
+  };
   return (
     <>
       <Box className="w-24 h-screen z-20 absolute bg-gray-100 text-white flex flex-col items-center py-6 gap-6 justify-between">
         <Box>
-          <Avatar className="w-12 h-12" src="https://github.com/osamalmezouari/AOS/raw/master/frontend/public/assets/images/logo.jpg" />
+          <Avatar
+            className="w-12 h-12"
+            src="https://github.com/osamalmezouari/AOS/raw/master/frontend/public/assets/images/logo.jpg"
+          />
         </Box>
         <Box className={"flex flex-col gap-2 text-gray-600"}>
           <Box
@@ -69,7 +76,7 @@ const SideBar = () => {
             <Cabin fontSize="small" />
           </Box>
         </Box>
-        <Box>
+        <Box onClick={()=>Deconexion()}>
           <Logout className="text-gray-700 w-12" fontSize="small" />
         </Box>
       </Box>

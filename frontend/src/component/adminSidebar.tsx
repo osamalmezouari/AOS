@@ -14,7 +14,7 @@ import {
   VolunteerActivism,
   WorkOutlineRounded,
 } from "@mui/icons-material";
-import { Avatar, Box, Button, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -39,6 +39,10 @@ const AdminSideBar = () => {
     if (target === "panel") {
       setToogle({ demandes: false, panel: !toogle.panel });
     }
+  };
+  const Deconexion = () => {
+    localStorage.clear();
+    navigate("/Aos", { replace: true });
   };
   useEffect(() => {
     const fetchNavbar = async () => {
@@ -227,7 +231,7 @@ const AdminSideBar = () => {
             </Typography>
           </Box>
         </Box>
-        <Button>
+        <Button onClick={()=>Deconexion()}>
           <Logout className="text-gray-700 w-12" fontSize="small" />
           Deconexion
         </Button>
