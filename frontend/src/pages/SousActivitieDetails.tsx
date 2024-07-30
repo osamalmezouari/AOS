@@ -53,6 +53,9 @@ const SousActivitieDetails = () => {
     } else if (id === "12" && user) {
       navigate("/AOS/SousActivitie/Excursion", { replace: true });
     }
+    else if (id === "19" && user) {
+      navigate("/AOS/SousActivitie/Handicape", { replace: true });
+    }
   };
 
   useEffect(() => {

@@ -1,52 +1,49 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CreateDemandeCondoleanceDto } from './dto/create-demande-condoleance.dto';
-import { UpdateDemandeCondoleanceDto } from './dto/update-demande-condoleance.dto';
 import { PrismaClient } from '@prisma/client';
-import { UuidService } from '../../../Helpers/UUID/uuid.service';
+import { UuidService } from '../../Helpers/UUID/uuid.service';
 import { getYear } from 'date-fns';
 import * as fs from 'fs';
 import * as path from 'path';
+import CreateHandicapeDTO from './dto/CreateHandicape.dto';
+import UpdateHandicapeDto from './dto/UpdateHandicape.dto';
 
 @Injectable()
-export class DemandeCondoleanceService {
+export class HandicapeService {
   constructor(
     private readonly prisma: PrismaClient,
     private readonly uuid: UuidService,
   ) {}
   findAll() {
-    return this.prisma.demandeCondoleance.findMany();
+    return this.prisma.demandeHandicape.findMany();
   }
 
   findOne(id: string) {
-    return this.prisma.demandeCondoleance.findUnique({
+    return this.prisma.demandeHandicape.findUnique({
       where: { id },
-      include: {
-        typeCondoleance: true,
-      },
     });
   }
 
-  async create(createCondoleanceDto: CreateDemandeCondoleanceDto) {
-    const condoleanceUUID = this.uuid.Getuuid();
+  async create(createHandicape: CreateHandicapeDTO) {
+    const HandicapeUUID = this.uuid.Getuuid();
     const currentyear = getYear(new Date());
     const matchingPersonel = await this.prisma.personel.findUnique({
-      where: { id: createCondoleanceDto.personelId },
+      where: { id: createHandicape.personelId },
     });
-    const Checkontraiter = await this.prisma.demandeCondoleance.findFirst({
+    const Checkontraiter = await this.prisma.demandeHandicape.findFirst({
       where: {
-        personelId: createCondoleanceDto.personelId,
+        personelId: createHandicape.personelId,
         Status: 'En traitement',
       },
     });
-    const Checkpasencorevue = await this.prisma.demandeCondoleance.findFirst({
+    const Checkpasencorevue = await this.prisma.demandeHandicape.findFirst({
       where: {
-        personelId: createCondoleanceDto.personelId,
+        personelId: createHandicape.personelId,
         Status: null,
       },
     });
-    const CheckDocnecess = await this.prisma.demandeCondoleance.findFirst({
+    const CheckDocnecess = await this.prisma.demandeHandicape.findFirst({
       where: {
-        personelId: createCondoleanceDto.personelId,
+        personelId: createHandicape.personelId,
         Status: 'Documents requis',
       },
     });
@@ -69,22 +66,22 @@ export class DemandeCondoleanceService {
       );
     }
     try {
-      if (createCondoleanceDto.files && matchingPersonel.matricule) {
-        const dir = `C:\\AOS\\${matchingPersonel.matricule}\\${currentyear}\\Aides_financières\\Demandes-Condoleances\\${condoleanceUUID}`;
+      if (createHandicape.files && matchingPersonel.matricule) {
+        const dir = `C:\\AOS\\${matchingPersonel.matricule}\\${currentyear}\\Aides_financières\\Demandes-Handicape\\${HandicapeUUID}`;
         fs.mkdirSync(dir, { recursive: true });
-        createCondoleanceDto.files.map((file) => {
+        createHandicape.files.map((file) => {
           const filePath = path.join(dir, file.originalname);
           fs.writeFileSync(filePath, file.buffer);
           console.log(`File written at ${filePath}`);
         });
       }
-      return this.prisma.demandeCondoleance.create({
+      return this.prisma.demandeHandicape.create({
         data: {
-          id: condoleanceUUID,
-          personelId: createCondoleanceDto.personelId,
-          sousActiviteId: '6',
-          typeCondoleanceId: createCondoleanceDto.selectedDeceased,
-          description: createCondoleanceDto.description,
+          id: HandicapeUUID,
+          personelId: createHandicape.personelId,
+          sousActiviteId: '19',
+          enfant: createHandicape.enfant,
+          description: createHandicape.description,
         },
       });
     } catch (error) {
@@ -92,48 +89,45 @@ export class DemandeCondoleanceService {
     }
   }
 
-  async update(
-    id: string,
-    updateDemandeCondoleance: UpdateDemandeCondoleanceDto,
-  ) {
-    const Condoleance = await this.prisma.demandeCondoleance.findUnique({
+  async update(id: string, updateHandicape: UpdateHandicapeDto) {
+    const Handicape = await this.prisma.demandeHandicape.findUnique({
       where: {
         id,
-        personelId: updateDemandeCondoleance.personelId,
+        personelId: updateHandicape.personelId,
       },
     });
-    if (!Condoleance) {
+    if (!Handicape) {
       throw new HttpException(
         'ya pas une demande avec ce id',
         HttpStatus.BAD_REQUEST,
       );
-    } else if (Condoleance) {
+    } else if (Handicape) {
       const matchingPersonel = await this.prisma.personel.findUnique({
         where: {
-          id: updateDemandeCondoleance.personelId,
+          id: updateHandicape.personelId,
         },
       });
 
       try {
-        if (updateDemandeCondoleance.files) {
-          const dir = `C:\\AOS\\${matchingPersonel.matricule}\\${Condoleance.effet.getFullYear()}\\Aides_financières\\Demandes-Condoleances\\${id}`;
+        if (updateHandicape.files) {
+          const dir = `C:\\AOS\\${matchingPersonel.matricule}\\${Handicape.effet.getFullYear()}\\Aides_financières\\Demandes-Handicape\\${id}`;
           const ExisstFiles = fs.readdirSync(dir);
           ExisstFiles.map((filePath) => {
             fs.unlinkSync(path.join(dir, filePath));
           });
-          updateDemandeCondoleance.files.map((file) => {
+          updateHandicape.files.map((file) => {
             const filePath = path.join(dir, file.originalname);
             fs.writeFileSync(filePath, file.buffer);
             console.log(`File written at ${filePath}`);
           });
         }
-        return this.prisma.demandeCondoleance.update({
+        return this.prisma.demandeHandicape.update({
           where: {
             id,
           },
           data: {
-            description: updateDemandeCondoleance.description,
-            typeCondoleanceId: updateDemandeCondoleance.selectedDeceased,
+            description: updateHandicape.description,
+            enfant: updateHandicape.enfant,
             Status: null,
           },
         });
@@ -143,6 +137,6 @@ export class DemandeCondoleanceService {
     }
   }
   remove(id: string) {
-    return this.prisma.demandeCondoleance.delete({ where: { id } });
+    return this.prisma.demandeHandicape.delete({ where: { id } });
   }
 }

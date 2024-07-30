@@ -176,6 +176,7 @@ model demandeSport {
   montantAlloue  Int?
   Status         String?
   effet          DateTime     @default(now())
+  annee          Int
   observation    String?      @db.Text
   ///relation to Personel
   Personel       Personel     @relation(fields: [personelId], references: [id])
@@ -189,6 +190,7 @@ model demandeHandicape {
   id             String       @id
   montant        Int?
   enfant         String
+  description    String
   Status         String?
   effet          DateTime     @default(now())
   observation    String?      @db.Text

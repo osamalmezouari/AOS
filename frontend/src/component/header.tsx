@@ -18,7 +18,7 @@ const Header = () => {
           </Box>
           
           <Box className={"flex gap-x-2 font-main items-center"}>
-            <Avatar src="frontend\public\assets\images\1.png"  alt={'O'} className="w-8 h-8 bg-makah" />
+            <Avatar src="frontend\public\assets\images\1.png"  alt={user?.nom_fr.substring(0,1).toUpperCase()} className="w-8 h-8 bg-makah" />
             <Typography className="font-main text-[16px]">{user?.nom_fr} {user.prenom_fr}</Typography>
           </Box>
         </Box>

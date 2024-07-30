@@ -290,6 +290,27 @@ export class PersonelService {
       });
       return data;
     }
+    if (sousActiviteId === '19') {
+      const data = this.prismaClient.demandeHandicape.findMany({
+        where: {
+          personelId: id,
+          effet: {
+            gte: startDate,
+            lt: endDate,
+          },
+        },
+        include: {
+          SousActivite: {
+            select: {
+              id: true,
+              nomAr: true,
+              nomFr: true,
+            },
+          },
+        },
+      });
+      return data;
+    }
   }
   async AdminSingleSousActivitiesdemandesWithDetails(sousActiviteId: string) {
     const currentYear = new Date().getFullYear();
@@ -463,6 +484,20 @@ export class PersonelService {
       });
       return data;
     }
+    if (sousActiviteId === '19') {
+      const data = this.prismaClient.demandeHandicape.findMany({
+        include: {
+          SousActivite: {
+            select: {
+              id: true,
+              nomAr: true,
+              nomFr: true,
+            },
+          },
+        },
+      });
+      return data;
+    }
   }
   async PersonelDemandesWithDetails(id: string) {
     const alldemandes = await this.prismaClient.personel.findUnique({
@@ -624,6 +659,19 @@ export class PersonelService {
             },
           },
         },
+        demandehanicape: {
+          select: {
+            Status: true,
+            id: true,
+            effet: true,
+            SousActivite: {
+              select: {
+                nomAr: true,
+                nomFr: true,
+              },
+            },
+          },
+        },
       },
     });
     return [
@@ -639,6 +687,7 @@ export class PersonelService {
       ...alldemandes.retrait,
       ...alldemandes.mariage,
       ...alldemandes.demandeLang,
+      ...alldemandes.demandehanicape,
     ];
   }
   async AllDemandesWithDetails() {
@@ -774,6 +823,17 @@ export class PersonelService {
         },
       },
     });
+    const Handicape = await this.prismaClient.demandeHandicape.findMany({
+      include: {
+        SousActivite: {
+          select: {
+            id: true,
+            nomAr: true,
+            nomFr: true,
+          },
+        },
+      },
+    });
 
     return [
       ...mariage,
@@ -788,6 +848,7 @@ export class PersonelService {
       ...retrait,
       ...rentreeScolaire,
       ...naissance,
+      ...Handicape,
     ];
   }
   async TargetDemandeWithDetails() {
@@ -923,6 +984,17 @@ export class PersonelService {
         },
       },
     });
+    const Handicape = await this.prismaClient.demandeHandicape.findMany({
+      include: {
+        SousActivite: {
+          select: {
+            id: true,
+            nomAr: true,
+            nomFr: true,
+          },
+        },
+      },
+    });
 
     return [
       ...mariage,
@@ -937,6 +1009,7 @@ export class PersonelService {
       ...retrait,
       ...rentreeScolaire,
       ...naissance,
+      ...Handicape,
     ];
   }
   findOne(id: string): Promise<Personel> {

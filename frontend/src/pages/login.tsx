@@ -95,6 +95,7 @@ const Login = () => {
                 autoFocus
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                inputProps={{shrink: true}}
               />
               <TextField
                 margin="normal"
@@ -105,6 +106,7 @@ const Login = () => {
                 label="Password"
                 type="password"
                 value={password}
+                InputLabelProps={{shrink: true}}
                 onChange={(e) => {
                   setPassword(e.target.value);
                 }}

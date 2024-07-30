@@ -38,6 +38,12 @@ const DemandesManageTable = ({ data }: Props) => {
     } else if (targetUpdateFormId === "12") {
       navigate(`/AOS/SousActivitie/updateExcursion/${targetDemandeId}`, { replace: true });
     }
+    else if (targetUpdateFormId === "18") {
+      navigate(`/AOS/SousActivitie/updateSport/${targetDemandeId}`, { replace: true });
+    }
+    else if (targetUpdateFormId === "19") {
+      navigate(`/AOS/SousActivitie/updateHandicape/${targetDemandeId}`, { replace: true });
+    }
   };
 
   const handleCopy = async (demandeId: string) => {

@@ -25,6 +25,9 @@ import { AuthModule } from './Resources/Auth/auth.module';
 import { MariageModule } from './Resources/Mariage/mariage.module';
 import { NaissanceModule } from './Resources/naissance/naissance.module';
 import { RentreeScolaireModule } from './Resources/rentreeScolaire/rentreeScolaire.module';
+import { HandicapeModule } from './Resources/handicape/handicape.module';
+import { EnfantsModule } from './Resources/Panel/enfants/enfants.module';
+import { SportModule } from './Resources/sport/sport.module';
 
 @Module({
   imports: [
@@ -56,6 +59,9 @@ import { RentreeScolaireModule } from './Resources/rentreeScolaire/rentreeScolai
     NaissanceModule,
     DemandePelerinageModule,
     RentreeScolaireModule,
+    HandicapeModule,
+    EnfantsModule,
+    SportModule,
   ],
   controllers: [],
   providers: [],

@@ -146,6 +146,7 @@ const Register: React.FC = () => {
                   type="email"
                   value={formState.email}
                   onChange={handleChange}
+                  InputLabelProps={{shrink : true}}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -157,6 +158,7 @@ const Register: React.FC = () => {
                   type="password"
                   value={formState.password}
                   onChange={handleChange}
+                  InputLabelProps={{shrink : true}}
                 />
               </Grid>
               <Grid item xs={12}>

@@ -1,52 +1,49 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { CreateDemandeCondoleanceDto } from './dto/create-demande-condoleance.dto';
-import { UpdateDemandeCondoleanceDto } from './dto/update-demande-condoleance.dto';
 import { PrismaClient } from '@prisma/client';
-import { UuidService } from '../../../Helpers/UUID/uuid.service';
+import { UuidService } from '../../Helpers/UUID/uuid.service';
 import { getYear } from 'date-fns';
 import * as fs from 'fs';
 import * as path from 'path';
+import { CreateSportDto } from './dto/CreateSport.dto';
+import UpdateSportDto from './dto/UpdateSport.dto';
 
 @Injectable()
-export class DemandeCondoleanceService {
+export class SportService {
   constructor(
     private readonly prisma: PrismaClient,
     private readonly uuid: UuidService,
   ) {}
   findAll() {
-    return this.prisma.demandeCondoleance.findMany();
+    return this.prisma.demandeSport.findMany();
   }
 
   findOne(id: string) {
-    return this.prisma.demandeCondoleance.findUnique({
+    return this.prisma.demandeSport.findUnique({
       where: { id },
-      include: {
-        typeCondoleance: true,
-      },
     });
   }
 
-  async create(createCondoleanceDto: CreateDemandeCondoleanceDto) {
-    const condoleanceUUID = this.uuid.Getuuid();
+  async create(createSport: CreateSportDto) {
+    const SportUUID = this.uuid.Getuuid();
     const currentyear = getYear(new Date());
     const matchingPersonel = await this.prisma.personel.findUnique({
-      where: { id: createCondoleanceDto.personelId },
+      where: { id: createSport.personelId },
     });
-    const Checkontraiter = await this.prisma.demandeCondoleance.findFirst({
+    const Checkontraiter = await this.prisma.demandeSport.findFirst({
       where: {
-        personelId: createCondoleanceDto.personelId,
+        personelId: createSport.personelId,
         Status: 'En traitement',
       },
     });
-    const Checkpasencorevue = await this.prisma.demandeCondoleance.findFirst({
+    const Checkpasencorevue = await this.prisma.demandeSport.findFirst({
       where: {
-        personelId: createCondoleanceDto.personelId,
+        personelId: createSport.personelId,
         Status: null,
       },
     });
-    const CheckDocnecess = await this.prisma.demandeCondoleance.findFirst({
+    const CheckDocnecess = await this.prisma.demandeSport.findFirst({
       where: {
-        personelId: createCondoleanceDto.personelId,
+        personelId: createSport.personelId,
         Status: 'Documents requis',
       },
     });
@@ -69,22 +66,23 @@ export class DemandeCondoleanceService {
       );
     }
     try {
-      if (createCondoleanceDto.files && matchingPersonel.matricule) {
-        const dir = `C:\\AOS\\${matchingPersonel.matricule}\\${currentyear}\\Aides_financières\\Demandes-Condoleances\\${condoleanceUUID}`;
+      if (createSport.files && matchingPersonel.matricule) {
+        const dir = `C:\\AOS\\${matchingPersonel.matricule}\\${currentyear}\\Aides_financières\\Demandes-Sport\\${SportUUID}`;
         fs.mkdirSync(dir, { recursive: true });
-        createCondoleanceDto.files.map((file) => {
+        createSport.files.map((file) => {
           const filePath = path.join(dir, file.originalname);
           fs.writeFileSync(filePath, file.buffer);
           console.log(`File written at ${filePath}`);
         });
       }
-      return this.prisma.demandeCondoleance.create({
+      return this.prisma.demandeSport.create({
         data: {
-          id: condoleanceUUID,
-          personelId: createCondoleanceDto.personelId,
-          sousActiviteId: '6',
-          typeCondoleanceId: createCondoleanceDto.selectedDeceased,
-          description: createCondoleanceDto.description,
+          id: SportUUID,
+          personelId: createSport.personelId,
+          sousActiviteId: '18',
+          enfant: createSport.enfant,
+          montant: createSport.montant,
+          annee: currentyear,
         },
       });
     } catch (error) {
@@ -92,48 +90,45 @@ export class DemandeCondoleanceService {
     }
   }
 
-  async update(
-    id: string,
-    updateDemandeCondoleance: UpdateDemandeCondoleanceDto,
-  ) {
-    const Condoleance = await this.prisma.demandeCondoleance.findUnique({
+  async update(id: string, updateSport: UpdateSportDto) {
+    const Sport = await this.prisma.demandeSport.findUnique({
       where: {
         id,
-        personelId: updateDemandeCondoleance.personelId,
+        personelId: updateSport.personelId,
       },
     });
-    if (!Condoleance) {
+    if (!Sport) {
       throw new HttpException(
         'ya pas une demande avec ce id',
         HttpStatus.BAD_REQUEST,
       );
-    } else if (Condoleance) {
+    } else if (Sport) {
       const matchingPersonel = await this.prisma.personel.findUnique({
         where: {
-          id: updateDemandeCondoleance.personelId,
+          id: updateSport.personelId,
         },
       });
 
       try {
-        if (updateDemandeCondoleance.files) {
-          const dir = `C:\\AOS\\${matchingPersonel.matricule}\\${Condoleance.effet.getFullYear()}\\Aides_financières\\Demandes-Condoleances\\${id}`;
+        if (updateSport.files) {
+          const dir = `C:\\AOS\\${matchingPersonel.matricule}\\${Sport.effet.getFullYear()}\\Aides_financières\\Demandes-Sport\\${id}`;
           const ExisstFiles = fs.readdirSync(dir);
           ExisstFiles.map((filePath) => {
             fs.unlinkSync(path.join(dir, filePath));
           });
-          updateDemandeCondoleance.files.map((file) => {
+          updateSport.files.map((file) => {
             const filePath = path.join(dir, file.originalname);
             fs.writeFileSync(filePath, file.buffer);
             console.log(`File written at ${filePath}`);
           });
         }
-        return this.prisma.demandeCondoleance.update({
+        return this.prisma.demandeSport.update({
           where: {
             id,
           },
           data: {
-            description: updateDemandeCondoleance.description,
-            typeCondoleanceId: updateDemandeCondoleance.selectedDeceased,
+            enfant: updateSport.enfant,
+            montant: updateSport.montant,
             Status: null,
           },
         });
@@ -143,6 +138,6 @@ export class DemandeCondoleanceService {
     }
   }
   remove(id: string) {
-    return this.prisma.demandeCondoleance.delete({ where: { id } });
+    return this.prisma.demandeSport.delete({ where: { id } });
   }
 }

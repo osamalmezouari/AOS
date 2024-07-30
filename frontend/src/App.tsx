@@ -61,6 +61,8 @@ import PersonesTable from "./pages/panel/perssones/table.tsx";
 import AddPersonel from "./pages/panel/perssones/create.tsx";
 import ExcursionTable from "./pages/panel/excursion/table.tsx";
 import AddExcursion from "./pages/panel/excursion/create.tsx";
+import Handicape from "./component/Createforms/handicape.tsx";
+import UpdateHandicape from "./component/Updateforms/updateHandicape.tsx";
 
 function App() {
   return (
@@ -108,6 +110,7 @@ function App() {
             element={<Condoleance />}
             path={"AOS/SousActivitie/Condoleance"}
           />
+          <Route path={'/AOS/SousActivitie/Handicape'} element={<Handicape />}/>
           <Route element={<Maladies />} path={"AOS/SousActivitie/Maladies"} />
           <Route
             element={<UpdateCondoleance />}
@@ -121,6 +124,7 @@ function App() {
             element={<UpdateZoo />}
             path="/AOS/SousActivitie/updateZoo/:demandeId"
           />
+          <Route element={<UpdateHandicape />} path={'AOS/SousActivitie/updateHandicape/:demandeId'} />
           <Route
             element={<UpdateEstivage />}
             path={"/AOS/SousActivitie/updateEsstivage/:demandeId"}
@@ -285,6 +289,7 @@ function App() {
               path="/AOS/Admin/Dashboard/demande/Excursion/Ajoute"
               element={<AddExcursion />}
           />
+
         </Routes>
 
       </BrowserRouter>
