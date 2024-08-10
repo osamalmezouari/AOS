@@ -80,7 +80,6 @@ const SousActivitieDatatable = () => {
     };
     personeldemandesDetails();
   }, [user.id,id]);
-
   return (
     <Box>
       <Box>

@@ -9,6 +9,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { SingleSousActivities } from "../interfaces/types.tsx";
 import { PORT } from "../../env.ts";
+import Companies from "../landingComponents/Companies.tsx";
 
 function Landing() {
   const [SousActivities, setSousActivities] = useState({
@@ -94,7 +95,7 @@ function Landing() {
             </Box>
           </Grid>
         </Grid>
-        <Typography className="text-xl font-bold capitalize font-main text-start text-mainBleu underline rounded p-4 h-max">
+        {/* <Typography className="text-xl font-bold capitalize font-main text-start text-mainBleu underline rounded p-4 h-max">
           Explorez notre demande en ligne dès maintenant disponible
         </Typography>
         <Grid
@@ -119,8 +120,9 @@ function Landing() {
                 },
               )
             : ""}
-        </Grid>
+        </Grid>*/}
       </Container>
+      <Companies />
       <Footer />
     </div>
   );

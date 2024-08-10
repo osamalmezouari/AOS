@@ -178,10 +178,8 @@ model demandeSport {
   effet          DateTime     @default(now())
   annee          Int
   observation    String?      @db.Text
-  ///relation to Personel
-  Personel       Personel     @relation(fields: [personelId], references: [id])
+  personel       Personel     @relation(fields: [personelId], references: [id])
   personelId     String
-  ///relation to Personel
   SousActivite   SousActivite @relation(fields: [sousActiviteId], references: [id])
   sousActiviteId String
 }
@@ -290,15 +288,22 @@ model demamdeMaladies {
 model demandeLang {
   id             String       @id
   effet          DateTime     @default(now())
-  description    String       @db.Text
   Status         String?
+  periode        String
+  enfant         String
+  annee          Int
+  montant        Int
+  montantAlloue  Int?
   observation    String?      @db.Text
   /// relation to Personel
   Personel       Personel     @relation(fields: [personelId], references: [id])
   personelId     String
+  parentId       String
   /// relation to Personel
   SousActivite   SousActivite @relation(fields: [sousActiviteId], references: [id])
   sousActiviteId String
+  
+  @@unique([parentId, annee , enfant, periode])
 }
 
 model demandeCondoleance {
@@ -420,6 +425,7 @@ model rentreeScolaire {
   montant        Int?
   nombre         Int
   Status         String?
+  annee          Int
   effet          DateTime     @default(now())
   observation    String?      @db.Text
   /// relation to Personel

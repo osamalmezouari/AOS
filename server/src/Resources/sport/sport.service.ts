@@ -22,10 +22,63 @@ export class SportService {
       where: { id },
     });
   }
-
   async create(createSport: CreateSportDto) {
     const SportUUID = this.uuid.Getuuid();
     const currentyear = getYear(new Date());
+    const Enfant_naissance = await this.prisma.enfants.findMany({
+      where: {
+        personelId: createSport.personelId,
+        nom_fr: createSport.enfant,
+      },
+      select: {
+        naissance: true,
+      },
+    });
+    const Enfant_age = this.calculateAge(Enfant_naissance[0].naissance);
+    const MaxAge = 21;
+    const Max_Enfant_pour_ce_demande = 2;
+    const Check_Enfant_dans_la_demande =
+      await this.prisma.demandeSport.findMany({
+        where: {
+          personelId: createSport.personelId,
+          annee: currentyear,
+        },
+        select: {
+          enfant: true,
+        },
+      });
+    const Check_Enfant_dans_la_demande_filtred = Array.from(
+      new Set(Check_Enfant_dans_la_demande.map((record) => record.enfant)),
+    );
+    const check_enfant_if_have_already_demande_in_this_year =
+      await this.prisma.demandeSport.findMany({
+        where: {
+          enfant: createSport.enfant,
+          personelId: createSport.personelId,
+          annee: currentyear,
+        },
+      });
+    if (Enfant_age > MaxAge) {
+      throw new HttpException(
+        'Age maximale pour ce demande est 21 ans',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    if (check_enfant_if_have_already_demande_in_this_year.length > 0) {
+      throw new HttpException(
+        ' Vous avez déjà soumis une demande ',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    if (!Check_Enfant_dans_la_demande_filtred.includes(createSport.enfant)) {
+      const Enfants_exisst = Check_Enfant_dans_la_demande_filtred.length;
+      if (Enfants_exisst >= Max_Enfant_pour_ce_demande) {
+        throw new HttpException(
+          ` Vous avez déjà ${Max_Enfant_pour_ce_demande} enfants inscrits pour cette demande cette année. `,
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    }
     const matchingPersonel = await this.prisma.personel.findUnique({
       where: { id: createSport.personelId },
     });
@@ -97,6 +150,53 @@ export class SportService {
         personelId: updateSport.personelId,
       },
     });
+    const currentyear = getYear(new Date());
+    const Enfant_naissance = await this.prisma.enfants.findMany({
+      where: {
+        personelId: updateSport.personelId,
+        nom_fr: updateSport.enfant,
+      },
+      select: {
+        naissance: true,
+      },
+    });
+    const Enfant_age = this.calculateAge(Enfant_naissance[0].naissance);
+    const MaxAge = 21;
+    const Max_Enfant_pour_ce_demande = 2;
+    const Check_Enfant_dans_la_demande =
+      await this.prisma.demandeSport.findMany({
+        where: {
+          personelId: updateSport.personelId,
+          annee: currentyear,
+        },
+        select: {
+          enfant: true,
+        },
+      });
+    const Check_Enfant_dans_la_demande_filtred = Array.from(
+      new Set(Check_Enfant_dans_la_demande.map((record) => record.enfant)),
+    );
+    if (Enfant_age > MaxAge) {
+      throw new HttpException(
+        'Age maximale pour ce demande est 21 ans',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    if (!Check_Enfant_dans_la_demande_filtred.includes(updateSport.enfant)) {
+      const Enfants_exisst = Check_Enfant_dans_la_demande_filtred.length;
+      if (Enfants_exisst >= Max_Enfant_pour_ce_demande) {
+        throw new HttpException(
+          ` Vous avez déjà ${Max_Enfant_pour_ce_demande} enfants inscrits pour cette demande cette année. `,
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    }
+    if (Check_Enfant_dans_la_demande_filtred.includes(updateSport.enfant)) {
+      throw new HttpException(
+        ` Ce enfant deja inscrits pour cette demande cette année. `,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
     if (!Sport) {
       throw new HttpException(
         'ya pas une demande avec ce id',
@@ -139,5 +239,22 @@ export class SportService {
   }
   remove(id: string) {
     return this.prisma.demandeSport.delete({ where: { id } });
+  }
+  calculateAge(birthDate: Date): number {
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const birthMonth = birthDate.getMonth();
+    const birthDay = birthDate.getDate();
+    const todayMonth = today.getMonth();
+    const todayDay = today.getDate();
+
+    if (
+      todayMonth < birthMonth ||
+      (todayMonth === birthMonth && todayDay < birthDay)
+    ) {
+      age--;
+    }
+
+    return age;
   }
 }

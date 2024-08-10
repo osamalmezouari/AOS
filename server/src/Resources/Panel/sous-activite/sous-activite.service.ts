@@ -178,7 +178,26 @@ export class SousActiviteService {
         },
       },
     });
-
+    const demandesHandicape = await this.prismaClient.demandeHandicape.findMany(
+      {
+        where: {
+          personelId: id,
+          effet: {
+            gte: startDate,
+            lt: endDate,
+          },
+        },
+      },
+    );
+    const demandesSport = await this.prismaClient.demandeSport.findMany({
+      where: {
+        personelId: id,
+        effet: {
+          gte: startDate,
+          lt: endDate,
+        },
+      },
+    });
     return [
       ...demandesEstivage.map((demande) => demande.Status),
       ...demandesPelerinage.map((demande) => demande.Status),
@@ -193,6 +212,8 @@ export class SousActiviteService {
       ...demandesNaissance.map((demande) => demande.Status),
       ...demandesRetrait.map((demande) => demande.Status),
       ...demandesInscreption.map((demande) => demande.status),
+      ...demandesSport.map((demande) => demande.Status),
+      ...demandesHandicape.map((demande) => demande.Status),
     ];
   }
 
@@ -333,7 +354,26 @@ export class SousActiviteService {
         },
       },
     });
-
+    const demandesSport = await this.prismaClient.demandeSport.findMany({
+      where: {
+        effet: {
+          gte: startDate,
+          lt: endDate,
+        },
+      },
+      select: { Status: true },
+    });
+    const demandesHandicape = await this.prismaClient.demandeHandicape.findMany(
+      {
+        where: {
+          effet: {
+            gte: startDate,
+            lt: endDate,
+          },
+        },
+        select: { Status: true },
+      },
+    );
     return [
       ...demandesEstivage.map((demande) => demande.Status),
       ...demandesPelerinage.map((demande) => demande.Status),
@@ -348,6 +388,8 @@ export class SousActiviteService {
       ...demandesNaissance.map((demande) => demande.Status),
       ...demandesRetrait.map((demande) => demande.Status),
       ...demandesInscreption.map((demande) => demande.status),
+      ...demandesHandicape.map((demande) => demande.Status),
+      ...demandesSport.map((demande) => demande.Status),
     ];
   }
 
@@ -538,6 +580,36 @@ export class SousActiviteService {
       });
       return (await data).map((item) => item.Status);
     }
+    if (sousActiviteId === '18') {
+      const data = this.prismaClient.demandeSport.findMany({
+        where: {
+          personelId: id,
+          effet: {
+            gte: startDate,
+            lt: endDate,
+          },
+        },
+        select: {
+          Status: true,
+        },
+      });
+      return (await data).map((item) => item.Status);
+    }
+    if (sousActiviteId === '19') {
+      const data = this.prismaClient.demandeHandicape.findMany({
+        where: {
+          personelId: id,
+          effet: {
+            gte: startDate,
+            lt: endDate,
+          },
+        },
+        select: {
+          Status: true,
+        },
+      });
+      return (await data).map((item) => item.Status);
+    }
   }
 
   async AdminfetchSignledemande(demandeId: string, sousActiviteId: string) {
@@ -598,6 +670,16 @@ export class SousActiviteService {
       return data;
     } else if (sousActiviteId === '15') {
       const data = await this.prismaClient.demandeLang.findUnique({
+        where: { id: demandeId },
+      });
+      return data;
+    } else if (sousActiviteId === '18') {
+      const data = await this.prismaClient.demandeSport.findUnique({
+        where: { id: demandeId },
+      });
+      return data;
+    } else if (sousActiviteId === '19') {
+      const data = await this.prismaClient.demandeHandicape.findUnique({
         where: { id: demandeId },
       });
       return data;
@@ -705,6 +787,22 @@ export class SousActiviteService {
       });
     } else if (sousActiviteId === '15') {
       return this.prismaClient.demandeLang.update({
+        where: {
+          id: demandeId,
+          personelId: personelId,
+        },
+        data: adminUpdateDto,
+      });
+    } else if (sousActiviteId === '18') {
+      return this.prismaClient.demandeSport.update({
+        where: {
+          id: demandeId,
+          personelId: personelId,
+        },
+        data: adminUpdateDto,
+      });
+    } else if (sousActiviteId === '19') {
+      return this.prismaClient.demandeHandicape.update({
         where: {
           id: demandeId,
           personelId: personelId,

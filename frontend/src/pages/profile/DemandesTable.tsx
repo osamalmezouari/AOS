@@ -1,7 +1,7 @@
 import { CheckCircleOutline, Edit, Visibility } from "@mui/icons-material";
 import { PiCopy } from "react-icons/pi";
 import { Box } from "@mui/material";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { DemadesDataType } from "../../interfaces/types";
 import { useNavigate } from "react-router-dom";
 

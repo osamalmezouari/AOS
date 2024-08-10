@@ -20,9 +20,69 @@ export class DemandeLangService {
   findOne(id: string) {
     return this.prismaClient.demandeLang.findUnique({ where: { id } });
   }
+
   async create(createDemandeLangDto: CreateDemandeLangDto) {
     const LangUUID = this.uuid.Getuuid();
     const currentyear = getYear(new Date());
+    const Enfant_naissance = await this.prismaClient.enfants.findMany({
+      where: {
+        personelId: createDemandeLangDto.personelId,
+        nom_fr: createDemandeLangDto.enfant,
+      },
+      select: {
+        naissance: true,
+      },
+    });
+    const Enfant_age = this.calculateAge(Enfant_naissance[0].naissance);
+    const MaxAge = 21;
+    const Max_Enfant_pour_ce_demande = 3;
+    const Check_Enfant_dans_la_demande =
+      await this.prismaClient.demandeLang.findMany({
+        where: {
+          personelId: createDemandeLangDto.personelId,
+          annee: currentyear,
+        },
+        select: {
+          enfant: true,
+        },
+      });
+    const Check_Enfant_dans_la_demande_filtred = Array.from(
+      new Set(Check_Enfant_dans_la_demande.map((record) => record.enfant)),
+    );
+    const check_enfant_if_have_already_anuelle_demande =
+      await this.prismaClient.demandeLang.findMany({
+        where: {
+          enfant: createDemandeLangDto.enfant,
+          personelId: createDemandeLangDto.personelId,
+          periode: 'anuelle',
+          annee: currentyear,
+        },
+      });
+    if (Enfant_age > MaxAge) {
+      throw new HttpException(
+        'Age maximale pour ce demande est 21 ans',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    if (check_enfant_if_have_already_anuelle_demande.length > 0) {
+      throw new HttpException(
+        ' Vous avez déjà soumis une demande Annuelle.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    if (
+      !Check_Enfant_dans_la_demande_filtred.includes(
+        createDemandeLangDto.enfant,
+      )
+    ) {
+      const Enfants_exisst = Check_Enfant_dans_la_demande_filtred.length;
+      if (Enfants_exisst >= Max_Enfant_pour_ce_demande) {
+        throw new HttpException(
+          ` Vous avez déjà ${Max_Enfant_pour_ce_demande} enfants inscrits pour cette demande cette année. `,
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    }
     const matchingPersonel = await this.prismaClient.personel.findUnique({
       where: { id: createDemandeLangDto.personelId },
     });
@@ -44,6 +104,7 @@ export class DemandeLangService {
         Status: 'Document nécessaire ou pas valide',
       },
     });
+
     if (Checkpasencorevue) {
       throw new HttpException(
         "Vous avez déjà une demande n est pas n'a pas encore été examinée par l'administrateur.",
@@ -76,8 +137,12 @@ export class DemandeLangService {
         data: {
           id: this.uuid.Getuuid(),
           personelId: createDemandeLangDto.personelId,
-          description: createDemandeLangDto.description,
           sousActiviteId: '15',
+          montant: createDemandeLangDto.montant,
+          annee: currentyear,
+          enfant: createDemandeLangDto.enfant,
+          periode: createDemandeLangDto.periode,
+          parentId: createDemandeLangDto.personelId,
         },
       });
     } catch (error) {
@@ -86,6 +151,64 @@ export class DemandeLangService {
   }
 
   async update(id: string, updateDemandeLang: UpdateDemandeLangDto) {
+    const currentyear = getYear(new Date());
+    const Enfant_naissance = await this.prismaClient.enfants.findMany({
+      where: {
+        personelId: updateDemandeLang.personelId,
+        nom_fr: updateDemandeLang.enfant,
+      },
+      select: {
+        naissance: true,
+      },
+    });
+    const Enfant_age = this.calculateAge(Enfant_naissance[0].naissance);
+    const MaxAge = 21;
+    const Max_Enfant_pour_ce_demande = 3;
+    const Check_Enfant_dans_la_demande =
+      await this.prismaClient.demandeLang.findMany({
+        where: {
+          personelId: updateDemandeLang.personelId,
+          annee: currentyear,
+        },
+        select: {
+          enfant: true,
+        },
+      });
+
+    // const check_enfant_if_have_already_anuelle_demande =
+    //   await this.prismaClient.demandeLang.findMany({
+    //     where: {
+    //       enfant: updateDemandeLang.enfant,
+    //       personelId: updateDemandeLang.personelId,
+    //       periode: 'anuelle',
+    //     },
+    //   });
+    // const Check_Enfant_dans_la_demande_filtred = Array.from(
+    //   new Set(Check_Enfant_dans_la_demande.map((record) => record.enfant)),
+    // );
+    if (Enfant_age > MaxAge) {
+      throw new HttpException(
+        'Age maximale pour ce demande est 21 ans',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    // if (check_enfant_if_have_already_anuelle_demande.length > 0) {
+    //   throw new HttpException(
+    //     ' Vous avez déjà soumis une demande Annuelle.',
+    //     HttpStatus.BAD_REQUEST,
+    //   );
+    // }
+    // if (
+    //   !Check_Enfant_dans_la_demande_filtred.includes(updateDemandeLang.enfant)
+    // ) {
+    //   const Enfants_exisst = Check_Enfant_dans_la_demande_filtred.length;
+    //   if (Enfants_exisst >= Max_Enfant_pour_ce_demande) {
+    //     throw new HttpException(
+    //       `Vous avez déjà ${Max_Enfant_pour_ce_demande} enfants inscrits pour cette demande cette année. `,
+    //       HttpStatus.BAD_REQUEST,
+    //     );
+    //   }
+    // }
     const Lang = await this.prismaClient.demandeLang.findUnique({
       where: {
         id,
@@ -122,8 +245,11 @@ export class DemandeLangService {
             id,
           },
           data: {
-            description: updateDemandeLang.description,
             Status: null,
+            montant: updateDemandeLang.montant,
+            annee: currentyear,
+            enfant: updateDemandeLang.enfant,
+            periode: updateDemandeLang.periode,
           },
         });
       } catch {
@@ -134,5 +260,22 @@ export class DemandeLangService {
 
   remove(id: string) {
     return this.prismaClient.demandeLang.delete({ where: { id } });
+  }
+  calculateAge(birthDate: Date): number {
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const birthMonth = birthDate.getMonth();
+    const birthDay = birthDate.getDate();
+    const todayMonth = today.getMonth();
+    const todayDay = today.getDate();
+
+    if (
+      todayMonth < birthMonth ||
+      (todayMonth === birthMonth && todayDay < birthDay)
+    ) {
+      age--;
+    }
+
+    return age;
   }
 }

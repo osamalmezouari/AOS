@@ -12,24 +12,11 @@ export class PersonelService {
     private readonly uuid: UuidService,
   ) {}
   findAll(): Promise<Personel[]> {
-    return this.prismaClient.personel.findMany(
-      //     {
-      //   include: {
-      //     demandeLang: true,
-      //     retrait : true,
-      //     Zoo:true
-      //     demamdeMaladies: true,
-      //     demandeCredit: true,
-      //     demandePelerinage: true,
-      //     demandeEstivage: true,
-      //   },
-      // }
-      {
-        include: {
-          Affectation: true,
-        },
+    return this.prismaClient.personel.findMany({
+      include: {
+        Affectation: true,
       },
-    );
+    });
   }
   async SingleSousActivitiesdemandesWithDetails(
     id: string,
@@ -311,6 +298,27 @@ export class PersonelService {
       });
       return data;
     }
+    if (sousActiviteId === '18') {
+      const data = this.prismaClient.demandeSport.findMany({
+        where: {
+          personelId: id,
+          effet: {
+            gte: startDate,
+            lt: endDate,
+          },
+        },
+        include: {
+          SousActivite: {
+            select: {
+              id: true,
+              nomAr: true,
+              nomFr: true,
+            },
+          },
+        },
+      });
+      return data;
+    }
   }
   async AdminSingleSousActivitiesdemandesWithDetails(sousActiviteId: string) {
     const currentYear = new Date().getFullYear();
@@ -498,6 +506,20 @@ export class PersonelService {
       });
       return data;
     }
+    if (sousActiviteId === '18') {
+      const data = this.prismaClient.demandeSport.findMany({
+        include: {
+          SousActivite: {
+            select: {
+              id: true,
+              nomAr: true,
+              nomFr: true,
+            },
+          },
+        },
+      });
+      return data;
+    }
   }
   async PersonelDemandesWithDetails(id: string) {
     const alldemandes = await this.prismaClient.personel.findUnique({
@@ -672,6 +694,19 @@ export class PersonelService {
             },
           },
         },
+        demandesport: {
+          select: {
+            Status: true,
+            id: true,
+            effet: true,
+            SousActivite: {
+              select: {
+                nomAr: true,
+                nomFr: true,
+              },
+            },
+          },
+        },
       },
     });
     return [
@@ -688,6 +723,7 @@ export class PersonelService {
       ...alldemandes.mariage,
       ...alldemandes.demandeLang,
       ...alldemandes.demandehanicape,
+      ...alldemandes.demandesport,
     ];
   }
   async AllDemandesWithDetails() {
@@ -834,7 +870,17 @@ export class PersonelService {
         },
       },
     });
-
+    const Sport = await this.prismaClient.demandeSport.findMany({
+      include: {
+        SousActivite: {
+          select: {
+            id: true,
+            nomAr: true,
+            nomFr: true,
+          },
+        },
+      },
+    });
     return [
       ...mariage,
       ...condoleance,
@@ -849,6 +895,7 @@ export class PersonelService {
       ...rentreeScolaire,
       ...naissance,
       ...Handicape,
+      ...Sport,
     ];
   }
   async TargetDemandeWithDetails() {
@@ -995,6 +1042,17 @@ export class PersonelService {
         },
       },
     });
+    const Sport = await this.prismaClient.demandeSport.findMany({
+      include: {
+        SousActivite: {
+          select: {
+            id: true,
+            nomAr: true,
+            nomFr: true,
+          },
+        },
+      },
+    });
 
     return [
       ...mariage,
@@ -1010,6 +1068,7 @@ export class PersonelService {
       ...rentreeScolaire,
       ...naissance,
       ...Handicape,
+      ...Sport,
     ];
   }
   findOne(id: string): Promise<Personel> {

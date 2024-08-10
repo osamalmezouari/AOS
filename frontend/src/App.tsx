@@ -63,6 +63,8 @@ import ExcursionTable from "./pages/panel/excursion/table.tsx";
 import AddExcursion from "./pages/panel/excursion/create.tsx";
 import Handicape from "./component/Createforms/handicape.tsx";
 import UpdateHandicape from "./component/Updateforms/updateHandicape.tsx";
+import Sport from "./component/Createforms/sport.tsx";
+import UpdateSport from "./component/Updateforms/updateSport.tsx";
 
 function App() {
   return (
@@ -111,6 +113,7 @@ function App() {
             path={"AOS/SousActivitie/Condoleance"}
           />
           <Route path={'/AOS/SousActivitie/Handicape'} element={<Handicape />}/>
+          <Route path={'/AOS/SousActivitie/Sport'} element={<Sport />}/>
           <Route element={<Maladies />} path={"AOS/SousActivitie/Maladies"} />
           <Route
             element={<UpdateCondoleance />}
@@ -125,6 +128,8 @@ function App() {
             path="/AOS/SousActivitie/updateZoo/:demandeId"
           />
           <Route element={<UpdateHandicape />} path={'AOS/SousActivitie/updateHandicape/:demandeId'} />
+          <Route element={<UpdateSport />} path={'AOS/SousActivitie/updateSport/:demandeId'} />
+
           <Route
             element={<UpdateEstivage />}
             path={"/AOS/SousActivitie/updateEsstivage/:demandeId"}

@@ -5,8 +5,8 @@ import {
   Button,
   CircularProgress,
   Container,
-  CssBaseline,
-  Grid,
+  CssBaseline, FormControl,
+  Grid, InputLabel, MenuItem, Select,
   TextField,
   Typography,
 } from "@mui/material";
@@ -18,34 +18,44 @@ import { useParams } from "react-router-dom";
 import Header from "../header.tsx";
 import SideBar from "../sidebar.tsx";
 
-interface FormState {
-  description: string;
-  files: File[];
-  personelId: string;
-}
-
 const UpdateLang: React.FC = () => {
   const userDataString = localStorage.getItem("user");
   const JSONDATA = userDataString ? JSON.parse(userDataString) : null;
   const user = JSONDATA;
+  const [enfants, setenfants] = useState([]);
+  const getCurrentTrimester = () => {
+    const month = new Date().getMonth();
+    if (month >= 1 && month < 3) return "tri1";
+    if (month >= 4 && month < 6) return "tri2";
+    if (month >= 7 && month < 9) return "tri3";
+
+    return;
+  };
+  const CurrentTrimester = getCurrentTrimester();
   const [sentStatus, setSentStatus] = useState<{
     success: boolean;
     inprogress: boolean;
     error: string;
     alert: string;
-    description: number;
   }>({
     success: false,
     inprogress: false,
     error: "",
     alert: "",
-    description: 0,
   });
   const [MaxFiles, setMaxFiles] = useState<number>(1);
-  const [formState, setFormState] = useState<FormState>({
-    description: "",
+  const [formState, setFormState] = useState< {
+    files: File[];
+    enfant: string;
+    montant: number;
+    personelId: string;
+    periode: string;
+  }>({
     files: [],
+    enfant: "",
+    montant: 0,
     personelId: user.id,
+    periode: "",
   });
   const { demandeId } = useParams();
   const handleChange = (
@@ -57,25 +67,24 @@ const UpdateLang: React.FC = () => {
       inprogress: false,
       error: "",
       alert: "",
-      description: value.length,
     });
-    if (name === "description" && value.length > 200) {
-      setSentStatus({
-        success: false,
-        inprogress: false,
-        error: "",
-        alert: "",
-        description: value.length,
-      });
-      return;
-    }
     console.log(sentStatus);
     setFormState((prevState) => ({
       ...prevState,
       [name]: value,
     }));
   };
-
+  useEffect(() => {
+    const fetchenfants = async () => {
+      try {
+        const res = await axios.get(`http://localhost:${PORT}/enfants`);
+        setenfants(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchenfants();
+  }, []);
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     if (files.length > MaxFiles) {
@@ -84,7 +93,6 @@ const UpdateLang: React.FC = () => {
         inprogress: false,
         error: "",
         alert: "max fechier pour disponbile pour ce demande est 3",
-        description: 0,
       });
       return;
     }
@@ -101,7 +109,6 @@ const UpdateLang: React.FC = () => {
         inprogress: false,
         error: "",
         alert: `Min files allowed is ${MaxFiles}`,
-        description: formState.description.length,
       });
       return;
     }
@@ -112,7 +119,6 @@ const UpdateLang: React.FC = () => {
         success: false,
         error: "",
         alert: "",
-        description: 0,
       });
       const response = await axios.patch(
         `http://localhost:${PORT}/demande-lang/${demandeId}`,
@@ -129,7 +135,6 @@ const UpdateLang: React.FC = () => {
           error: "",
           inprogress: false,
           alert: "",
-          description: 0,
         });
       }
     } catch (error) {
@@ -142,7 +147,6 @@ const UpdateLang: React.FC = () => {
           success: false,
           inprogress: false,
           alert: "",
-          description: 0,
           error: error.response.data.message || "An error occurred",
         });
       } else {
@@ -150,7 +154,6 @@ const UpdateLang: React.FC = () => {
           success: false,
           inprogress: false,
           alert: "",
-          description: 0,
           error: error.response.data.message || "An error occurred",
         });
       }
@@ -181,8 +184,9 @@ const UpdateLang: React.FC = () => {
         const data = await res.data;
         setFormState((prevState) => ({
           ...prevState,
-          description: data.description,
-          selectedDeceased: data.typeCondoleanceId,
+          enfant : data.enfant,
+          periode : data.periode,
+          montant : data.montant
         }));
       } catch (error) {
         console.log(error);
@@ -198,78 +202,122 @@ const UpdateLang: React.FC = () => {
       <Header />
       <SideBar />
       <Container
-        maxWidth="sm"
-        className="w-full flex items-center justify-center h-screen"
+          maxWidth="sm"
+          className="w-full flex items-center justify-center h-screen"
       >
         <CssBaseline />
         <Box
-          sx={{
-            mt: 5,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-          className={"w-full"}
+            sx={{
+              mt: 5,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+            className={"w-full"}
         >
           <Typography
-            variant="h5"
-            sx={{
-              background: "#1976d2",
-            }}
-            className="mr-auto rounded font-main flex gap-2 items-center text-white capitalize w-full p-4"
+              variant="h5"
+              sx={{
+                background: "#1976d2",
+              }}
+              className="mr-auto rounded font-main flex gap-2 items-center text-white capitalize w-full p-4"
           >
-            Modification de demande de language
+            demande de language
           </Typography>
           <Box
-            component="form"
-            sx={{ mt: 3 }}
-            onSubmit={handleSubmit}
-            className={"w-full"}
+              component="form"
+              sx={{ mt: 3 }}
+              onSubmit={handleSubmit}
+              className={"w-full"}
           >
             <Grid container spacing={2}>
-              <Grid item xs={12}>
+              <Grid item xs={6}>
                 <TextField
-                  required
-                  fullWidth
-                  name="description"
-                  label="Description"
-                  type="text"
-                  value={formState.description}
-                  onChange={handleChange}
-                  multiline
-                  rows={4}
-                  inputProps={{ maxLength: 500 }}
+                    required
+                    fullWidth
+                    name="montant"
+                    label="montant"
+                    type="text"
+                    value={formState.montant}
+                    onChange={handleChange}
+                    multiline
+                    rows={1}
                 />
-                <Typography className="text-sm text-gray-500 mt-1">
-                  {`Maximum ${sentStatus.description || 0} / 200 characters`}
-                </Typography>
+              </Grid>
+              <Grid item xs={6}>
+                <FormControl fullWidth required>
+                  <InputLabel id="select-enfant">
+                    Choisissez l'enfant
+                  </InputLabel>
+                  <Select
+                      labelId="select-enfant"
+                      id="select-enfant"
+                      name="enfant"
+                      value={formState.enfant}
+                      onChange={handleChange}
+                      label="l'enfant"
+                  >
+                    {enfants &&
+                        enfants.map((nom) => (
+                            <MenuItem key={nom.nom_fr} value={nom.nom_fr}>
+                              {nom.nom_fr}
+                            </MenuItem>
+                        ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12}>
+                <FormControl fullWidth required>
+                  <InputLabel id="select-enfant">
+                    Choisissez la periode
+                  </InputLabel>
+                  <Select
+                      labelId="select-periode"
+                      id="select-periode"
+                      name="periode"
+                      value={formState.periode}
+                      onChange={handleChange}
+                      label="periode"
+                  >
+                    {CurrentTrimester === "tri1" && (
+                        <MenuItem value={"tri1"}>Trimistre 1</MenuItem>
+                    )}
+                    {CurrentTrimester === "tri2" && (
+                        <MenuItem value={"tri2"}>Trimistre 2</MenuItem>
+                    )}
+                    {CurrentTrimester === "tri3" && (
+                        <MenuItem value={"tri3"}>Trimistre 3</MenuItem>
+                    )}
+                    <MenuItem value={"anuelle"}>Anuelle</MenuItem>
+                  </Select>
+                </FormControl>
               </Grid>
               <Grid item xs={12}>
                 <input
-                  type="file"
-                  id="files"
-                  name="files"
-                  onChange={handleFileChange}
-                  multiple
-                  style={{ display: "none" }}
+                    type="file"
+                    id="files"
+                    name="files"
+                    onChange={handleFileChange}
+                    multiple
+                    style={{ display: "none" }}
                 />
                 <label htmlFor="files">
                   <Button
-                    variant="contained"
-                    component="span"
-                    className="bg-mainBleu"
-                    sx={{
-                      color: "white",
-                      mb: 2,
-                    }}
+                      variant="contained"
+                      component="span"
+                      className="bg-mainBleu"
+                      sx={{
+                        color: "white",
+                        mb: 2,
+                      }}
                   >
                     Importer les Fechiers
                   </Button>
                 </label>
                 {formState.files.length > 0 ? (
-                  <Typography>{formState.files.length} files chosen</Typography>
+                    <Typography>{formState.files.length} files chosen</Typography>
                 ) : (
-                  <Typography>No fechier selectioner</Typography>
+                    <Typography>No fechier selectioner</Typography>
                 )}
                 <Typography className="text-sm text-gray-500 mt-1">
                   Max {MaxFiles} Fechiers
@@ -277,45 +325,38 @@ const UpdateLang: React.FC = () => {
               </Grid>
             </Grid>
             {sentStatus.error && (
-              <Alert className="mt-4" severity="info">
-                {sentStatus.error}
-              </Alert>
+                <Alert className="mt-4" severity="info">
+                  {sentStatus.error}
+                </Alert>
             )}
             {sentStatus.success && (
-              <Alert className="mt-4" severity="success">
-                le form est envouyer avec succes
-              </Alert>
-            )}
-            {sentStatus.description > 200 && (
-              <Alert className="mt-4" severity="info">
-                max charachters est 200
-              </Alert>
+                <Alert className="mt-4" severity="success">
+                  le form est envouyer avec succes
+                </Alert>
             )}
             {sentStatus.alert && (
-              <Alert className="mt-4" severity="info">
-                {`max fechier est  ${MaxFiles} pour ce demande`}
-              </Alert>
+                <Alert className="mt-4" severity="info">
+                  {`max fechier est  ${MaxFiles} pour ce demande`}
+                </Alert>
             )}
             <Button
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              type="submit"
-              className="bg-mainBleu hover:bg-yellow transition-all duration-500 flex gap-x-4"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+                type="submit"
+                className="bg-mainBleu hover:bg-yellow transition-all duration-500 flex gap-x-4"
             >
               Envouyer
               {sentStatus.inprogress && (
-                <CircularProgress color="inherit" size={20} />
+                  <CircularProgress color="inherit" size={20} />
               )}
               {sentStatus.success && (
-                <Verified color="inherit" fontSize={"small"} />
+                  <Verified color="inherit" fontSize={"small"} />
               )}
-              {sentStatus.error ||
-              sentStatus.description > 200 ||
-              sentStatus.alert ? (
-                <ErrorOutlineRounded color="inherit" fontSize={"small"} />
+              {sentStatus.error || sentStatus.alert ? (
+                  <ErrorOutlineRounded color="inherit" fontSize={"small"} />
               ) : (
-                ""
+                  ""
               )}
             </Button>
           </Box>
